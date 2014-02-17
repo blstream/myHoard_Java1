@@ -2,16 +2,42 @@ package com.myhoard.model.dao;
 
 import java.sql.Timestamp;
 
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.Table;
+import javax.persistence.Column;
+
+@Entity
+@Table(name = "Collections")
 public class CollectionDS {
 	
+    @Id
+    @Column(name="id")
+    @GeneratedValue
 	private int id;
+    
+    @Column(name="name")
 	private String name;
+	
+    @Column(name="description")
 	private String description;
+	
+    @Column(name="tags")
 	private String tags;
+	
+    @Column(name="items_number")
 	private int itemsNumber;
+	
+    @Column(name="created_date")
 	private Timestamp createdDate;
+	
+    @Column(name="modified_date")
 	private Timestamp modifiedDate;
-	private String Owner;
+	
+    @Column(name="owner")
+	private String owner;
+	
 	
 	public int getId() {
 		return id;
@@ -70,11 +96,13 @@ public class CollectionDS {
 	}
 
 	public String getOwner() {
-		return Owner;
+		return owner;
 	}
 
 	public void setOwner(String owner) {
-		Owner = owner;
+		this.owner = owner;
 	}
+
+	
 	
 }
