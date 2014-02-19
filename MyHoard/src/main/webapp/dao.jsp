@@ -16,47 +16,46 @@
 	
 	<%
 	
-	/*
 	
-	Timestamp date = Timestamp.valueOf("2014-02-18 12:45:36");
-	CollectionDS collection = new CollectionDS("Monety", "Miliony monet", "monety 2014 SEźćńŋd", 42,
-			date, date, "Jan Bżćńółć");
-	CollectionDAO cd = new CollectionDAO();
-	
-	
-	cd.create(collection);
-	out.println("Dodano kolekcję o id = " + collection.getId() + "<br />");
-	collection.setDescription("Nowy opis kolekcji żśWgłh");
-	cd.update(collection);
-	out.println("Zaktualizowano kolekcję o id = " + collection.getId() + "<br />");
+	// Timestamp date = Timestamp.valueOf("2014-02-18 12:45:36");
+	// CollectionDS collection = new CollectionDS("Monety", "Miliony monet", "monety 2014 SEźćńŋd", 42,
+	//		date, date, "Jan Bżćńółć");
+	// CollectionDAO cd = new CollectionDAO();
 	
 	
-	CollectionDS collection2 = new CollectionDS("Monety II", "kolekcja do usunięcia", "monety 2014 SEźćńŋd", 42,
-			date, date, "Jan Bżćńółć");
-	cd.create(collection2);
-	cd.remove(collection2.getId());
-	
-	cd.remove(collection2.getId());
-	
-	CollectionDS collection3 = cd.get(collection2.getId());
-	CollectionDS collection4 = cd.get(collection.getId());
-	
-	out.println("ID : " + collection4.getId() + "<br />");
-	out.println("NAME : " + collection4.getName() + "<br />");
-	out.println("DESCRIPTION : " + collection4.getDescription() + "<br />");
-	out.println("TAGS : " + collection4.getTags() + "<br />");
-	out.println("ITEMS_NUMBER : " + collection4.getItemsNumber() + "<br />");
-	out.println("CREATED_DATE : " + collection4.getCreatedDate() + "<br />");
-	out.println("MODIFIED_DATE : " + collection4.getModifiedDate() + "<br />");
-	out.println("OWNER : " + collection4.getOwner() + "<br />");
+	// cd.create(collection);
+	// out.println("Dodano kolekcję o id = " + collection.getId() + "<br />");
+	// collection.setDescription("Nowy opis kolekcji żśWgłh");
+	// cd.update(collection);
+	// out.println("Zaktualizowano kolekcję o id = " + collection.getId() + "<br />");
 	
 	
-	List<CollectionDS> list = cd.getList();
+	// CollectionDS collection2 = new CollectionDS("Monety II", "kolekcja do usunięcia", "monety 2014 SEźćńŋd", 42,
+	//		date, date, "Jan Bżćńółć");
+	// cd.create(collection2);
+	// cd.remove(collection2.getId());
 	
-	for(CollectionDS obj : list)
-		out.println(obj.getId() + "<br />");
+	// cd.remove(collection2.getId());
 	
-	*/
+	// CollectionDS collection3 = cd.get(collection2.getId());
+	// CollectionDS collection4 = cd.get(collection.getId());
+	
+	// out.println("ID : " + collection4.getId() + "<br />");
+	// out.println("NAME : " + collection4.getName() + "<br />");
+	// out.println("DESCRIPTION : " + collection4.getDescription() + "<br />");
+	// out.println("TAGS : " + collection4.getTags() + "<br />");
+	// out.println("ITEMS_NUMBER : " + collection4.getItemsNumber() + "<br />");
+	// out.println("CREATED_DATE : " + collection4.getCreatedDate() + "<br />");
+	// out.println("MODIFIED_DATE : " + collection4.getModifiedDate() + "<br />");
+	// out.println("OWNER : " + collection4.getOwner() + "<br />");
+	
+	
+	// List<CollectionDS> list = cd.getList();
+	
+	// for(CollectionDS obj : list)
+	//	out.println(obj.getId() + "<br />");
+	
+	
 	%>
 	
 </body>
