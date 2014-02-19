@@ -3,9 +3,11 @@ package com.myhoard.model.dao;
 import java.util.List;
 
 import org.hibernate.Session;
+import org.springframework.stereotype.Repository;
+
 import com.myhoard.model.dao.Hibernate;
 
-
+@Repository
 public class CollectionDAO implements ResourceDAO<CollectionDS> {
 	
 	@SuppressWarnings("unchecked")

@@ -5,10 +5,17 @@
 
 	<display-name>MyHoard - Patronage 2014 Java1</display-name>
 
-	<context-param>
-		<param-name>contextConfigLocation</param-name>
-		<param-value>/WEB-INF/context.xml</param-value>
-	</context-param>
+	<servlet>
+		<description></description>
+		<display-name>myHoard</display-name>
+		<servlet-name>myHoard</servlet-name>
+		<servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+		<load-on-startup>1</load-on-startup>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>myHoard</servlet-name>
+		<url-pattern>/</url-pattern>
+	</servlet-mapping>
 
 </web-app>
 
