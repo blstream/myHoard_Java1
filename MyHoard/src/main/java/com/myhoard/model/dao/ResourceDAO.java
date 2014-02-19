@@ -8,5 +8,5 @@ public interface ResourceDAO<T> {
 	public T get(int id);
 	public void create(T object);
 	public void update (T object);
-	public void remove(T object);
+	public void remove(int id);
 }

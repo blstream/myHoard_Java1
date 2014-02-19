@@ -2,42 +2,42 @@ package com.myhoard.model.dao;
 
 import java.sql.Timestamp;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.Table;
-import javax.persistence.Column;
 
-@Entity
-@Table(name = "Collections")
 public class CollectionDS {
 	
-    @Id
-    @Column(name="id")
-    @GeneratedValue
 	private int id;
-    
-    @Column(name="name")
+
 	private String name;
-	
-    @Column(name="description")
+
 	private String description;
-	
-    @Column(name="tags")
+
 	private String tags;
-	
-    @Column(name="items_number")
+
 	private int itemsNumber;
-	
-    @Column(name="created_date")
+
 	private Timestamp createdDate;
-	
-    @Column(name="modified_date")
+
 	private Timestamp modifiedDate;
 	
-    @Column(name="owner")
 	private String owner;
 	
+	
+	public CollectionDS() {
+		
+	}
+	
+	public CollectionDS(String name, String description, String tags, int itemsNumber,
+			Timestamp createdDate, Timestamp modifiedDate, String owner) {
+		
+		this.id = 0;
+		this.name = name;
+		this.description = description;
+		this.tags = tags;
+		this.itemsNumber = itemsNumber;
+		this.createdDate = createdDate;
+		this.modifiedDate = modifiedDate;
+		this.owner = owner;
+	}
 	
 	public int getId() {
 		return id;

@@ -1,0 +1,58 @@
+<%@page import="java.util.List"%>
+<%@page import="java.sql.Timestamp"%>
+<%@page import="com.myhoard.model.dao.CollectionDAO"%>
+<%@page import="com.myhoard.model.dao.CollectionDS"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>Hibernate :: Test</title>
+</head>
+<body>
+	
+	<%
+	
+	Timestamp date = Timestamp.valueOf("2014-02-18 12:45:36");
+	CollectionDS collection = new CollectionDS("Monety", "Miliony monet", "monety 2014 SEźćńŋd", 42,
+			date, date, "Jan Bżćńółć");
+	CollectionDAO cd = new CollectionDAO();
+	
+	
+	cd.create(collection);
+	out.println("Dodano kolekcję o id = " + collection.getId() + "<br />");
+	collection.setDescription("Nowy opis kolekcji żśWgłh");
+	cd.update(collection);
+	out.println("Zaktualizowano kolekcję o id = " + collection.getId() + "<br />");
+	
+	
+	CollectionDS collection2 = new CollectionDS("Monety II", "kolekcja do usunięcia", "monety 2014 SEźćńŋd", 42,
+			date, date, "Jan Bżćńółć");
+	cd.create(collection2);
+	cd.remove(collection2.getId());
+	
+	cd.remove(collection2.getId());
+	
+	CollectionDS collection3 = cd.get(collection2.getId());
+	CollectionDS collection4 = cd.get(collection.getId());
+	
+	out.println("ID : " + collection4.getId() + "<br />");
+	out.println("NAME : " + collection4.getName() + "<br />");
+	out.println("DESCRIPTION : " + collection4.getDescription() + "<br />");
+	out.println("TAGS : " + collection4.getTags() + "<br />");
+	out.println("ITEMS_NUMBER : " + collection4.getItemsNumber() + "<br />");
+	out.println("CREATED_DATE : " + collection4.getCreatedDate() + "<br />");
+	out.println("MODIFIED_DATE : " + collection4.getModifiedDate() + "<br />");
+	out.println("OWNER : " + collection4.getOwner() + "<br />");
+	
+	
+	List<CollectionDS> list = cd.getList();
+	
+	for(CollectionDS obj : list)
+		out.println(obj.getId() + "<br />");
+	
+	%>
+	
+</body>
+</html>

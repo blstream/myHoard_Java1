@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+ 
+<hibernate-mapping>
+    <class name="com.myhoard.model.dao.CollectionDS" table="Collections" >
+        
+        <id name="id" type="int">
+            <column name="id" />
+            <generator class="identity" />
+        </id>
+        
+        <property name="name" type="string">
+            <column name="name" length="50" not-null="false" unique="false" />
+        </property>
+        
+        <property name="description" type="string">
+            <column name="description" length="250" not-null="false" unique="false" />
+        </property>
+        
+        <property name="tags" type="string">
+            <column name="tags" length="250" not-null="false" unique="false" />
+        </property>
+        
+        <property name="itemsNumber" type="int">
+            <column name="items_number" not-null="true" unique="false" />
+        </property>
+        
+        <property name="createdDate" type="timestamp">
+            <column name="created_date" not-null="true" unique="false" />
+        </property>
+        
+        <property name="modifiedDate" type="timestamp">
+            <column name="modified_date" not-null="true" unique="false" />
+        </property>
+        
+        <property name="owner" type="string">
+            <column name="owner" not-null="true" unique="false" />
+        </property>
+                                                
+    </class>
+</hibernate-mapping>
