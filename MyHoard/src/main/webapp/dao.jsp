@@ -12,7 +12,11 @@
 </head>
 <body>
 	
+	<p> Test połączenia z bazą danych i dodawania/aktualizowania/usuwania rekordów w bazie. </p>
+	
 	<%
+	
+	/*
 	
 	Timestamp date = Timestamp.valueOf("2014-02-18 12:45:36");
 	CollectionDS collection = new CollectionDS("Monety", "Miliony monet", "monety 2014 SEźćńŋd", 42,
@@ -52,6 +56,7 @@
 	for(CollectionDS obj : list)
 		out.println(obj.getId() + "<br />");
 	
+	*/
 	%>
 	
 </body>
