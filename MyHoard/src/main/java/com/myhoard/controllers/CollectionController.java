@@ -27,7 +27,7 @@ public class CollectionController {
 	@ResponseStatus(HttpStatus.CREATED)
 	public CollectionDS addCollection(@RequestBody CollectionDS collection) {
 		collectionService.create(collection);
-		return null;
+		return collection;
 	}
 
 	@RequestMapping(value = "/{id}", method = RequestMethod.GET)

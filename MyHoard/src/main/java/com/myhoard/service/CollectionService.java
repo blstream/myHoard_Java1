@@ -11,7 +11,7 @@ import com.myhoard.model.dao.CollectionDAO;
 import com.myhoard.model.dao.CollectionDS;
 
 @Service("collectionService")
-public class CollectionService {
+public class CollectionService implements ResourceService<CollectionDS> {
 
 	private CollectionDAO collectionDAO;
 
