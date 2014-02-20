@@ -2,6 +2,7 @@ package com.myhoard.controllers;
 
 import java.util.List;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
@@ -34,6 +35,7 @@ public class CollectionController {
 	@ResponseStatus(HttpStatus.OK)
 	@ResponseBody
 	public CollectionDS getCollection(@PathVariable("id") int id) {
+		StringUtils.isNumeric("");
 		return collectionService.get(id);
 	}
 
