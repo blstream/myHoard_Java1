@@ -1,4 +1,4 @@
-package com.myhoard.controllers;
+package com.blstream.myhoard.controller;
 
 import java.util.List;
 
@@ -12,8 +12,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
-import com.myhoard.model.dao.CollectionDTO;
-import com.myhoard.service.ResourceService;
+import com.blstream.myhoard.biz.model.CollectionDTO;
+import com.blstream.myhoard.biz.service.ResourceService;
 
 @Controller
 @RequestMapping("/collections")

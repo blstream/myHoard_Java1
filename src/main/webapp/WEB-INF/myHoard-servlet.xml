@@ -10,7 +10,7 @@
         http://www.springframework.org/schema/mvc/spring-mvc-3.0.xsd">
 
 	<mvc:annotation-driven />
-	<context:component-scan base-package="com.myhoard" />
+	<context:component-scan base-package="com.blstream.myhoard" />
 	<mvc:default-servlet-handler />
 	<mvc:annotation-driven></mvc:annotation-driven>
 

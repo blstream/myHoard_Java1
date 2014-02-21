@@ -1,7 +1,10 @@
-package com.myhoard.model.dao;
+package com.blstream.myhoard.biz.mapper;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import com.blstream.myhoard.biz.model.CollectionDTO;
+import com.blstream.myhoard.db.model.CollectionDS;
 
 public class CollectionMapper {
 

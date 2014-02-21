@@ -1,11 +1,11 @@
-package com.myhoard.model.dao;
+package com.blstream.myhoard.db.dao;
 
 import java.util.List;
 
 import org.hibernate.Session;
 import org.springframework.stereotype.Repository;
 
-import com.myhoard.model.dao.Hibernate;
+import com.blstream.myhoard.db.model.CollectionDS;
 
 @Repository
 public class CollectionDAO implements ResourceDAO<CollectionDS> {

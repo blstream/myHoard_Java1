@@ -1,4 +1,4 @@
-package com.myhoard.model.dao;
+package com.blstream.myhoard.db.model;
 
 import java.util.Date;
 

@@ -1,4 +1,4 @@
-package com.myhoard.model.dao;
+package com.blstream.myhoard.db.dao;
 
 import java.util.List;
 

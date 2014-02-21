@@ -1,8 +1,8 @@
 <%@page import="java.text.SimpleDateFormat"%>
 <%@page import="java.util.Date"%>
 <%@page import="java.util.List"%>
-<%@page import="com.myhoard.model.dao.CollectionDAO"%>
-<%@page import="com.myhoard.model.dao.CollectionDS"%>
+<%@page import="com.blstream.myhoard.db.dao.CollectionDAO"%>
+<%@page import="com.blstream.myhoard.db.model.CollectionDS"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">

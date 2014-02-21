@@ -1,4 +1,4 @@
-package com.myhoard.service;
+package com.blstream.myhoard.biz.service;
 
 import java.sql.Timestamp;
 import java.util.Date;
@@ -7,10 +7,10 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.myhoard.model.dao.CollectionDAO;
-import com.myhoard.model.dao.CollectionDS;
-import com.myhoard.model.dao.CollectionDTO;
-import com.myhoard.model.dao.CollectionMapper;
+import com.blstream.myhoard.biz.mapper.CollectionMapper;
+import com.blstream.myhoard.biz.model.CollectionDTO;
+import com.blstream.myhoard.db.dao.CollectionDAO;
+import com.blstream.myhoard.db.model.CollectionDS;
 
 @Service("collectionService")
 public class CollectionService implements ResourceService<CollectionDTO> {

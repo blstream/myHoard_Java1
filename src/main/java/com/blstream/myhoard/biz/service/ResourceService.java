@@ -1,4 +1,4 @@
-package com.myhoard.service;
+package com.blstream.myhoard.biz.service;
 
 import java.util.List;
 
