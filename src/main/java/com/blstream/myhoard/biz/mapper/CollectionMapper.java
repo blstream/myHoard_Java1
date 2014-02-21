@@ -20,7 +20,7 @@ public class CollectionMapper {
 		collectionDS.setCreatedDate(collectionDTO.getCreatedDate());
 		collectionDS.setDescription(collectionDTO.getDescription());
 		try {
-		collectionDS.setId(Integer.parseInt(collectionDTO.getId()));
+			collectionDS.setId(Integer.parseInt(collectionDTO.getId()));
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

@@ -73,7 +73,7 @@ public class CollectionController {
 	@RequestMapping(value = "/{id}", method = RequestMethod.PUT)
 	@ResponseStatus(HttpStatus.OK)
 	@ResponseBody
-	public CollectionDTO updateCollection(@PathVariable String idStr,
+	public CollectionDTO updateCollection(@PathVariable("id") String idStr,
 			@RequestBody CollectionDTO collection) {
 
 		try {
@@ -82,6 +82,7 @@ public class CollectionController {
 			ex.printStackTrace();
 			return null;
 		}
+		collection.setId(idStr);
 		collectionService.update(collection);
 		return collection;
 	}

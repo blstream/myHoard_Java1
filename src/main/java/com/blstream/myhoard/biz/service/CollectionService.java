@@ -16,8 +16,8 @@ import com.blstream.myhoard.db.model.CollectionDS;
 public class CollectionService implements ResourceService<CollectionDTO> {
 
 	/**********************************************************************************
-	 * Czy DAO nie powinno zwracać DTO? I wlasnie tam wszelkie czary mary(mapowania)? *
-	 *         Czy w DTO powinna byc jakakolwiek logika?                              *
+	 * Czy DAO nie powinno zwracać DTO? I wlasnie tam wszelkie czary
+	 * mary(mapowania)? * Czy w DTO powinna byc jakakolwiek logika? *
 	 **********************************************************************************/
 
 	@Autowired
@@ -47,14 +47,14 @@ public class CollectionService implements ResourceService<CollectionDTO> {
 		collection.setOwner("Moja babcia");
 
 		CollectionDS collectionDS = CollectionMapper.map(collection);
-		collectionDAO.create(collectionDS);		
+		collectionDAO.create(collectionDS);
 		CollectionDTO collectionDTO = CollectionMapper.map(collectionDS);
-		
+
 		return collectionDTO;
 	}
 
 	public void update(CollectionDTO collection) {
-		//update nie dziala, trzeba poprawic dao
+		// update nie dziala, trzeba poprawic dao
 		CollectionDS collectionDS = CollectionMapper.map(collection);
 
 		collectionDAO.update(collectionDS);
