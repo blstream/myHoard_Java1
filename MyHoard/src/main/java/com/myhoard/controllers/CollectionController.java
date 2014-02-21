@@ -2,7 +2,6 @@ package com.myhoard.controllers;
 
 import java.util.List;
 
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
@@ -13,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
-import com.myhoard.model.dao.CollectionDS;
+import com.myhoard.model.dao.CollectionDTO;
 import com.myhoard.service.ResourceService;
 
 @Controller
@@ -21,43 +20,68 @@ import com.myhoard.service.ResourceService;
 public class CollectionController {
 
 	@Autowired
-	ResourceService<CollectionDS> collectionService;
+	ResourceService<CollectionDTO> collectionService;
 
 	@RequestMapping(method = RequestMethod.POST)
 	@ResponseBody
 	@ResponseStatus(HttpStatus.CREATED)
-	public CollectionDS addCollection(@RequestBody CollectionDS collection) {
-		collectionService.create(collection);
-		return collection;
+	public CollectionDTO addCollection(@RequestBody CollectionDTO collection) {
+		return collectionService.create(collection);
 	}
 
 	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
 	@ResponseStatus(HttpStatus.OK)
 	@ResponseBody
-	public CollectionDS getCollection(@PathVariable("id") int id) {
-		StringUtils.isNumeric("");
+	public CollectionDTO getCollection(@PathVariable("id") String idStr) {
+		// na razie jest jak jest
+		// walidator: musmy sprawdzic czy string to liczba, jezeli tak to czy
+		// string to liczba calkowita <= Integer.MaxValue, nalezy zaktualizowac
+		// api
+
+		int id = 0;
+		try {
+			id = Integer.parseInt(idStr);
+		} catch (Exception ex) {
+			ex.printStackTrace();
+			return null;
+		}
+
 		return collectionService.get(id);
 	}
 
 	@RequestMapping(method = RequestMethod.GET)
 	@ResponseStatus(HttpStatus.OK)
 	@ResponseBody
-	public List<CollectionDS> getCollections() {
+	public List<CollectionDTO> getCollections() {
 		return collectionService.getList();
 	}
 
 	@RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	@ResponseBody
-	public void deleteCollection(@PathVariable("id") int id) {
+	public void deleteCollection(@PathVariable("id") String idStr) {
+		int id = 0;
+		try {
+			id = Integer.parseInt(idStr);
+		} catch (Exception ex) {
+			ex.printStackTrace();
+			return;
+		}
 		collectionService.remove(id);
 	}
 
 	@RequestMapping(value = "/{id}", method = RequestMethod.PUT)
 	@ResponseStatus(HttpStatus.OK)
 	@ResponseBody
-	public CollectionDS updateCollection(@PathVariable int id,
-			@RequestBody CollectionDS collection) {
+	public CollectionDTO updateCollection(@PathVariable String idStr,
+			@RequestBody CollectionDTO collection) {
+
+		try {
+			Integer.parseInt(idStr);
+		} catch (Exception ex) {
+			ex.printStackTrace();
+			return null;
+		}
 		collectionService.update(collection);
 		return collection;
 	}

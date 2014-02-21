@@ -8,7 +8,7 @@ public interface ResourceService<T> {
 
 	T get(int i);
 
-	void create(T t);
+	T create(T t);
 
 	void update(T t);
 
