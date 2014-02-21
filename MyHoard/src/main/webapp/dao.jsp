@@ -1,5 +1,6 @@
+<%@page import="java.text.SimpleDateFormat"%>
+<%@page import="java.util.Date"%>
 <%@page import="java.util.List"%>
-<%@page import="java.sql.Timestamp"%>
 <%@page import="com.myhoard.model.dao.CollectionDAO"%>
 <%@page import="com.myhoard.model.dao.CollectionDS"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
@@ -16,10 +17,13 @@
 	
 	<%
 	
+	// SimpleDateFormat sdf = new SimpleDateFormat("dd-M-yyyy hh:mm:ss");
+	// String dateInString = "31-08-1982 10:20:56";
+	// Date date = sdf.parse(dateInString);
 	
-	// Timestamp date = Timestamp.valueOf("2014-02-18 12:45:36");
+	// Date date = Timestamp.valueOf("2014-02-18 12:45:36");
 	// CollectionDS collection = new CollectionDS("Monety", "Miliony monet", "monety 2014 SEźćńŋd", 42,
-	//		date, date, "Jan Bżćńółć");
+	//		 date, date, "Jan Bżćńółć");
 	// CollectionDAO cd = new CollectionDAO();
 	
 	

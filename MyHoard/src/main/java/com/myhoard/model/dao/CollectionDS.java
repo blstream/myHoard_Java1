@@ -1,6 +1,6 @@
 package com.myhoard.model.dao;
 
-import java.sql.Timestamp;
+import java.util.Date;
 
 
 public class CollectionDS {
@@ -15,9 +15,9 @@ public class CollectionDS {
 
 	private int itemsNumber;
 
-	private Timestamp createdDate;
+	private Date createdDate;
 
-	private Timestamp modifiedDate;
+	private Date modifiedDate;
 	
 	private String owner;
 	
@@ -27,7 +27,7 @@ public class CollectionDS {
 	}
 	
 	public CollectionDS(String name, String description, String tags, int itemsNumber,
-			Timestamp createdDate, Timestamp modifiedDate, String owner) {
+			Date createdDate, Date modifiedDate, String owner) {
 		
 		this.id = 0;
 		this.name = name;
@@ -79,19 +79,19 @@ public class CollectionDS {
 		this.itemsNumber = itemsNumber;
 	}
 
-	public Timestamp getCreatedDate() {
+	public Date getCreatedDate() {
 		return createdDate;
 	}
 
-	public void setCreatedDate(Timestamp createdDate) {
+	public void setCreatedDate(Date createdDate) {
 		this.createdDate = createdDate;
 	}
 
-	public Timestamp getModifiedDate() {
+	public Date getModifiedDate() {
 		return modifiedDate;
 	}
 
-	public void setModifiedDate(Timestamp modifiedDate) {
+	public void setModifiedDate(Date modifiedDate) {
 		this.modifiedDate = modifiedDate;
 	}
 
