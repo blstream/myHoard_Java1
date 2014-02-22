@@ -3,6 +3,8 @@ package com.blstream.myhoard.db.dao;
 import java.util.List;
 
 import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.blstream.myhoard.db.model.CollectionDS;
@@ -10,10 +12,13 @@ import com.blstream.myhoard.db.model.CollectionDS;
 @Repository
 public class CollectionDAO implements ResourceDAO<CollectionDS> {
 
+	@Autowired
+    private SessionFactory sessionFactory;
+	
 	@SuppressWarnings("unchecked")
 	public List<CollectionDS> getList() {
 
-		Session session = Hibernate.getSessionFactory().openSession();
+		Session session = sessionFactory.openSession();
 		session.beginTransaction();
 		List<CollectionDS> collections = session.createQuery(
 				"FROM CollectionDS").list();
@@ -22,9 +27,10 @@ public class CollectionDAO implements ResourceDAO<CollectionDS> {
 		return collections;
 	}
 
+	
 	public CollectionDS get(int id) {
 
-		Session session = Hibernate.getSessionFactory().openSession();
+		Session session = sessionFactory.openSession();
 		session.beginTransaction();
 		CollectionDS collection = (CollectionDS) session.get(
 				CollectionDS.class, id);
@@ -35,16 +41,16 @@ public class CollectionDAO implements ResourceDAO<CollectionDS> {
 
 	public void create(CollectionDS obj) {
 
-		Session session = Hibernate.getSessionFactory().openSession();
+		Session session = sessionFactory.getCurrentSession();
 		session.beginTransaction();
 		session.save(obj);
 		session.getTransaction().commit();
-		session.close();
+		//session.close();
 	}
 
 	public void update(CollectionDS obj) {
 
-		Session session = Hibernate.getSessionFactory().openSession();
+		Session session = sessionFactory.openSession();
 		session.beginTransaction();
 		session.update(obj);
 		session.getTransaction().commit();
@@ -53,7 +59,7 @@ public class CollectionDAO implements ResourceDAO<CollectionDS> {
 
 	public void remove(int id) {
 
-		Session session = Hibernate.getSessionFactory().openSession();
+		Session session = sessionFactory.openSession();
 		session.beginTransaction();
 		CollectionDS collection = (CollectionDS) session.get(
 				CollectionDS.class, id);

@@ -21,9 +21,9 @@
 	// String dateInString = "31-08-1982 10:20:56";
 	// Date date = sdf.parse(dateInString);
 	
-	// Date date = Timestamp.valueOf("2014-02-18 12:45:36");
 	// CollectionDS collection = new CollectionDS("Monety", "Miliony monet", "monety 2014 SEźćńŋd", 42,
 	//		 date, date, "Jan Bżćńółć");
+	
 	// CollectionDAO cd = new CollectionDAO();
 	
 	
@@ -43,7 +43,7 @@
 	
 	// CollectionDS collection3 = cd.get(collection2.getId());
 	// CollectionDS collection4 = cd.get(collection.getId());
-	
+
 	// out.println("ID : " + collection4.getId() + "<br />");
 	// out.println("NAME : " + collection4.getName() + "<br />");
 	// out.println("DESCRIPTION : " + collection4.getDescription() + "<br />");
@@ -52,13 +52,12 @@
 	// out.println("CREATED_DATE : " + collection4.getCreatedDate() + "<br />");
 	// out.println("MODIFIED_DATE : " + collection4.getModifiedDate() + "<br />");
 	// out.println("OWNER : " + collection4.getOwner() + "<br />");
-	
+
 	
 	// List<CollectionDS> list = cd.getList();
 	
 	// for(CollectionDS obj : list)
-	//	out.println(obj.getId() + "<br />");
-	
+	// 	out.println(obj.getId() + "<br />");
 	
 	%>
 	

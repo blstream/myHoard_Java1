@@ -9,6 +9,7 @@ import org.hibernate.service.ServiceRegistryBuilder;
 public class Hibernate {
 	
     private static SessionFactory sessionFactory;
+    
     private static ServiceRegistry serviceRegistry;
 
     private static SessionFactory configureSessionFactory() throws HibernateException {
@@ -21,7 +22,6 @@ public class Hibernate {
 
     public static SessionFactory getSessionFactory() {
         return configureSessionFactory();
-
     }	
 
 }

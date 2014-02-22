@@ -9,6 +9,34 @@
         http://www.springframework.org/schema/mvc
         http://www.springframework.org/schema/mvc/spring-mvc-3.0.xsd">
 
+	<bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+   		<property name="location">
+    		<value>file:${database.properties}</value>
+   		</property>
+	</bean>
+
+	<bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+ 		<property name="driverClassName" value="${db.driverClassName}" />
+ 		<property name="url" value="${db.url}" />
+ 		<property name="username" value="${db.username}" />
+ 		<property name="password" value="${db.password}" />
+	</bean>
+
+
+	<bean id = "sessionFactory" class = "org.springframework.orm.hibernate4.LocalSessionFactoryBean">
+    	<property name="dataSource" ref="dataSource"/>
+    	<property name="configLocation" value="classpath:hibernate.cfg.xml"/>
+    	<property name="hibernateProperties">
+        	<value>
+            	hibernate.dialect=${hibernate.dialect}
+       		</value>
+    	</property>
+	</bean>
+
+    <bean id = "transactionManager" class = "org.springframework.orm.hibernate4.HibernateTransactionManager">
+        <property name = "sessionFactory" ref = "sessionFactory" />
+    </bean>
+    
 	<mvc:annotation-driven />
 	<context:component-scan base-package="com.blstream.myhoard" />
 	<mvc:default-servlet-handler />
