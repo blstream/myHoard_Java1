@@ -1,5 +1,5 @@
 
-CREATE TABLE IF NOT EXISTS `Collections` (
+CREATE TABLE IF NOT EXISTS `Collection` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(50) COLLATE utf8_bin NOT NULL,
   `description` varchar(250) COLLATE utf8_bin DEFAULT NULL,
