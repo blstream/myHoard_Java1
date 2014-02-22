@@ -40,7 +40,6 @@ public class CollectionMapper {
 	 * @return collectionDTO
 	 */
 	public static CollectionDTO map(CollectionDS collectionDS) {
-
 		CollectionDTO collectionDTO = new CollectionDTO();
 
 		collectionDTO.setCreatedDate(collectionDS.getCreatedDate());

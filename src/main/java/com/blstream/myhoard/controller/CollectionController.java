@@ -14,6 +14,8 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 
 import com.blstream.myhoard.biz.model.CollectionDTO;
 import com.blstream.myhoard.biz.service.ResourceService;
+import com.blstream.myhoard.exception.CollectionException;
+import com.blstream.myhoard.exception.ErrorCodeEnum;
 
 @Controller
 @RequestMapping("/collections")
@@ -26,6 +28,7 @@ public class CollectionController {
 	@ResponseBody
 	@ResponseStatus(HttpStatus.CREATED)
 	public CollectionDTO addCollection(@RequestBody CollectionDTO collection) {
+		// throw new CollectionException(ErrorCodeEnum.CREATE.getValue());
 		return collectionService.create(collection);
 	}
 
@@ -33,6 +36,7 @@ public class CollectionController {
 	@ResponseStatus(HttpStatus.OK)
 	@ResponseBody
 	public CollectionDTO getCollection(@PathVariable("id") String idStr) {
+
 		// na razie jest jak jest
 		// walidator: musmy sprawdzic czy string to liczba, jezeli tak to czy
 		// string to liczba calkowita <= Integer.MaxValue, nalezy zaktualizowac
@@ -42,8 +46,7 @@ public class CollectionController {
 		try {
 			id = Integer.parseInt(idStr);
 		} catch (Exception ex) {
-			ex.printStackTrace();
-			return null;
+			throw new CollectionException(ErrorCodeEnum.READ.getValue());
 		}
 
 		return collectionService.get(id);
@@ -64,8 +67,7 @@ public class CollectionController {
 		try {
 			id = Integer.parseInt(idStr);
 		} catch (Exception ex) {
-			ex.printStackTrace();
-			return;
+			throw new CollectionException(ErrorCodeEnum.DELETE.getValue());
 		}
 		collectionService.remove(id);
 	}
@@ -79,8 +81,7 @@ public class CollectionController {
 		try {
 			Integer.parseInt(idStr);
 		} catch (Exception ex) {
-			ex.printStackTrace();
-			return null;
+			throw new CollectionException(ErrorCodeEnum.UPDATE.getValue());
 		}
 		collection.setId(idStr);
 		collectionService.update(collection);

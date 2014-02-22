@@ -11,6 +11,8 @@ import com.blstream.myhoard.biz.mapper.CollectionMapper;
 import com.blstream.myhoard.biz.model.CollectionDTO;
 import com.blstream.myhoard.db.dao.CollectionDAO;
 import com.blstream.myhoard.db.model.CollectionDS;
+import com.blstream.myhoard.exception.CollectionException;
+import com.blstream.myhoard.exception.ErrorCodeEnum;
 
 @Service("collectionService")
 public class CollectionService implements ResourceService<CollectionDTO> {
@@ -35,6 +37,9 @@ public class CollectionService implements ResourceService<CollectionDTO> {
 	public CollectionDTO get(int i) {
 
 		CollectionDS collectionDS = collectionDAO.get(i);
+		if(collectionDS==null) {
+			throw new CollectionException(ErrorCodeEnum.READ.getValue());
+		}
 		CollectionDTO collectionDTO = CollectionMapper.map(collectionDS);
 
 		return collectionDTO;
