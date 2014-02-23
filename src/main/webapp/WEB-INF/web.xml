@@ -4,7 +4,7 @@
 	version="2.5">
 
 	<display-name>MyHoard - Patronage 2014 Java1</display-name>
-
+	
 	<servlet>
 		<description></description>
 		<display-name>myHoard</display-name>
