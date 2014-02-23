@@ -2,9 +2,8 @@ package com.blstream.myhoard.db.model;
 
 import java.util.Date;
 
-
 public class CollectionDS {
-	
+
 	private int id;
 
 	private String name;
@@ -18,17 +17,16 @@ public class CollectionDS {
 	private Date createdDate;
 
 	private Date modifiedDate;
-	
+
 	private String owner;
-	
-	
+
 	public CollectionDS() {
-		
+
 	}
-	
-	public CollectionDS(String name, String description, String tags, int itemsNumber,
-			Date createdDate, Date modifiedDate, String owner) {
-		
+
+	public CollectionDS(String name, String description, String tags,
+			int itemsNumber, Date createdDate, Date modifiedDate, String owner) {
+
 		this.id = 0;
 		this.name = name;
 		this.description = description;
@@ -38,19 +36,19 @@ public class CollectionDS {
 		this.modifiedDate = modifiedDate;
 		this.owner = owner;
 	}
-	
+
 	public int getId() {
 		return id;
 	}
-	
+
 	public void setId(int id) {
 		this.id = id;
 	}
-	
+
 	public String getName() {
 		return name;
 	}
-	
+
 	public void setName(String name) {
 		this.name = name;
 	}
@@ -103,6 +101,12 @@ public class CollectionDS {
 		this.owner = owner;
 	}
 
-	
-	
+	@Override
+	public String toString() {
+		return "CollectionDS [id=" + id + ", name=" + name + ", description="
+				+ description + ", tags=" + tags + ", itemsNumber="
+				+ itemsNumber + ", createdDate=" + createdDate
+				+ ", modifiedDate=" + modifiedDate + ", owner=" + owner + "]";
+	}
+
 }

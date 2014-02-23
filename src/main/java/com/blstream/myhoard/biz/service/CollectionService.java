@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 
 import com.blstream.myhoard.biz.mapper.CollectionMapper;
 import com.blstream.myhoard.biz.model.CollectionDTO;
-import com.blstream.myhoard.db.dao.CollectionDAO;
+import com.blstream.myhoard.db.dao.ResourceDAO;
 import com.blstream.myhoard.db.model.CollectionDS;
 import com.blstream.myhoard.exception.CollectionException;
 import com.blstream.myhoard.exception.ErrorCodeEnum;
@@ -23,7 +23,7 @@ public class CollectionService implements ResourceService<CollectionDTO> {
 	 **********************************************************************************/
 
 	@Autowired
-	private CollectionDAO collectionDAO;
+	private ResourceDAO<CollectionDS> collectionDAO;
 
 	public List<CollectionDTO> getList() {
 
@@ -37,7 +37,7 @@ public class CollectionService implements ResourceService<CollectionDTO> {
 	public CollectionDTO get(int i) {
 
 		CollectionDS collectionDS = collectionDAO.get(i);
-		if(collectionDS==null) {
+		if (collectionDS == null) {
 			throw new CollectionException(ErrorCodeEnum.READ.getValue());
 		}
 		CollectionDTO collectionDTO = CollectionMapper.map(collectionDS);
@@ -58,11 +58,27 @@ public class CollectionService implements ResourceService<CollectionDTO> {
 		return collectionDTO;
 	}
 
-	public void update(CollectionDTO collection) {
-		// update nie dziala, trzeba poprawic dao
-		CollectionDS collectionDS = CollectionMapper.map(collection);
+	public CollectionDTO update(CollectionDTO collection) {
 
-		collectionDAO.update(collectionDS);
+		CollectionDS collectionDS = CollectionMapper.map(collection);
+		CollectionDS obiektZBazy = collectionDAO.get(collectionDS.getId());
+
+		if (obiektZBazy == null) {
+			
+			// Czy mozemy z tego miejsca rzucic wyjatkiem??
+			throw new CollectionException(ErrorCodeEnum.UPDATE.getValue());
+		}
+
+		obiektZBazy.setDescription(collectionDS.getDescription());
+		obiektZBazy.setItemsNumber(collectionDS.getItemsNumber());
+		obiektZBazy.setModifiedDate(new Date());
+		obiektZBazy.setName(collectionDS.getName());
+		obiektZBazy.setOwner(collectionDS.getOwner());
+		obiektZBazy.setTags(collectionDS.getTags());
+		System.out.println(obiektZBazy.toString());
+		collectionDAO.update(obiektZBazy);
+
+		return CollectionMapper.map(obiektZBazy);
 	}
 
 	public void remove(int i) {

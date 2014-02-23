@@ -2,7 +2,6 @@ package com.blstream.myhoard.db.dao;
 
 import java.util.List;
 
-import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -15,50 +14,40 @@ import com.blstream.myhoard.db.model.CollectionDS;
 public class CollectionDAO implements ResourceDAO<CollectionDS> {
 
 	@Autowired
-    private SessionFactory sessionFactory;
+	private SessionFactory sessionFactory;
 
 	@SuppressWarnings("unchecked")
 	public List<CollectionDS> getList() {
 
-		Session session = sessionFactory.openSession();
-		List<CollectionDS> collections = session.createQuery(
-				"FROM CollectionDS").list();
-		session.close();
+		List<CollectionDS> collections = sessionFactory.getCurrentSession()
+				.createQuery("FROM CollectionDS").list();
 		return collections;
 	}
 
-	
 	public CollectionDS get(int id) {
 
-		Session session = sessionFactory.openSession();
-		CollectionDS collection = (CollectionDS) session.get(
-				CollectionDS.class, id);
-		session.close();
+		CollectionDS collection = (CollectionDS) sessionFactory
+				.getCurrentSession().get(CollectionDS.class, id);
 		return collection;
 	}
 
 	public void create(CollectionDS obj) {
 
-		Session session = sessionFactory.openSession();
-		session.save(obj);
-		session.close();
+		sessionFactory.getCurrentSession().save(obj);
 	}
 
 	public void update(CollectionDS obj) {
 
-		Session session = sessionFactory.openSession();
-		session.update(obj);
-		session.close();
+		sessionFactory.getCurrentSession().update(obj);
 	}
 
 	public void remove(int id) {
 
-		Session session = sessionFactory.openSession();
-		CollectionDS collection = (CollectionDS) session.get(
-				CollectionDS.class, id);
-		if (collection != null)
-			session.delete(collection);
-		session.close();
+		CollectionDS collection = (CollectionDS) sessionFactory
+				.getCurrentSession().get(CollectionDS.class, id);
+		if (collection != null) {
+			sessionFactory.getCurrentSession().delete(collection);
+		}
 	}
 
 }

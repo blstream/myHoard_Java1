@@ -10,7 +10,7 @@ public interface ResourceService<T> {
 
 	T create(T t);
 
-	void update(T t);
+	T update(T t);
 
 	void remove(int i);
 

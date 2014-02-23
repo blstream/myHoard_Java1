@@ -38,10 +38,6 @@ public class CollectionController {
 	public CollectionDTO getCollection(@PathVariable("id") String idStr) {
 
 		// na razie jest jak jest
-		// walidator: musmy sprawdzic czy string to liczba, jezeli tak to czy
-		// string to liczba calkowita <= Integer.MaxValue, nalezy zaktualizowac
-		// api
-
 		int id = 0;
 		try {
 			id = Integer.parseInt(idStr);
@@ -84,8 +80,7 @@ public class CollectionController {
 			throw new CollectionException(ErrorCodeEnum.UPDATE.getValue());
 		}
 		collection.setId(idStr);
-		collectionService.update(collection);
-		return collection;
+		return collectionService.update(collection);
 	}
 
 }
