@@ -16,7 +16,7 @@ public class CollectionDAO implements ResourceDAO<CollectionDS> {
 
 	@Autowired
     private SessionFactory sessionFactory;
-	
+
 	@SuppressWarnings("unchecked")
 	public List<CollectionDS> getList() {
 

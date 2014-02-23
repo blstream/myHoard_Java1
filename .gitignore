@@ -11,4 +11,4 @@ target/
 .project
 .settings/
 
-*.properties
+/config/tomcat/database.properties
