@@ -24,11 +24,11 @@ public class CollectionController {
 	@Autowired
 	ResourceService<CollectionDTO> collectionService;
 
-	@RequestMapping(method = RequestMethod.POST)
+	@RequestMapping(value = "/", method = RequestMethod.POST)
 	@ResponseBody
 	@ResponseStatus(HttpStatus.CREATED)
 	public CollectionDTO addCollection(@RequestBody CollectionDTO collection) {
-		// throw new CollectionException(ErrorCodeEnum.CREATE.getValue());
+
 		return collectionService.create(collection);
 	}
 

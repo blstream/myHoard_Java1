@@ -47,9 +47,9 @@ public class CollectionService implements ResourceService<CollectionDTO> {
 
 	public CollectionDTO create(CollectionDTO collection) {
 		Date date = new java.util.Date();
-		collection.setCreatedDate(new Timestamp(date.getTime()));
-		collection.setModifiedDate(new Timestamp(date.getTime()));
-		collection.setOwner("Moja babcia");
+		collection.setCreated_date(new Timestamp(date.getTime()));
+		collection.setModified_date(new Timestamp(date.getTime()));
+		collection.setOwner("Moj dziadek");
 
 		CollectionDS collectionDS = CollectionMapper.map(collection);
 		collectionDAO.create(collectionDS);
@@ -64,7 +64,7 @@ public class CollectionService implements ResourceService<CollectionDTO> {
 		CollectionDS obiektZBazy = collectionDAO.get(collectionDS.getId());
 
 		if (obiektZBazy == null) {
-			
+
 			// Czy mozemy z tego miejsca rzucic wyjatkiem??
 			throw new CollectionException(ErrorCodeEnum.UPDATE.getValue());
 		}
@@ -73,7 +73,11 @@ public class CollectionService implements ResourceService<CollectionDTO> {
 		obiektZBazy.setItemsNumber(collectionDS.getItemsNumber());
 		obiektZBazy.setModifiedDate(new Date());
 		obiektZBazy.setName(collectionDS.getName());
-		obiektZBazy.setOwner(collectionDS.getOwner());
+
+		if (collectionDS.getOwner() != null) {
+			// czy mozemy zmienic?
+			obiektZBazy.setOwner(collectionDS.getOwner());
+		}
 		obiektZBazy.setTags(collectionDS.getTags());
 		System.out.println(obiektZBazy.toString());
 		collectionDAO.update(obiektZBazy);

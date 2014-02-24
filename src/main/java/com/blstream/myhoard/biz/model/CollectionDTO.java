@@ -1,16 +1,23 @@
 package com.blstream.myhoard.biz.model;
 
 import java.util.Date;
+import java.util.List;
+
+import org.codehaus.jackson.map.annotate.JsonSerialize;
+
+import com.blstream.myhoard.biz.serializer.RestDateSerializer;
 
 public class CollectionDTO {
 
 	private String id = "0";
 	private String name;
 	private String description;
-	private String tags;
-	private int itemsNumber;
-	private Date createdDate;
-	private Date modifiedDate;
+	List<String> tags;
+	private int items_number;
+	@JsonSerialize(using = RestDateSerializer.class)
+	private Date created_date;
+	@JsonSerialize(using = RestDateSerializer.class)
+	private Date modified_date;
 	private String owner;
 
 	public CollectionDTO() {
@@ -18,16 +25,16 @@ public class CollectionDTO {
 	}
 
 	public CollectionDTO(String id, String name, String description,
-			String tags, int itemsNumber, Date createdDate, Date modifiedDate,
-			String owner) {
+			List<String> tags, int items_number, Date created_date,
+			Date modified_date, String owner) {
 		super();
 		this.id = id;
 		this.name = name;
 		this.description = description;
 		this.tags = tags;
-		this.itemsNumber = itemsNumber;
-		this.createdDate = createdDate;
-		this.modifiedDate = modifiedDate;
+		this.items_number = items_number;
+		this.created_date = created_date;
+		this.modified_date = modified_date;
 		this.owner = owner;
 	}
 
@@ -55,36 +62,36 @@ public class CollectionDTO {
 		this.description = description;
 	}
 
-	public String getTags() {
+	public List<String> getTags() {
 		return tags;
 	}
 
-	public void setTags(String tags) {
+	public void setTags(List<String> tags) {
 		this.tags = tags;
 	}
 
-	public int getItemsNumber() {
-		return itemsNumber;
+	public int getItems_number() {
+		return items_number;
 	}
 
-	public void setItemsNumber(int itemsNumber) {
-		this.itemsNumber = itemsNumber;
+	public void setItems_number(int items_number) {
+		this.items_number = items_number;
 	}
 
-	public Date getCreatedDate() {
-		return createdDate;
+	public Date getCreated_date() {
+		return created_date;
 	}
 
-	public void setCreatedDate(Date createdDate) {
-		this.createdDate = createdDate;
+	public void setCreated_date(Date created_date) {
+		this.created_date = created_date;
 	}
 
-	public Date getModifiedDate() {
-		return modifiedDate;
+	public Date getModified_date() {
+		return modified_date;
 	}
 
-	public void setModifiedDate(Date modifiedDate) {
-		this.modifiedDate = modifiedDate;
+	public void setModified_date(Date modified_date) {
+		this.modified_date = modified_date;
 	}
 
 	public String getOwner() {
@@ -100,13 +107,13 @@ public class CollectionDTO {
 		final int prime = 31;
 		int result = 1;
 		result = prime * result
-				+ ((createdDate == null) ? 0 : createdDate.hashCode());
+				+ ((created_date == null) ? 0 : created_date.hashCode());
 		result = prime * result
 				+ ((description == null) ? 0 : description.hashCode());
 		result = prime * result + ((id == null) ? 0 : id.hashCode());
-		result = prime * result + itemsNumber;
+		result = prime * result + items_number;
 		result = prime * result
-				+ ((modifiedDate == null) ? 0 : modifiedDate.hashCode());
+				+ ((modified_date == null) ? 0 : modified_date.hashCode());
 		result = prime * result + ((name == null) ? 0 : name.hashCode());
 		result = prime * result + ((owner == null) ? 0 : owner.hashCode());
 		result = prime * result + ((tags == null) ? 0 : tags.hashCode());
@@ -122,10 +129,10 @@ public class CollectionDTO {
 		if (getClass() != obj.getClass())
 			return false;
 		CollectionDTO other = (CollectionDTO) obj;
-		if (createdDate == null) {
-			if (other.createdDate != null)
+		if (created_date == null) {
+			if (other.created_date != null)
 				return false;
-		} else if (!createdDate.equals(other.createdDate))
+		} else if (!created_date.equals(other.created_date))
 			return false;
 		if (description == null) {
 			if (other.description != null)
@@ -137,12 +144,12 @@ public class CollectionDTO {
 				return false;
 		} else if (!id.equals(other.id))
 			return false;
-		if (itemsNumber != other.itemsNumber)
+		if (items_number != other.items_number)
 			return false;
-		if (modifiedDate == null) {
-			if (other.modifiedDate != null)
+		if (modified_date == null) {
+			if (other.modified_date != null)
 				return false;
-		} else if (!modifiedDate.equals(other.modifiedDate))
+		} else if (!modified_date.equals(other.modified_date))
 			return false;
 		if (name == null) {
 			if (other.name != null)
@@ -165,9 +172,9 @@ public class CollectionDTO {
 	@Override
 	public String toString() {
 		return "CollectionDTO [id=" + id + ", name=" + name + ", description="
-				+ description + ", tags=" + tags + ", itemsNumber="
-				+ itemsNumber + ", createdDate=" + createdDate
-				+ ", modifiedDate=" + modifiedDate + ", owner=" + owner + "]";
+				+ description + ", tags=" + tags + ", items_number="
+				+ items_number + ", created_date=" + created_date
+				+ ", modified_date=" + modified_date + ", owner=" + owner + "]";
 	}
 
 }
