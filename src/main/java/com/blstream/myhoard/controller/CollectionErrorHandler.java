@@ -9,17 +9,17 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
-import com.blstream.myhoard.exception.CollectionException;
+import com.blstream.myhoard.exception.CollectionRestException;
 import com.blstream.myhoard.exception.ErrorCode;
 
 @ControllerAdvice
 @RequestMapping("/collections")
 public class CollectionErrorHandler {
 
-	@ExceptionHandler(CollectionException.class)
+	@ExceptionHandler(CollectionRestException.class)
 	@ResponseStatus(HttpStatus.BAD_REQUEST)
 	@ResponseBody
-	public ErrorCode handleCollectionException(CollectionException ex) {
+	public ErrorCode handleCollectionException(CollectionRestException ex) {
 		return new ErrorCode(ex.getCode());
 	}
 

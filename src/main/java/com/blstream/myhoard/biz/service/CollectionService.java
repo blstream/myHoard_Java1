@@ -12,6 +12,7 @@ import com.blstream.myhoard.biz.model.CollectionDTO;
 import com.blstream.myhoard.db.dao.ResourceDAO;
 import com.blstream.myhoard.db.model.CollectionDS;
 import com.blstream.myhoard.exception.CollectionException;
+import com.blstream.myhoard.exception.CollectionRestException;
 import com.blstream.myhoard.exception.ErrorCodeEnum;
 
 @Service("collectionService")
@@ -34,11 +35,12 @@ public class CollectionService implements ResourceService<CollectionDTO> {
 		return collectionDTOs;
 	}
 
-	public CollectionDTO get(int i) {
+	public CollectionDTO get(int i) throws CollectionException {
 
 		CollectionDS collectionDS = collectionDAO.get(i);
 		if (collectionDS == null) {
-			throw new CollectionException(ErrorCodeEnum.READ.getValue());
+			throw new CollectionException();
+			//throw new CollectionRestException(ErrorCodeEnum.READ.getValue());
 		}
 		CollectionDTO collectionDTO = CollectionMapper.map(collectionDS);
 
@@ -58,13 +60,14 @@ public class CollectionService implements ResourceService<CollectionDTO> {
 		return collectionDTO;
 	}
 
-	public CollectionDTO update(CollectionDTO collection) {
+	public CollectionDTO update(CollectionDTO collection) throws CollectionException {
 
 		CollectionDS collectionDS = CollectionMapper.map(collection);
 		CollectionDS obiektZBazy = collectionDAO.get(collectionDS.getId());
 
 		if (obiektZBazy == null) {
-			throw new CollectionException(ErrorCodeEnum.UPDATE.getValue());
+			throw new CollectionException();
+			//throw new CollectionRestException(ErrorCodeEnum.UPDATE.getValue());
 		}
 
 		obiektZBazy.setDescription(collectionDS.getDescription());
@@ -83,12 +86,13 @@ public class CollectionService implements ResourceService<CollectionDTO> {
 		return CollectionMapper.map(obiektZBazy);
 	}
 
-	public void remove(int i) {
+	public void remove(int i) throws CollectionException {
 		CollectionDS collectionDS = collectionDAO.get(i);
 		if (collectionDS != null) {
 			collectionDAO.remove(i);
 		} else {
-			throw new CollectionException(ErrorCodeEnum.DELETE.getValue());
+			throw new CollectionException();
+			//throw new CollectionRestException(ErrorCodeEnum.DELETE.getValue());
 		}
 	}
 

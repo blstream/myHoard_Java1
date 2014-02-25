@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import com.blstream.myhoard.biz.model.CollectionDTO;
 import com.blstream.myhoard.biz.service.ResourceService;
 import com.blstream.myhoard.exception.CollectionException;
+import com.blstream.myhoard.exception.CollectionRestException;
 import com.blstream.myhoard.exception.ErrorCodeEnum;
 
 @Controller
@@ -29,7 +30,11 @@ public class CollectionController {
 	@ResponseStatus(HttpStatus.CREATED)
 	public CollectionDTO addCollection(@RequestBody CollectionDTO collection) {
 
-		return collectionService.create(collection);
+		try {
+			return collectionService.create(collection);
+		} catch (Exception e) {
+			throw new CollectionRestException(ErrorCodeEnum.CREATE.getValue());
+		}
 	}
 
 	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
@@ -39,20 +44,24 @@ public class CollectionController {
 
 		// na razie jest jak jest
 		int id = 0;
+
 		try {
 			id = Integer.parseInt(idStr);
-		} catch (Exception ex) {
-			throw new CollectionException(ErrorCodeEnum.READ.getValue());
+			return collectionService.get(id);
+		} catch (Exception e) {
+			throw new CollectionRestException(ErrorCodeEnum.READ.getValue());
 		}
-
-		return collectionService.get(id);
 	}
 
 	@RequestMapping(method = RequestMethod.GET)
 	@ResponseStatus(HttpStatus.OK)
 	@ResponseBody
 	public List<CollectionDTO> getCollections() {
-		return collectionService.getList();
+		try {
+			return collectionService.getList();
+		} catch (CollectionException e) {
+			throw new CollectionRestException(ErrorCodeEnum.READ.getValue());
+		}
 	}
 
 	@RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
@@ -62,10 +71,10 @@ public class CollectionController {
 		int id = 0;
 		try {
 			id = Integer.parseInt(idStr);
+			collectionService.remove(id);
 		} catch (Exception ex) {
-			throw new CollectionException(ErrorCodeEnum.DELETE.getValue());
+			throw new CollectionRestException(ErrorCodeEnum.DELETE.getValue());
 		}
-		collectionService.remove(id);
 	}
 
 	@RequestMapping(value = "/{id}", method = RequestMethod.PUT)
@@ -76,11 +85,12 @@ public class CollectionController {
 
 		try {
 			Integer.parseInt(idStr);
+			collection.setId(idStr);
+			return collectionService.update(collection);
 		} catch (Exception ex) {
-			throw new CollectionException(ErrorCodeEnum.UPDATE.getValue());
+			throw new CollectionRestException(ErrorCodeEnum.UPDATE.getValue());
 		}
-		collection.setId(idStr);
-		return collectionService.update(collection);
+
 	}
 
 }
