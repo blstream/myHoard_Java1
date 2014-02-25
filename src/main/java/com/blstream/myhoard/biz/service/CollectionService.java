@@ -64,8 +64,6 @@ public class CollectionService implements ResourceService<CollectionDTO> {
 		CollectionDS obiektZBazy = collectionDAO.get(collectionDS.getId());
 
 		if (obiektZBazy == null) {
-
-			// Czy mozemy z tego miejsca rzucic wyjatkiem??
 			throw new CollectionException(ErrorCodeEnum.UPDATE.getValue());
 		}
 
@@ -86,7 +84,12 @@ public class CollectionService implements ResourceService<CollectionDTO> {
 	}
 
 	public void remove(int i) {
-		collectionDAO.remove(i);
+		CollectionDS collectionDS = collectionDAO.get(i);
+		if (collectionDS != null) {
+			collectionDAO.remove(i);
+		} else {
+			throw new CollectionException(ErrorCodeEnum.DELETE.getValue());
+		}
 	}
 
 }
