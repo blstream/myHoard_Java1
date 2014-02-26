@@ -42,7 +42,6 @@ public class CollectionController {
 	@ResponseBody
 	public CollectionDTO getCollection(@PathVariable("id") String idStr) {
 
-		// na razie jest jak jest
 		int id = 0;
 
 		try {
