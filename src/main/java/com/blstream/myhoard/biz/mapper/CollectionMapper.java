@@ -1,6 +1,7 @@
 package com.blstream.myhoard.biz.mapper;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import com.blstream.myhoard.biz.model.CollectionDTO;
@@ -30,6 +31,19 @@ public class CollectionMapper {
 		collectionDS.setOwner(collectionDTO.getOwner());
 		// collectionDS.setTags(collectionDTO.getTags());
 
+		if (collectionDTO.getTags() != null) {
+
+			List<String> tags = collectionDTO.getTags();
+			StringBuilder tagsStr = new StringBuilder();
+			String regex = "@NEXT@";
+
+			for (String tag : tags) {
+				tagsStr.append(regex);
+				tagsStr.append(tag);
+			}
+
+			collectionDS.setTags(tagsStr.toString());
+		}
 		return collectionDS;
 	}
 
@@ -49,8 +63,14 @@ public class CollectionMapper {
 		collectionDTO.setModified_date(collectionDS.getModifiedDate());
 		collectionDTO.setName(collectionDS.getName());
 		collectionDTO.setOwner(collectionDS.getOwner());
-		// collectionDTO.setTags(collectionDS.getTags());
 
+		if (collectionDS.getTags() != null) {
+			String regex = "@NEXT@";
+			String[] split = collectionDS.getTags().split(regex);
+			List<String> wordList = Arrays.asList(split);
+
+			collectionDTO.setTags(wordList);
+		}
 		return collectionDTO;
 	}
 

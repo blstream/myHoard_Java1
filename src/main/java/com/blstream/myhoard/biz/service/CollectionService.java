@@ -12,16 +12,9 @@ import com.blstream.myhoard.biz.model.CollectionDTO;
 import com.blstream.myhoard.db.dao.ResourceDAO;
 import com.blstream.myhoard.db.model.CollectionDS;
 import com.blstream.myhoard.exception.CollectionException;
-import com.blstream.myhoard.exception.CollectionRestException;
-import com.blstream.myhoard.exception.ErrorCodeEnum;
 
 @Service("collectionService")
 public class CollectionService implements ResourceService<CollectionDTO> {
-
-	/**********************************************************************************
-	 * Czy DAO nie powinno zwracać DTO? I wlasnie tam wszelkie czary
-	 * mary(mapowania)? * Czy w DTO powinna byc jakakolwiek logika? *
-	 **********************************************************************************/
 
 	@Autowired
 	private ResourceDAO<CollectionDS> collectionDAO;
@@ -40,7 +33,6 @@ public class CollectionService implements ResourceService<CollectionDTO> {
 		CollectionDS collectionDS = collectionDAO.get(i);
 		if (collectionDS == null) {
 			throw new CollectionException();
-			//throw new CollectionRestException(ErrorCodeEnum.READ.getValue());
 		}
 		CollectionDTO collectionDTO = CollectionMapper.map(collectionDS);
 
@@ -60,14 +52,14 @@ public class CollectionService implements ResourceService<CollectionDTO> {
 		return collectionDTO;
 	}
 
-	public CollectionDTO update(CollectionDTO collection) throws CollectionException {
+	public CollectionDTO update(CollectionDTO collection)
+			throws CollectionException {
 
 		CollectionDS collectionDS = CollectionMapper.map(collection);
 		CollectionDS obiektZBazy = collectionDAO.get(collectionDS.getId());
 
 		if (obiektZBazy == null) {
 			throw new CollectionException();
-			//throw new CollectionRestException(ErrorCodeEnum.UPDATE.getValue());
 		}
 
 		obiektZBazy.setDescription(collectionDS.getDescription());
@@ -92,7 +84,6 @@ public class CollectionService implements ResourceService<CollectionDTO> {
 			collectionDAO.remove(i);
 		} else {
 			throw new CollectionException();
-			//throw new CollectionRestException(ErrorCodeEnum.DELETE.getValue());
 		}
 	}
 
