@@ -155,7 +155,7 @@
 	</dependencies>
 
 	<build>
-		<finalName>ROOT</finalName>
+		<finalName>MyHoard</finalName>
 		<plugins>
 			<!-- MAVEN ECLIPSE PLUGIN -->
 			<plugin>
