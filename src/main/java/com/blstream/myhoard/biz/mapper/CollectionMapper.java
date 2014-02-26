@@ -38,8 +38,8 @@ public class CollectionMapper {
 			String regex = "@NEXT@";
 
 			for (String tag : tags) {
-				tagsStr.append(regex);
 				tagsStr.append(tag);
+				tagsStr.append(regex);
 			}
 
 			collectionDS.setTags(tagsStr.toString());
@@ -68,9 +68,9 @@ public class CollectionMapper {
 			String regex = "@NEXT@";
 			String[] split = collectionDS.getTags().split(regex);
 			List<String> wordList = Arrays.asList(split);
-
 			collectionDTO.setTags(wordList);
 		}
+
 		return collectionDTO;
 	}
 
