@@ -8,6 +8,6 @@ CREATE TABLE IF NOT EXISTS `Collection` (
   `created_date` datetime NOT NULL,
   `modified_date` datetime NOT NULL,
   `owner` varchar(50) COLLATE utf8_bin NOT NULL,
-  PRIMARY KEY (`id`)
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `name_of_the_owner_collection` (`name`,`owner`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=1 ;
-

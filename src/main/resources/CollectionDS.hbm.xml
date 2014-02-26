@@ -11,7 +11,7 @@
 			<generator class="identity" />
 		</id>
 
-		<property name="name" type="string">
+		<property name="name" type="string" insert="false" update="false">
 			<column name="name" length="50" not-null="false" unique="false" />
 		</property>
 
@@ -36,9 +36,14 @@
 			<column name="modified_date" not-null="true" unique="false" />
 		</property>
 
-		<property name="owner" type="string">
+		<property name="owner" type="string" insert="false" update="false">
 			<column name="owner" not-null="true" unique="false" />
 		</property>
+		
+		<properties name="name_of_the_owner_collection" unique="true">
+        	<property name="name"/>
+        	<property name="owner"/>
+		</properties>
 
 	</class>
 </hibernate-mapping>
