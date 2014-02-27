@@ -18,18 +18,17 @@ public class CollectionMapper {
 	public static CollectionDS map(CollectionDTO collectionDTO) {
 		CollectionDS collectionDS = new CollectionDS();
 
-		collectionDS.setCreatedDate(collectionDTO.getCreated_date());
+		collectionDS.setCreatedDate(collectionDTO.getCreatedDate());
 		collectionDS.setDescription(collectionDTO.getDescription());
 		try {
 			collectionDS.setId(Integer.parseInt(collectionDTO.getId()));
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		collectionDS.setItemsNumber(collectionDTO.getItems_number());
-		collectionDS.setModifiedDate(collectionDTO.getModified_date());
+		collectionDS.setItemsNumber(collectionDTO.getItemsNumber());
+		collectionDS.setModifiedDate(collectionDTO.getModifiedDate());
 		collectionDS.setName(collectionDTO.getName());
 		collectionDS.setOwner(collectionDTO.getOwner());
-		// collectionDS.setTags(collectionDTO.getTags());
 
 		if (collectionDTO.getTags() != null) {
 
@@ -56,11 +55,11 @@ public class CollectionMapper {
 	public static CollectionDTO map(CollectionDS collectionDS) {
 		CollectionDTO collectionDTO = new CollectionDTO();
 
-		collectionDTO.setCreated_date(collectionDS.getCreatedDate());
+		collectionDTO.setCreatedDate(collectionDS.getCreatedDate());
 		collectionDTO.setDescription(collectionDS.getDescription());
 		collectionDTO.setId(String.valueOf(collectionDS.getId()));
-		collectionDTO.setItems_number(collectionDS.getItemsNumber());
-		collectionDTO.setModified_date(collectionDS.getModifiedDate());
+		collectionDTO.setItemsNumber(collectionDS.getItemsNumber());
+		collectionDTO.setModifiedDate(collectionDS.getModifiedDate());
 		collectionDTO.setName(collectionDS.getName());
 		collectionDTO.setOwner(collectionDS.getOwner());
 

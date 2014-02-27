@@ -41,8 +41,8 @@ public class CollectionService implements ResourceService<CollectionDTO> {
 
 	public CollectionDTO create(CollectionDTO collection) {
 		Date date = new java.util.Date();
-		collection.setCreated_date(new Timestamp(date.getTime()));
-		collection.setModified_date(new Timestamp(date.getTime()));
+		collection.setCreatedDate(new Timestamp(date.getTime()));
+		collection.setModifiedDate(new Timestamp(date.getTime()));
 		collection.setOwner("Moj dziadek");
 
 		CollectionDS collectionDS = CollectionMapper.map(collection);

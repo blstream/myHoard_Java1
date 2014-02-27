@@ -25,7 +25,7 @@ public class CollectionController {
 	@Autowired
 	ResourceService<CollectionDTO> collectionService;
 
-	@RequestMapping(value = "/", method = RequestMethod.POST)
+	@RequestMapping(method = RequestMethod.POST)
 	@ResponseBody
 	@ResponseStatus(HttpStatus.CREATED)
 	public CollectionDTO addCollection(@RequestBody CollectionDTO collection) {
