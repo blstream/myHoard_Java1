@@ -10,18 +10,14 @@ import org.codehaus.jackson.map.JsonSerializer;
 import org.codehaus.jackson.map.SerializerProvider;
 
 public class RestDateSerializer extends JsonSerializer<Date> {
+
+	private static final SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSXXX");
+
 	@Override
 	public void serialize(Date value, JsonGenerator gen, SerializerProvider arg2)
 			throws IOException, JsonProcessingException {
-
-		// http://docs.spring.io/spring/docs/3.2.x/spring-framework-reference/html/validation.html#format-configuring-formatting-mvc
-
-		SimpleDateFormat formatter = new SimpleDateFormat(
-				"yyyy-MM-dd'T'HH:mm:ss.SSSXXX");
 		String formattedDate = formatter.format(value);
-
 		gen.writeString(formattedDate);
-
 	}
 
 }

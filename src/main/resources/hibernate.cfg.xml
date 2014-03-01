@@ -10,6 +10,7 @@
         <property name="show_sql">true</property>
         
 		<mapping resource="CollectionDS.hbm.xml"></mapping>
+		<mapping resource="ItemDS.hbm.xml"></mapping>
 
 	</session-factory>
 </hibernate-configuration>
