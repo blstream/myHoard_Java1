@@ -4,28 +4,29 @@
 "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
 
 <hibernate-mapping>
-    <class name="com.blstream.myhoard.db.model.MediaDS" table="Media">
+	<class name="com.blstream.myhoard.db.model.MediaDS" table="Media">
 
-        <id name="id" type="int">
-            <column name="id" />
-            <generator class="identity" />
-        </id>
+		<id name="id" type="int">
+			<column name="id" />
+			<generator class="identity" />
+		</id>
 
-        <property name="file" type="binary">
-            <column name="file" not-null="false" unique="false" />
-        </property>
+		<property name="file" type="binary">
+			<column name="file" not-null="false" unique="false" />
+		</property>
 
-        <property name="thumbnail" type="binary">
-            <column name="thumbnail" not-null="false" unique="false" />
-        </property>
+		<property name="thumbnail" type="binary">
+			<column name="thumbnail" not-null="false" unique="false" />
+		</property>
 
-        <many-to-one name="item" class="com.blstream.myhoard.dbmodel.ItemDS" fetch="select">
-            <column name="item_id" not-null="true" />
-        </many-to-one>
+		<property name="createdDate" type="timestamp">
+			<column name="created_date" not-null="true" unique="false" />
+		</property>
 
-        <property name="createdDate" type="timestamp">
-            <column name="created_date" not-null="true" unique="false" />
-        </property>
+		<many-to-one name="itemDS" class="com.blstream.myhoard.db.model.ItemDS"
+			fetch="select">
+			<column name="item_id" not-null="true" />
+		</many-to-one>
 
-    </class>
+	</class>
 </hibernate-mapping>

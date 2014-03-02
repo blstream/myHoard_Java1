@@ -1,36 +1,44 @@
 package com.blstream.myhoard.exception;
 
+import org.codehaus.jackson.annotate.JsonProperty;
+
 public class ErrorCode {
 
-	private int error_code;
-	private String error_reason;
+	@JsonProperty("error_code")
+	private int errorCode;
+
+	@JsonProperty("error_reason")
+	private String errorReason;
 
 	public ErrorCode() {
+		super();
 	}
 
-	public ErrorCode(int error_code) {
-		this.error_code = error_code;
+	public ErrorCode(int errorCode) {
+		super();
+		this.errorCode = errorCode;
 	}
 
-	public ErrorCode(int error_code, String error_reason) {
-		this.error_code = error_code;
-		this.error_reason = error_reason;
+	public ErrorCode(int errorCode, String errorReason) {
+		super();
+		this.errorCode = errorCode;
+		this.errorReason = errorReason;
 	}
 
-	public int getError_code() {
-		return error_code;
+	public int getErrorCode() {
+		return errorCode;
 	}
 
-	public void setError_code(int error_code) {
-		this.error_code = error_code;
+	public void setErrorCode(int errorCode) {
+		this.errorCode = errorCode;
 	}
 
-	public String getError_reason() {
-		return error_reason;
+	public String getErrorReason() {
+		return errorReason;
 	}
 
-	public void setError_reason(String error_reason) {
-		this.error_reason = error_reason;
+	public void setErrorReason(String errorReason) {
+		this.errorReason = errorReason;
 	}
 
 }

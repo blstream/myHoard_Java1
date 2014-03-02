@@ -33,22 +33,22 @@ public class MediaController {
 
 		System.out.println("media upload");
 
-//		MediaDTO media = new MediaDTO();
-//		media.setCreatedDate(new Date());
-//		media.setId(500);
-//
-//		try {
-//			media.setFile(file.getBytes());
-//			media.setThumbnail(file.getBytes());
-//		} catch (Exception e) {
-//			e.printStackTrace();
-//		}
-//
-//		try {
-//			mediaService.create(media);
-//		} catch (MyHoardException e1) {
-//			e1.printStackTrace();
-//		}
+		MediaDTO media = new MediaDTO();
+		media.setCreatedDate(new Date());
+		media.setId(500);
+
+		try {
+			media.setFile(file.getBytes());
+			media.setThumbnail(file.getBytes());
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		try {
+			mediaService.create(media);
+		} catch (MyHoardException e1) {
+			e1.printStackTrace();
+		}
 
 		throw new CollectionRestException(2222);
 	}

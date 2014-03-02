@@ -11,6 +11,6 @@
 
 		<mapping resource="CollectionDS.hbm.xml"></mapping>
 		<mapping resource="ItemDS.hbm.xml"></mapping>
-	<!-- <mapping resource="MediaDS.hbm.xml"></mapping> -->
+		<mapping resource="MediaDS.hbm.xml"></mapping>
 	</session-factory>
 </hibernate-configuration>
