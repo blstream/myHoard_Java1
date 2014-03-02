@@ -5,12 +5,12 @@
 "http://hibernate.sourceforge.net/hibernate-configuration-3.0.dtd">
 <hibernate-configuration>
 	<session-factory>
-	
-		<property name="hibernate.bytecode.use_reflection_optimizer">false</property> 
-        <property name="show_sql">true</property>
-        
+
+		<property name="hibernate.bytecode.use_reflection_optimizer">false</property>
+		<property name="show_sql">true</property>
+
 		<mapping resource="CollectionDS.hbm.xml"></mapping>
 		<mapping resource="ItemDS.hbm.xml"></mapping>
-
+	<!-- <mapping resource="MediaDS.hbm.xml"></mapping> -->
 	</session-factory>
 </hibernate-configuration>
