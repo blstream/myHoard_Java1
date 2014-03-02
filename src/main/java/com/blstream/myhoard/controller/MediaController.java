@@ -2,6 +2,7 @@ package com.blstream.myhoard.controller;
 
 import java.io.IOException;
 import java.util.Date;
+import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -37,6 +38,11 @@ public class MediaController {
 		media.setCreatedDate(new Date());
 		media.setId(500);
 
+		if (file.isEmpty()) {
+			System.out.println("EMPTY");
+			return "upload.jsp";
+		}
+
 		try {
 			media.setFile(file.getBytes());
 			media.setThumbnail(file.getBytes());
@@ -50,20 +56,24 @@ public class MediaController {
 			e1.printStackTrace();
 		}
 
-		throw new CollectionRestException(2222);
+		return "upload.jsp";
+
+		// throw new CollectionRestException(2222);
 	}
 
 	@RequestMapping(value = "/a")
 	@ResponseBody
 	public byte[] getFile() {
-		MediaDTO m = null;
+		List<MediaDTO> lista = null;
 		try {
-			m = mediaService.get(1);
+			lista = mediaService.getList();
 		} catch (MyHoardException e) {
 			e.printStackTrace();
 		}
 
-		return m.getFile();
+		System.out.println(lista.size());
+
+		return lista.get(lista.size() - 1).getFile();
 	}
 
 }

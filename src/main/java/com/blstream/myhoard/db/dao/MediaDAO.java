@@ -21,9 +21,11 @@ public class MediaDAO implements ResourceDAO<MediaDS> {
 		return sessionFactory.getCurrentSession();
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public List<MediaDS> getList() {
-		return null;
+		return sessionFactory.getCurrentSession().createCriteria(MediaDS.class)
+				.list();
 	}
 
 	@Override
