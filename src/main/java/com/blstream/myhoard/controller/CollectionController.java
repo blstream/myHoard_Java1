@@ -13,8 +13,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
 import com.blstream.myhoard.biz.model.CollectionDTO;
-import com.blstream.myhoard.biz.service.ResourceService;
-import com.blstream.myhoard.exception.CollectionException;
+import com.blstream.myhoard.biz.service.IResourceService;
+import com.blstream.myhoard.exception.MyHoardException;
 import com.blstream.myhoard.exception.CollectionRestException;
 import com.blstream.myhoard.exception.ErrorCodeEnum;
 
@@ -23,7 +23,7 @@ import com.blstream.myhoard.exception.ErrorCodeEnum;
 public class CollectionController {
 
 	@Autowired
-	ResourceService<CollectionDTO> collectionService;
+	IResourceService<CollectionDTO> collectionService;
 
 	@RequestMapping(method = RequestMethod.POST)
 	@ResponseBody
@@ -58,7 +58,7 @@ public class CollectionController {
 	public List<CollectionDTO> getCollections() {
 		try {
 			return collectionService.getList();
-		} catch (CollectionException e) {
+		} catch (MyHoardException e) {
 			throw new CollectionRestException(ErrorCodeEnum.READ.getValue());
 		}
 	}

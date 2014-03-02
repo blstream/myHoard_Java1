@@ -16,8 +16,11 @@
 			<column name="description" length="250" not-null="false"
 				unique="false" />
 		</property>
-		<property name="location" type="string">
-			<column name="location" length="250" not-null="false" unique="false" />
+		<property name="lat" type="float">
+			<column name="lat" not-null="true" unique="false" />
+		</property>
+		<property name="lng" type="float">
+			<column name="lng" not-null="true" unique="false" />
 		</property>
 		<property name="quantity" type="int">
 			<column name="quantity" not-null="true" unique="false" />

@@ -9,24 +9,21 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.blstream.myhoard.db.model.ItemDS;
 
-// TODO RT implements all methods
 @Repository
 @Transactional
 public class ItemDAO implements ResourceDAO<ItemDS> {
-	
+
 	@Autowired
 	private SessionFactory sessionFactory;
-	
+
 	@Override
 	public List<ItemDS> getList() {
-		// TODO Auto-generated method stub
-		return null;
+		return sessionFactory.getCurrentSession().createCriteria(ItemDS.class).list();
 	}
 
 	@Override
 	public ItemDS get(int id) {
-		// TODO Auto-generated method stub
-		return null;
+		return (ItemDS) sessionFactory.getCurrentSession().get(ItemDS.class, id);
 	}
 
 	@Override
@@ -36,14 +33,12 @@ public class ItemDAO implements ResourceDAO<ItemDS> {
 
 	@Override
 	public void update(ItemDS object) {
-		// TODO Auto-generated method stub
-		
+		sessionFactory.getCurrentSession().update(object);
 	}
 
 	@Override
 	public void remove(int id) {
-		// TODO Auto-generated method stub
-		
+		sessionFactory.getCurrentSession().delete(get(id));
 	}
 
 }

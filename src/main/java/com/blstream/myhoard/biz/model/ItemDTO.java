@@ -13,8 +13,9 @@ public class ItemDTO {
 	private String id;
 	private String name;
 	private String description;
-	private String location;
+	private GeoPointDTO location;
 	private int quantity;
+	// TODO media
 	private List<String> media;
 	@JsonProperty("created_date")
 	@JsonSerialize(using = RestDateSerializer.class)
@@ -29,10 +30,8 @@ public class ItemDTO {
 	public ItemDTO() {
 	}
 
-	public ItemDTO(String id, String name, String description, String location,
-			int quantity, List<String> media, Date createdDate,
+	public ItemDTO(String id, String name, String description, GeoPointDTO location, int quantity, List<String> media, Date createdDate,
 			Date modifiedDate, String owner, String collection) {
-		super();
 		this.id = id;
 		this.name = name;
 		this.description = description;
@@ -69,11 +68,11 @@ public class ItemDTO {
 		this.description = description;
 	}
 
-	public String getLocation() {
+	public GeoPointDTO getLocation() {
 		return location;
 	}
 
-	public void setLocation(String location) {
+	public void setLocation(GeoPointDTO location) {
 		this.location = location;
 	}
 
@@ -123,15 +122,6 @@ public class ItemDTO {
 
 	public void setCollection(String collection) {
 		this.collection = collection;
-	}
-
-	@Override
-	public String toString() {
-		return "ItemDTO [id=" + id + ", name=" + name + ", description="
-				+ description + ", location=" + location + ", quantity="
-				+ quantity + ", media=" + media + ", createdDate="
-				+ createdDate + ", modifiedDate=" + modifiedDate + ", owner="
-				+ owner + ", collection=" + collection + "]";
 	}
 
 }

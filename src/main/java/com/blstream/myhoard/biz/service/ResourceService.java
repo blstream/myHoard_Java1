@@ -1,19 +1,10 @@
 package com.blstream.myhoard.biz.service;
 
-import java.util.List;
+import java.util.logging.Logger;
 
-import com.blstream.myhoard.exception.CollectionException;
+public abstract class ResourceService<T> implements IResourceService<T> {
 
-public interface ResourceService<T> {
-
-	List<T> getList() throws CollectionException;
-
-	T get(int i) throws CollectionException;
-
-	T create(T t) throws CollectionException;
-
-	T update(T t) throws CollectionException;
-
-	void remove(int i) throws CollectionException;
+	protected final static Logger logger = Logger.getLogger(ResourceService.class
+			.getName());
 
 }

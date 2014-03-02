@@ -6,6 +6,7 @@ import java.util.logging.Logger;
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.http.HttpStatus;
+import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -13,14 +14,14 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 
 import com.blstream.myhoard.exception.CollectionRestException;
 import com.blstream.myhoard.exception.ErrorCode;
+import com.blstream.myhoard.exception.NotFoundException;
 
 @ControllerAdvice
-// @RequestMapping("/collections") this should be global?
-// TODO add error reason
-public class CollectionErrorHandler {
+public class MyHoardErrorHandler {
+	
+	private final static String ERROR_REASON_NOT_FOUND = "Resource Not Found";
 
-	private final static Logger logger = Logger
-			.getLogger(CollectionErrorHandler.class.getName());
+	private final static Logger logger = Logger.getLogger(MyHoardErrorHandler.class.getName());
 
 	@ExceptionHandler(CollectionRestException.class)
 	@ResponseStatus(HttpStatus.BAD_REQUEST)
@@ -34,8 +35,7 @@ public class CollectionErrorHandler {
 	@ExceptionHandler(org.hibernate.PropertyValueException.class)
 	@ResponseStatus(HttpStatus.BAD_REQUEST)
 	@ResponseBody
-	public ErrorCode handleCollectionExceptionA(
-			org.hibernate.PropertyValueException ex) {
+	public ErrorCode handleCollectionExceptionA(org.hibernate.PropertyValueException ex) {
 		logger.log(Level.SEVERE, ex.toString());
 		return new ErrorCode(111);
 	}
@@ -43,8 +43,7 @@ public class CollectionErrorHandler {
 	@ExceptionHandler
 	@ResponseBody
 	@ResponseStatus(value = HttpStatus.BAD_REQUEST)
-	public ErrorCode handleException(Exception exception,
-			HttpServletRequest request) {
+	public ErrorCode handleException(Exception exception, HttpServletRequest request) {
 
 		String method = request.getMethod();
 		logger.log(Level.SEVERE, exception.toString());
@@ -60,5 +59,23 @@ public class CollectionErrorHandler {
 		}
 
 	}
+
+	@ExceptionHandler
+	@ResponseStatus(value = HttpStatus.NOT_FOUND)
+	@ResponseBody
+	public ErrorCode handleException(NotFoundException e) {
+		logger.log(Level.SEVERE, e.toString());
+		
+		return new ErrorCode(404, ERROR_REASON_NOT_FOUND);
+	}
+	
+	@ExceptionHandler
+	@ResponseStatus(value = HttpStatus.BAD_REQUEST)
+	@ResponseBody
+	public ErrorCode handleException(HttpRequestMethodNotSupportedException e) {
+		logger.log(Level.SEVERE, e.toString());
+		
+		return new ErrorCode(400, e.getMessage());
+	}	
 
 }

@@ -11,14 +11,15 @@ import com.blstream.myhoard.biz.mapper.CollectionMapper;
 import com.blstream.myhoard.biz.model.CollectionDTO;
 import com.blstream.myhoard.db.dao.ResourceDAO;
 import com.blstream.myhoard.db.model.CollectionDS;
-import com.blstream.myhoard.exception.CollectionException;
+import com.blstream.myhoard.exception.MyHoardException;
 
 @Service("collectionService")
-public class CollectionService implements ResourceService<CollectionDTO> {
+public class CollectionService extends ResourceService<CollectionDTO> {
 
 	@Autowired
 	private ResourceDAO<CollectionDS> collectionDAO;
 
+	@Override
 	public List<CollectionDTO> getList() {
 
 		List<CollectionDS> collectionDSs = collectionDAO.getList();
@@ -27,18 +28,20 @@ public class CollectionService implements ResourceService<CollectionDTO> {
 
 		return collectionDTOs;
 	}
-
-	public CollectionDTO get(int i) throws CollectionException {
+	
+	@Override
+	public CollectionDTO get(int i) throws MyHoardException {
 
 		CollectionDS collectionDS = collectionDAO.get(i);
 		if (collectionDS == null) {
-			throw new CollectionException();
+			throw new MyHoardException();
 		}
 		CollectionDTO collectionDTO = CollectionMapper.map(collectionDS);
 
 		return collectionDTO;
 	}
 
+	@Override
 	public CollectionDTO create(CollectionDTO collection) {
 		Date date = new java.util.Date();
 		collection.setCreatedDate(new Timestamp(date.getTime()));
@@ -52,14 +55,15 @@ public class CollectionService implements ResourceService<CollectionDTO> {
 		return collectionDTO;
 	}
 
+	@Override
 	public CollectionDTO update(CollectionDTO collection)
-			throws CollectionException {
+			throws MyHoardException {
 
 		CollectionDS collectionDS = CollectionMapper.map(collection);
 		CollectionDS obiektZBazy = collectionDAO.get(collectionDS.getId());
 
 		if (obiektZBazy == null) {
-			throw new CollectionException();
+			throw new MyHoardException();
 		}
 
 		obiektZBazy.setDescription(collectionDS.getDescription());
@@ -78,12 +82,13 @@ public class CollectionService implements ResourceService<CollectionDTO> {
 		return CollectionMapper.map(obiektZBazy);
 	}
 
-	public void remove(int i) throws CollectionException {
+	@Override
+	public void remove(int i) throws MyHoardException {
 		CollectionDS collectionDS = collectionDAO.get(i);
 		if (collectionDS != null) {
 			collectionDAO.remove(i);
 		} else {
-			throw new CollectionException();
+			throw new MyHoardException();
 		}
 	}
 
