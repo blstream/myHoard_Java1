@@ -30,7 +30,7 @@ public class MediaService extends ResourceService<MediaDTO> {
 	public List<MediaDTO> getList() throws MyHoardException {
 
 		List<MediaDS> mediaDSs = mediaDao.getList();
-		if(mediaDSs == null) {
+		if (mediaDSs == null) {
 			System.out.println("Media Service lista null");
 		}
 		List<MediaDTO> mediaDTOs = MediaMapper.map(mediaDSs);
@@ -78,6 +78,7 @@ public class MediaService extends ResourceService<MediaDTO> {
 		MediaDS mediaDSBaza = mediaDao.get(mediaDS.getId());
 
 		if (mediaDSBaza == null) {
+			System.out.println("mediaDSBaza == null");
 			throw new MyHoardException();
 		}
 
@@ -98,10 +99,11 @@ public class MediaService extends ResourceService<MediaDTO> {
 		MediaDS mediaDS = mediaDao.get(id);
 
 		if (mediaDS == null) {
+			System.out.println("mediaDS null");
 			throw new MyHoardException();
 		}
 
-		mediaDao.remove(id);
+		mediaDao.remove(mediaDS.getId());
 
 	}
 }

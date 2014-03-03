@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.blstream.myhoard.db.model.CollectionDS;
 import com.blstream.myhoard.db.model.MediaDS;
 
 @Repository
@@ -40,12 +41,16 @@ public class MediaDAO implements ResourceDAO<MediaDS> {
 
 	@Override
 	public void update(MediaDS object) {
-
+		getSession().update(object);
 	}
 
 	@Override
 	public void remove(int id) {
-
+		MediaDS media = (MediaDS) sessionFactory.getCurrentSession().get(
+				MediaDS.class, id);
+		if (media != null) {
+			sessionFactory.getCurrentSession().delete(media);
+		}
 	}
 
 }

@@ -3,6 +3,7 @@ package com.blstream.myhoard.biz.model;
 import java.util.Arrays;
 import java.util.Date;
 
+import org.codehaus.jackson.annotate.JsonIgnore;
 import org.codehaus.jackson.annotate.JsonProperty;
 import org.codehaus.jackson.map.annotate.JsonSerialize;
 
@@ -13,12 +14,16 @@ public class MediaDTO {
 
 	private int id;
 
+	@JsonIgnore
 	private byte[] file;
 
+	@JsonIgnore
 	private byte[] thumbnail;
 
+	@JsonIgnore
 	private ItemDS itemDS;
 
+	@JsonIgnore
 	@JsonProperty("created_date")
 	@JsonSerialize(using = RestDateSerializer.class)
 	private Date createdDate;
