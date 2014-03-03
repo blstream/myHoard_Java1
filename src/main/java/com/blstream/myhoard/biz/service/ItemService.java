@@ -14,6 +14,7 @@ import com.blstream.myhoard.db.dao.ResourceDAO;
 import com.blstream.myhoard.db.model.CollectionDS;
 import com.blstream.myhoard.db.model.ItemDS;
 
+// TODO RT set MediaDS collection to ItemDS
 @Service("itemService")
 public class ItemService extends ResourceService<ItemDTO> {
 
@@ -28,14 +29,12 @@ public class ItemService extends ResourceService<ItemDTO> {
 		Date date = new Date();
 		itemDTO.setCreatedDate(new Timestamp(date.getTime()));
 		itemDTO.setModifiedDate(new Timestamp(date.getTime()));
-
 		try {
 			int collectionId = Integer.parseInt(itemDTO.getCollection());
 			collectionDS = collectionDAO.get(collectionId);
 		} catch (Exception e) {
 			logger.log(Level.SEVERE, e.toString());
 		}
-
 		ItemDS itemDS = ItemMapper.map(itemDTO, collectionDS);
 		itemDAO.create(itemDS);
 		itemDTO = ItemMapper.map(itemDS);
@@ -64,7 +63,6 @@ public class ItemService extends ResourceService<ItemDTO> {
 		} catch (Exception e) {
 			logger.log(Level.SEVERE, e.toString());
 		}
-
 		ItemDS updateItemDS = ItemMapper.map(itemDTO, collectionDS);
 		ItemDS itemDS = itemDAO.get(Integer.parseInt(itemDTO.getId()));
 		itemDS.setModifiedDate(new Timestamp(new Date().getTime()));
@@ -81,6 +79,7 @@ public class ItemService extends ResourceService<ItemDTO> {
 
 	@Override
 	public void remove(int id) {
+		
 		itemDAO.remove(id);
 	}
 

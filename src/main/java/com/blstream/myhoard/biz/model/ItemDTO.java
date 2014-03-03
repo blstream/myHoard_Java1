@@ -1,7 +1,7 @@
 package com.blstream.myhoard.biz.model;
 
 import java.util.Date;
-import java.util.List;
+import java.util.Set;
 
 import org.codehaus.jackson.annotate.JsonProperty;
 import org.codehaus.jackson.map.annotate.JsonSerialize;
@@ -15,8 +15,7 @@ public class ItemDTO {
 	private String description;
 	private GeoPointDTO location;
 	private int quantity;
-	// TODO media
-	private List<String> media;
+	private Set<MediaDTO> media;
 	@JsonProperty("created_date")
 	@JsonSerialize(using = RestDateSerializer.class)
 	private Date createdDate;
@@ -30,7 +29,7 @@ public class ItemDTO {
 	public ItemDTO() {
 	}
 
-	public ItemDTO(String id, String name, String description, GeoPointDTO location, int quantity, List<String> media, Date createdDate,
+	public ItemDTO(String id, String name, String description, GeoPointDTO location, int quantity, Set<MediaDTO> media, Date createdDate,
 			Date modifiedDate, String owner, String collection) {
 		this.id = id;
 		this.name = name;
@@ -84,11 +83,11 @@ public class ItemDTO {
 		this.quantity = quantity;
 	}
 
-	public List<String> getMedia() {
+	public Set<MediaDTO> getMedia() {
 		return media;
 	}
 
-	public void setMedia(List<String> media) {
+	public void setMedia(Set<MediaDTO> media) {
 		this.media = media;
 	}
 

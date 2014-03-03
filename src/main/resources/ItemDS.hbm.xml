@@ -36,5 +36,9 @@
 		</property>
 		<many-to-one name="collection" column="collection"
 			class="com.blstream.myhoard.db.model.CollectionDS" not-null="true" />
+		<set name="media" cascade="all" fetch="select" lazy="false">
+			<key column="item_id" />
+			<one-to-many class="com.blstream.myhoard.db.model.MediaDS" />
+		</set>
 	</class>
 </hibernate-mapping>

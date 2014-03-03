@@ -1,7 +1,9 @@
 package com.blstream.myhoard.biz.mapper;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import com.blstream.myhoard.biz.model.MediaDTO;
 import com.blstream.myhoard.db.model.MediaDS;
@@ -42,6 +44,15 @@ public class MediaMapper {
 			mediaDTOs.add(MediaMapper.map(mediaDS));
 		}
 
+		return mediaDTOs;
+	}
+	
+	public static Set<MediaDTO> map(Set<MediaDS> mediaDSSet) {
+		// TODO MT generate hashCode and equals MediaDTO class
+		Set<MediaDTO> mediaDTOs = new HashSet<MediaDTO>();
+		for (MediaDS mediaDS : mediaDSSet) {
+			mediaDTOs.add(MediaMapper.map(mediaDS));
+		}
 		return mediaDTOs;
 	}
 

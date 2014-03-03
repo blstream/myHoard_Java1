@@ -4,15 +4,15 @@ import java.util.Arrays;
 import java.util.Date;
 
 import org.codehaus.jackson.annotate.JsonIgnore;
-import org.codehaus.jackson.annotate.JsonProperty;
-import org.codehaus.jackson.map.annotate.JsonSerialize;
 
-import com.blstream.myhoard.biz.serializer.RestDateSerializer;
 import com.blstream.myhoard.db.model.ItemDS;
 
 public class MediaDTO {
 
+	// TODO MT string id 
 	private int id;
+	
+	// TODO MT create media url
 
 	@JsonIgnore
 	private byte[] file;
@@ -24,8 +24,6 @@ public class MediaDTO {
 	private ItemDS itemDS;
 
 	@JsonIgnore
-	@JsonProperty("created_date")
-	@JsonSerialize(using = RestDateSerializer.class)
 	private Date createdDate;
 
 	public MediaDTO() {

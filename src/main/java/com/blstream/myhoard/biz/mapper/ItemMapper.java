@@ -37,7 +37,7 @@ public class ItemMapper {
 		itemDTO.setModifiedDate(itemDS.getModifiedDate());
 		itemDTO.setCollection(String.valueOf(itemDS.getCollection().getId()));
 		itemDTO.setOwner(itemDS.getOwner());
-		itemDTO.setMedia(Arrays.asList(new String[] { "TODO MEDIA" })); // TODO
+		itemDTO.setMedia(MediaMapper.map(itemDS.getMedia()));
 
 		return itemDTO;
 	}
