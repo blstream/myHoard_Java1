@@ -9,9 +9,8 @@ import com.blstream.myhoard.db.model.ItemDS;
 
 public class MediaDTO {
 
-	// TODO MT string id 
-	private int id;
-	
+	private String id;
+
 	// TODO MT create media url
 
 	@JsonIgnore
@@ -26,25 +25,27 @@ public class MediaDTO {
 	@JsonIgnore
 	private Date createdDate;
 
+	private String url;
+
 	public MediaDTO() {
 		super();
 	}
 
-	public MediaDTO(int id, byte[] file, byte[] thumbnail, ItemDS itemDS,
-			Date createdDate) {
+	public MediaDTO(String id, byte[] file, byte[] thumbnail, ItemDS itemDS, Date createdDate, String url) {
 		super();
 		this.id = id;
 		this.file = file;
 		this.thumbnail = thumbnail;
 		this.itemDS = itemDS;
 		this.createdDate = createdDate;
+		this.url = url;
 	}
 
-	public int getId() {
+	public String getId() {
 		return id;
 	}
 
-	public void setId(int id) {
+	public void setId(String id) {
 		this.id = id;
 	}
 
@@ -80,11 +81,18 @@ public class MediaDTO {
 		this.createdDate = createdDate;
 	}
 
+	public String getUrl() {
+		return url;
+	}
+
+	public void setUrl(String url) {
+		this.url = url;
+	}
+
 	@Override
 	public String toString() {
-		return "MediaDS [id=" + id + ", file=" + Arrays.toString(file)
-				+ ", thumbnail=" + Arrays.toString(thumbnail) + ", itemDS="
-				+ itemDS + ", createdDate=" + createdDate + "]";
+		return "MediaDTO [id=" + id + ", file=" + Arrays.toString(file) + ", thumbnail=" + Arrays.toString(thumbnail) + ", itemDS="
+				+ itemDS + ", createdDate=" + createdDate + ", url=" + url + "]";
 	}
 
 }

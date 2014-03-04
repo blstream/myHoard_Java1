@@ -16,7 +16,7 @@ public class MediaMapper {
 
 		mediaDS.setCreatedDate(mediaDTO.getCreatedDate());
 		mediaDS.setFile(mediaDTO.getFile());
-		mediaDS.setId(mediaDTO.getId());
+		mediaDS.setId(Integer.parseInt(mediaDTO.getId()));
 		mediaDS.setItemDS(mediaDTO.getItemDS());
 		mediaDS.setThumbnail(mediaDTO.getThumbnail());
 
@@ -29,9 +29,10 @@ public class MediaMapper {
 
 		mediaDTO.setCreatedDate(mediaDS.getCreatedDate());
 		mediaDTO.setFile(mediaDS.getFile());
-		mediaDTO.setId(mediaDS.getId());
+		mediaDTO.setId(String.valueOf(mediaDS.getId()));
 		mediaDTO.setItemDS(mediaDS.getItemDS());
 		mediaDTO.setThumbnail(mediaDS.getThumbnail());
+		mediaDTO.setUrl(buildUrl(mediaDS.getId()));
 
 		return mediaDTO;
 	}
@@ -54,6 +55,15 @@ public class MediaMapper {
 			mediaDTOs.add(MediaMapper.map(mediaDS));
 		}
 		return mediaDTOs;
+	}
+
+	private static String buildUrl(int id) {
+
+		StringBuilder url = new StringBuilder();
+
+		url.append(id);
+
+		return url.toString();
 	}
 
 }
