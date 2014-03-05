@@ -8,7 +8,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.blstream.myhoard.db.model.CollectionDS;
 import com.blstream.myhoard.db.model.MediaDS;
 
 @Repository

@@ -16,15 +16,12 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.blstream.myhoard.biz.model.CollectionDTO;
 import com.blstream.myhoard.biz.model.MediaDTO;
 import com.blstream.myhoard.biz.service.ResourceService;
-import com.blstream.myhoard.db.dao.MediaDAO;
 import com.blstream.myhoard.exception.CollectionRestException;
 import com.blstream.myhoard.exception.ErrorCodeEnum;
 import com.blstream.myhoard.exception.MyHoardException;
@@ -113,6 +110,7 @@ public class MediaController {
 			mediaService.update(mediaDTO);
 			return mediaDTO;
 		} catch (Exception ex) {
+			ex.printStackTrace();
 			throw new CollectionRestException(ErrorCodeEnum.UPDATE.getValue());
 		}
 	}
@@ -164,8 +162,6 @@ public class MediaController {
 		} catch (MyHoardException e) {
 			e.printStackTrace();
 		}
-
-		System.out.println(lista.size());
 
 		return lista.get(lista.size() - 1).getFile();
 	}

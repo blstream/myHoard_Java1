@@ -33,6 +33,7 @@ public class CollectionController {
 		try {
 			return collectionService.create(collection);
 		} catch (Exception e) {
+			e.printStackTrace();
 			throw new CollectionRestException(ErrorCodeEnum.CREATE.getValue());
 		}
 	}
@@ -48,6 +49,7 @@ public class CollectionController {
 			id = Integer.parseInt(idStr);
 			return collectionService.get(id);
 		} catch (Exception e) {
+			e.printStackTrace();
 			throw new CollectionRestException(ErrorCodeEnum.READ.getValue());
 		}
 	}
@@ -59,6 +61,7 @@ public class CollectionController {
 		try {
 			return collectionService.getList();
 		} catch (MyHoardException e) {
+			e.printStackTrace();
 			throw new CollectionRestException(ErrorCodeEnum.READ.getValue());
 		}
 	}
@@ -72,6 +75,7 @@ public class CollectionController {
 			id = Integer.parseInt(idStr);
 			collectionService.remove(id);
 		} catch (Exception ex) {
+			ex.printStackTrace();
 			throw new CollectionRestException(ErrorCodeEnum.DELETE.getValue());
 		}
 	}
@@ -87,6 +91,7 @@ public class CollectionController {
 			collection.setId(idStr);
 			return collectionService.update(collection);
 		} catch (Exception ex) {
+			ex.printStackTrace();
 			throw new CollectionRestException(ErrorCodeEnum.UPDATE.getValue());
 		}
 
