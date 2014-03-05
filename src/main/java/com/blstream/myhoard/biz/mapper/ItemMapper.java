@@ -3,15 +3,17 @@ package com.blstream.myhoard.biz.mapper;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Set;
 
 import com.blstream.myhoard.biz.model.GeoPointDTO;
 import com.blstream.myhoard.biz.model.ItemDTO;
 import com.blstream.myhoard.db.model.CollectionDS;
 import com.blstream.myhoard.db.model.ItemDS;
+import com.blstream.myhoard.db.model.MediaDS;
 
 public class ItemMapper {
 
-	public static final ItemDS map(ItemDTO itemDTO, CollectionDS collection) {
+	public static final ItemDS map(ItemDTO itemDTO, CollectionDS collection, Set<MediaDS> media) {
 		ItemDS itemDS = new ItemDS();
 		itemDS.setName(itemDTO.getName());
 		itemDS.setDescription(itemDTO.getDescription());
@@ -22,6 +24,7 @@ public class ItemMapper {
 		itemDS.setModifiedDate(itemDTO.getModifiedDate());
 		itemDS.setOwner(collection.getOwner());
 		itemDS.setCollection(collection);
+		itemDS.setMedia(media);
 
 		return itemDS;
 	}
@@ -37,7 +40,7 @@ public class ItemMapper {
 		itemDTO.setModifiedDate(itemDS.getModifiedDate());
 		itemDTO.setCollection(String.valueOf(itemDS.getCollection().getId()));
 		itemDTO.setOwner(itemDS.getOwner());
-		itemDTO.setMedia(MediaMapper.map(itemDS.getMedia()));
+		itemDTO.setMedia(MediaMapper.mapToSetDTO(itemDS.getMedia()));
 
 		return itemDTO;
 	}

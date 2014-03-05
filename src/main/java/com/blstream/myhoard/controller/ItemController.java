@@ -1,6 +1,8 @@
 package com.blstream.myhoard.controller;
 
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -14,12 +16,15 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 
 import com.blstream.myhoard.biz.model.ItemDTO;
 import com.blstream.myhoard.biz.service.ItemService;
+import com.blstream.myhoard.biz.service.ResourceService;
 import com.blstream.myhoard.exception.NotFoundException;
 
 //TODO RT Validation
 @Controller
 @RequestMapping("/items")
 public class ItemController {
+
+	protected final static Logger logger = Logger.getLogger(ItemController.class.getName());
 
 	@Autowired
 	ItemService itemService;
@@ -48,6 +53,7 @@ public class ItemController {
 			ItemDTO itemDTO = itemService.get(Integer.parseInt(id));
 			return itemDTO;
 		} catch (Exception e) {
+			logger.log(Level.SEVERE, e.toString());
 			throw new NotFoundException();
 		}
 	}
@@ -59,6 +65,7 @@ public class ItemController {
 		try {
 			itemService.get(Integer.parseInt(id));
 		} catch (Exception e) {
+			logger.log(Level.SEVERE, e.toString());
 			throw new NotFoundException();
 		}
 		item.setId(id);
@@ -73,6 +80,7 @@ public class ItemController {
 		try {
 			itemService.get(Integer.parseInt(id));
 		} catch (Exception e) {
+			logger.log(Level.SEVERE, e.toString());
 			throw new NotFoundException();
 		}
 		itemService.remove(Integer.parseInt(id));
