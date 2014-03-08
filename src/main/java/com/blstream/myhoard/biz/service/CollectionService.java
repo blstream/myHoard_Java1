@@ -1,20 +1,21 @@
 package com.blstream.myhoard.biz.service;
 
-import java.sql.Timestamp;
-import java.util.Date;
-import java.util.List;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
 import com.blstream.myhoard.biz.mapper.CollectionMapper;
 import com.blstream.myhoard.biz.model.CollectionDTO;
 import com.blstream.myhoard.db.dao.ResourceDAO;
 import com.blstream.myhoard.db.model.CollectionDS;
 import com.blstream.myhoard.exception.MyHoardException;
+import java.sql.Timestamp;
+import java.util.Date;
+import java.util.List;
+import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 @Service("collectionService")
 public class CollectionService extends ResourceService<CollectionDTO> {
+        
+        private static final Logger logger = Logger.getLogger(CollectionService.class.getCanonicalName());
 
 	@Autowired
 	private ResourceDAO<CollectionDS> collectionDAO;
@@ -34,6 +35,7 @@ public class CollectionService extends ResourceService<CollectionDTO> {
 
 		CollectionDS collectionDS = collectionDAO.get(i);
 		if (collectionDS == null) {
+                        logger.error("CollectionDS object is null");
 			throw new MyHoardException();
 		}
 		CollectionDTO collectionDTO = CollectionMapper.map(collectionDS);
@@ -76,7 +78,6 @@ public class CollectionService extends ResourceService<CollectionDTO> {
 			obiektZBazy.setOwner(collectionDS.getOwner());
 		}
 		obiektZBazy.setTags(collectionDS.getTags());
-		System.out.println(obiektZBazy.toString());
 		collectionDAO.update(obiektZBazy);
 
 		return CollectionMapper.map(obiektZBazy);
@@ -88,6 +89,7 @@ public class CollectionService extends ResourceService<CollectionDTO> {
 		if (collectionDS != null) {
 			collectionDAO.remove(i);
 		} else {
+                        logger.error("CollectionDS object is null");
 			throw new MyHoardException();
 		}
 	}

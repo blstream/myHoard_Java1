@@ -1,22 +1,23 @@
 package com.blstream.myhoard.biz.service;
 
-import java.sql.Timestamp;
-import java.util.Date;
-import java.util.List;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.stereotype.Service;
-
 import com.blstream.myhoard.biz.mapper.MediaMapper;
 import com.blstream.myhoard.biz.model.MediaDTO;
 import com.blstream.myhoard.db.dao.ResourceDAO;
 import com.blstream.myhoard.db.model.ItemDS;
 import com.blstream.myhoard.db.model.MediaDS;
 import com.blstream.myhoard.exception.MyHoardException;
+import java.sql.Timestamp;
+import java.util.Date;
+import java.util.List;
+import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.stereotype.Service;
 
 @Service("mediaService")
 public class MediaService extends ResourceService<MediaDTO> {
+        
+        private static final Logger logger = Logger.getLogger(MediaService.class.getCanonicalName());
 
 	@Autowired
 	@Qualifier("mediaDAO")
@@ -31,7 +32,7 @@ public class MediaService extends ResourceService<MediaDTO> {
 
 		List<MediaDS> mediaDSs = mediaDao.getList();
 		if (mediaDSs == null) {
-			System.out.println("Media Service lista null");
+                        logger.info("Media Service list is null");
 		}
 		List<MediaDTO> mediaDTOs = MediaMapper.map(mediaDSs);
 
@@ -78,7 +79,7 @@ public class MediaService extends ResourceService<MediaDTO> {
 		MediaDS mediaDSBaza = mediaDao.get(mediaDS.getId());
 
 		if (mediaDSBaza == null) {
-			System.out.println("mediaDSBaza == null");
+                        logger.error("mediaDSBaza == null");
 			throw new MyHoardException();
 		}
 
@@ -99,7 +100,7 @@ public class MediaService extends ResourceService<MediaDTO> {
 		MediaDS mediaDS = mediaDao.get(id);
 
 		if (mediaDS == null) {
-			System.out.println("mediaDS null");
+                        logger.error("mediaDS null");
 			throw new MyHoardException();
 		}
 

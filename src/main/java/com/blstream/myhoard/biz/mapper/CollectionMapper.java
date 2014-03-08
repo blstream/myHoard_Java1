@@ -1,13 +1,15 @@
 package com.blstream.myhoard.biz.mapper;
 
+import com.blstream.myhoard.biz.model.CollectionDTO;
+import com.blstream.myhoard.db.model.CollectionDS;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-
-import com.blstream.myhoard.biz.model.CollectionDTO;
-import com.blstream.myhoard.db.model.CollectionDS;
+import org.apache.log4j.Logger;
 
 public class CollectionMapper {
+        
+        private static final Logger logger = Logger.getLogger(CollectionMapper.class.getCanonicalName());
 
 	/**
 	 * Metoda przepisuje obiekt CollectionDTO na obiekt CollectionDS
@@ -23,7 +25,7 @@ public class CollectionMapper {
 		try {
 			collectionDS.setId(Integer.parseInt(collectionDTO.getId()));
 		} catch (Exception e) {
-			e.printStackTrace();
+			logger.error(e.getMessage(), e);
 		}
 		collectionDS.setItemsNumber(collectionDTO.getItemsNumber());
 		collectionDS.setModifiedDate(collectionDTO.getModifiedDate());

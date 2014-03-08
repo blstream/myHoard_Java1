@@ -17,10 +17,13 @@ import com.blstream.myhoard.biz.service.IResourceService;
 import com.blstream.myhoard.exception.MyHoardException;
 import com.blstream.myhoard.exception.CollectionRestException;
 import com.blstream.myhoard.exception.ErrorCodeEnum;
+import org.apache.log4j.Logger;
 
 @Controller
 @RequestMapping("/collections")
 public class CollectionController {
+        
+        private static final Logger logger = Logger.getLogger(CollectionController.class.getCanonicalName());
 
 	@Autowired
 	IResourceService<CollectionDTO> collectionService;
@@ -33,7 +36,7 @@ public class CollectionController {
 		try {
 			return collectionService.create(collection);
 		} catch (Exception e) {
-			e.printStackTrace();
+			logger.error(e.getMessage(), e);
 			throw new CollectionRestException(ErrorCodeEnum.CREATE.getValue());
 		}
 	}
@@ -49,7 +52,7 @@ public class CollectionController {
 			id = Integer.parseInt(idStr);
 			return collectionService.get(id);
 		} catch (Exception e) {
-			e.printStackTrace();
+			logger.error(e.getMessage(), e);
 			throw new CollectionRestException(ErrorCodeEnum.READ.getValue());
 		}
 	}
@@ -61,7 +64,7 @@ public class CollectionController {
 		try {
 			return collectionService.getList();
 		} catch (MyHoardException e) {
-			e.printStackTrace();
+			logger.error(e.getMessage(), e);
 			throw new CollectionRestException(ErrorCodeEnum.READ.getValue());
 		}
 	}
@@ -75,7 +78,7 @@ public class CollectionController {
 			id = Integer.parseInt(idStr);
 			collectionService.remove(id);
 		} catch (Exception ex) {
-			ex.printStackTrace();
+			logger.error(ex.getMessage(), ex);
 			throw new CollectionRestException(ErrorCodeEnum.DELETE.getValue());
 		}
 	}
@@ -91,7 +94,7 @@ public class CollectionController {
 			collection.setId(idStr);
 			return collectionService.update(collection);
 		} catch (Exception ex) {
-			ex.printStackTrace();
+			logger.error(ex.getMessage(), ex);
 			throw new CollectionRestException(ErrorCodeEnum.UPDATE.getValue());
 		}
 
