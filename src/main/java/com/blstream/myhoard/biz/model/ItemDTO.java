@@ -5,11 +5,16 @@ import java.util.Date;
 import java.util.Set;
 import org.codehaus.jackson.annotate.JsonProperty;
 import org.codehaus.jackson.map.annotate.JsonSerialize;
+import org.hibernate.validator.constraints.Length;
+import org.hibernate.validator.constraints.NotEmpty;
 
 public class ItemDTO {
 
         private String id;
+        @NotEmpty
+        @Length(min = 2, max = 50)
         private String name;
+        @Length(max = 250)
         private String description;
         private GeoPointDTO location;
         private int quantity;
@@ -27,8 +32,7 @@ public class ItemDTO {
         public ItemDTO() {
         }
 
-        public ItemDTO(String id, String name, String description, GeoPointDTO location, int quantity, Set<MediaDTO> media, Date createdDate,
-                Date modifiedDate, String owner, String collection) {
+        public ItemDTO(String id, String name, String description, GeoPointDTO location, int quantity, Set<MediaDTO> media, Date createdDate, Date modifiedDate, String owner, String collection) {
                 this.id = id;
                 this.name = name;
                 this.description = description;

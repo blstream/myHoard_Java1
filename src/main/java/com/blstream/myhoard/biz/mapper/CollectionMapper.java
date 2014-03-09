@@ -60,7 +60,7 @@ public class CollectionMapper {
 		collectionDTO.setCreatedDate(collectionDS.getCreatedDate());
 		collectionDTO.setDescription(collectionDS.getDescription());
 		collectionDTO.setId(String.valueOf(collectionDS.getId()));
-		collectionDTO.setItemsNumber(collectionDS.getItems().size()); // TODO
+		collectionDTO.setItemsNumber(collectionDS.getItems() != null ? collectionDS.getItems().size() : 0); // TODO
 		collectionDTO.setModifiedDate(collectionDS.getModifiedDate());
 		collectionDTO.setName(collectionDS.getName());
 		collectionDTO.setOwner(collectionDS.getOwner());

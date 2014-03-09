@@ -1,9 +1,11 @@
 package com.blstream.myhoard.controller;
 
 import com.blstream.myhoard.biz.model.ItemDTO;
-import com.blstream.myhoard.biz.service.ItemService;
+import com.blstream.myhoard.biz.service.IResourceService;
+import com.blstream.myhoard.exception.MyHoardException;
 import com.blstream.myhoard.exception.NotFoundException;
 import java.util.List;
+import javax.validation.Valid;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -15,7 +17,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
-//TODO RT Validation
 @Controller
 @RequestMapping("/items")
 public class ItemController {
@@ -23,12 +24,12 @@ public class ItemController {
         private static final Logger logger = Logger.getLogger(ItemController.class.getCanonicalName());
 
         @Autowired
-        ItemService itemService;
+        IResourceService<ItemDTO> itemService;
 
         @RequestMapping(method = RequestMethod.GET)
         @ResponseStatus(HttpStatus.OK)
         @ResponseBody
-        public List<ItemDTO> getItems() {
+        public List<ItemDTO> getItems() throws MyHoardException {
                 logger.info("Getting all items");
 
                 return itemService.getList();
@@ -37,7 +38,7 @@ public class ItemController {
         @RequestMapping(method = RequestMethod.POST)
         @ResponseStatus(HttpStatus.CREATED)
         @ResponseBody
-        public ItemDTO addItem(@RequestBody ItemDTO item) {
+        public ItemDTO addItem(@Valid @RequestBody ItemDTO item) throws MyHoardException {
 
                 return itemService.create(item);
         }
@@ -58,7 +59,7 @@ public class ItemController {
         @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
         @ResponseStatus(HttpStatus.OK)
         @ResponseBody
-        public ItemDTO updateItem(@PathVariable("id") String id, @RequestBody ItemDTO item) {
+        public ItemDTO updateItem(@PathVariable("id") String id, @Valid @RequestBody ItemDTO item) throws MyHoardException {
                 try {
                         itemService.get(Integer.parseInt(id));
                 } catch (Exception e) {
@@ -73,7 +74,7 @@ public class ItemController {
         @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
         @ResponseStatus(HttpStatus.NO_CONTENT)
         @ResponseBody
-        public void deleteItem(@PathVariable("id") String id) {
+        public void deleteItem(@PathVariable("id") String id) throws MyHoardException {
                 try {
                         itemService.get(Integer.parseInt(id));
                 } catch (Exception e) {

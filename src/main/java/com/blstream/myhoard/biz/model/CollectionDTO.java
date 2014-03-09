@@ -1,34 +1,30 @@
 package com.blstream.myhoard.biz.model;
 
+import com.blstream.myhoard.biz.serializer.RestDateSerializer;
 import java.util.Date;
 import java.util.List;
-
 import org.codehaus.jackson.annotate.JsonProperty;
 import org.codehaus.jackson.map.annotate.JsonSerialize;
-
-import com.blstream.myhoard.biz.serializer.RestDateSerializer;
+import org.hibernate.validator.constraints.Length;
+import org.hibernate.validator.constraints.NotEmpty;
 
 public class CollectionDTO {
 
 	private String id = "0";
-
+        @NotEmpty
+        @Length(min = 2, max = 50)
 	private String name;
-
+        @Length(max = 250)
 	private String description;
-
 	List<String> tags;
-
 	@JsonProperty("items_number")
 	private int itemsNumber;
-
 	@JsonProperty("created_date")
 	@JsonSerialize(using = RestDateSerializer.class)
 	private Date createdDate;
-
 	@JsonProperty("modified_date")
 	@JsonSerialize(using = RestDateSerializer.class)
 	private Date modifiedDate;
-
 	private String owner;
 
 	public CollectionDTO() {
