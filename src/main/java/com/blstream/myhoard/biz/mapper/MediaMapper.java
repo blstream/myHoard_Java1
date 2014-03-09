@@ -1,12 +1,11 @@
 package com.blstream.myhoard.biz.mapper;
 
+import com.blstream.myhoard.biz.model.MediaDTO;
+import com.blstream.myhoard.db.model.MediaDS;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-
-import com.blstream.myhoard.biz.model.MediaDTO;
-import com.blstream.myhoard.db.model.MediaDS;
 
 public class MediaMapper {
 
@@ -27,7 +26,7 @@ public class MediaMapper {
 		mediaDTO.setId(String.valueOf(mediaDS.getId()));
 		mediaDTO.setThumbnail(mediaDS.getThumbnail());
 		// TODO generate media URL
-		mediaDTO.setUrl("TODO");
+		mediaDTO.setUrl("http://78.133.154.39:1080/media/"+mediaDTO.getId());
 		
 		return mediaDTO;
 	}

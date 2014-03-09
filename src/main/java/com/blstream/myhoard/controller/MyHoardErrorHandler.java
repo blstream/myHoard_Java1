@@ -6,6 +6,7 @@ import com.blstream.myhoard.exception.NotFoundException;
 import javax.servlet.http.HttpServletRequest;
 import org.apache.log4j.Logger;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 public class MyHoardErrorHandler {
 
         private final static String ERROR_REASON_NOT_FOUND = "Resource Not Found";
+        private final static String ERROR_REASON_INCORRECT = "Incorrect Data"; 
 
         private static final Logger logger = Logger.getLogger(MyHoardErrorHandler.class.getCanonicalName());
 
@@ -60,8 +62,11 @@ public class MyHoardErrorHandler {
         @ResponseStatus(value = HttpStatus.NOT_FOUND)
         @ResponseBody
         public ErrorCode handleException(NotFoundException e) {
-                logger.error("handleException 404", e);
-
+                logger.error("handleException 404 " + e.getMessage(), e);
+                
+                if (e.getMessage() != null) {
+                     return new ErrorCode(404, e.getMessage());   
+                }
                 return new ErrorCode(404, ERROR_REASON_NOT_FOUND);
         }
 
@@ -73,5 +78,14 @@ public class MyHoardErrorHandler {
 
                 return new ErrorCode(400, e.getMessage());
         }
+        
+        @ExceptionHandler
+        @ResponseStatus(value = HttpStatus.BAD_REQUEST)
+        @ResponseBody
+        public ErrorCode handleException(HttpMessageNotReadableException e) {
+                logger.error("handleException 400", e);
+
+                return new ErrorCode(400, String.format("%s", ERROR_REASON_INCORRECT));
+        }        
 
 }

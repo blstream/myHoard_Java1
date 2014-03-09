@@ -39,6 +39,11 @@
 		<property name="owner" type="string" >
 			<column name="owner" not-null="true" unique="false" />
 		</property>
+                
+		<set name="items" cascade="all" fetch="select" lazy="false">
+			<key column="collection" />
+			<one-to-many class="com.blstream.myhoard.db.model.ItemDS" />
+		</set>
 
 	</class>
 </hibernate-mapping>

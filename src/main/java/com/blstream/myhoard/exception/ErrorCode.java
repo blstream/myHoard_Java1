@@ -11,16 +11,13 @@ public class ErrorCode {
 	private String errorReason;
 
 	public ErrorCode() {
-		super();
 	}
 
 	public ErrorCode(int errorCode) {
-		super();
 		this.errorCode = errorCode;
 	}
 
 	public ErrorCode(int errorCode, String errorReason) {
-		super();
 		this.errorCode = errorCode;
 		this.errorReason = errorReason;
 	}

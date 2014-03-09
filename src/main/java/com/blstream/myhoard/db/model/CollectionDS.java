@@ -1,27 +1,21 @@
 package com.blstream.myhoard.db.model;
 
 import java.util.Date;
+import java.util.Set;
 
 public class CollectionDS {
 
 	private int id;
-
 	private String name;
-
 	private String description;
-
 	private String tags;
-
 	private int itemsNumber;
-
 	private Date createdDate;
-
 	private Date modifiedDate;
-
 	private String owner;
+        private Set<ItemDS> items;
 
 	public CollectionDS() {
-
 	}
 
 	public CollectionDS(String name, String description, String tags,
@@ -100,8 +94,14 @@ public class CollectionDS {
 	public void setOwner(String owner) {
 		this.owner = owner;
 	}
-	
-	
+
+        public Set<ItemDS> getItems() {
+                return items;
+        }
+
+        public void setItems(Set<ItemDS> items) {
+                this.items = items;
+        }
 
 	@Override
 	public int hashCode() {
