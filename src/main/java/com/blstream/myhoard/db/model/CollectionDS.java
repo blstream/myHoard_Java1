@@ -1,6 +1,7 @@
 package com.blstream.myhoard.db.model;
 
 import java.util.Date;
+import java.util.HashSet;
 import java.util.Set;
 
 public class CollectionDS {
@@ -8,7 +9,7 @@ public class CollectionDS {
 	private int id;
 	private String name;
 	private String description;
-	private String tags;
+	private Set<TagDS> tags = new HashSet<TagDS>(0);
 	private int itemsNumber;
 	private Date createdDate;
 	private Date modifiedDate;
@@ -18,7 +19,7 @@ public class CollectionDS {
 	public CollectionDS() {
 	}
 
-	public CollectionDS(String name, String description, String tags,
+	public CollectionDS(String name, String description, Set<TagDS> tags,
 			int itemsNumber, Date createdDate, Date modifiedDate, String owner) {
 
 		this.id = 0;
@@ -55,11 +56,11 @@ public class CollectionDS {
 		this.description = description;
 	}
 
-	public String getTags() {
+	public Set<TagDS> getTags() {
 		return tags;
 	}
-
-	public void setTags(String tags) {
+	
+	public void setTags(Set<TagDS> tags) {
 		this.tags = tags;
 	}
 
@@ -114,7 +115,6 @@ public class CollectionDS {
 		result = prime * result + ((modifiedDate == null) ? 0 : modifiedDate.hashCode());
 		result = prime * result + ((name == null) ? 0 : name.hashCode());
 		result = prime * result + ((owner == null) ? 0 : owner.hashCode());
-		result = prime * result + ((tags == null) ? 0 : tags.hashCode());
 		return result;
 	}
 
@@ -156,18 +156,13 @@ public class CollectionDS {
 				return false;
 		} else if (!owner.equals(other.owner))
 			return false;
-		if (tags == null) {
-			if (other.tags != null)
-				return false;
-		} else if (!tags.equals(other.tags))
-			return false;
 		return true;
 	}
 
 	@Override
 	public String toString() {
 		return "CollectionDS [id=" + id + ", name=" + name + ", description="
-				+ description + ", tags=" + tags + ", itemsNumber="
+				+ description + ", itemsNumber="
 				+ itemsNumber + ", createdDate=" + createdDate
 				+ ", modifiedDate=" + modifiedDate + ", owner=" + owner + "]";
 	}

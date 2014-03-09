@@ -20,10 +20,6 @@
 				unique="false" />
 		</property>
 
-		<property name="tags" type="string">
-			<column name="tags" length="250" not-null="false" unique="false" />
-		</property>
-
 		<property name="itemsNumber" type="int">
 			<column name="items_number" not-null="true" unique="false" />
 		</property>
@@ -44,6 +40,15 @@
 			<key column="collection" />
 			<one-to-many class="com.blstream.myhoard.db.model.ItemDS" />
 		</set>
-
+		
+        <set name="tags" table="CollectionTag" 
+        	inverse="false" lazy="false" fetch="select" cascade="all" >
+            <key>
+                <column name="collection_id" not-null="true" />
+            </key>
+            <many-to-many entity-name="com.blstream.myhoard.db.model.TagDS">
+                <column name="tag_id" not-null="true" />
+            </many-to-many>
+        </set>
 	</class>
 </hibernate-mapping>

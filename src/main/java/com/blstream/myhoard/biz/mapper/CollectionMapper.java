@@ -3,9 +3,11 @@ package com.blstream.myhoard.biz.mapper;
 import com.blstream.myhoard.biz.model.CollectionDTO;
 import com.blstream.myhoard.db.model.CollectionDS;
 import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
 import org.apache.log4j.Logger;
+import java.util.Set;
+import com.blstream.myhoard.db.model.TagDS;
 
 public class CollectionMapper {
         
@@ -35,16 +37,17 @@ public class CollectionMapper {
 		if (collectionDTO.getTags() != null) {
 
 			List<String> tags = collectionDTO.getTags();
-			StringBuilder tagsStr = new StringBuilder();
-			String regex = "@NEXT@";
-
-			for (String tag : tags) {
-				tagsStr.append(tag);
-				tagsStr.append(regex);
+			Set<TagDS> tagSet = new HashSet<TagDS>();
+			
+			for(String tag : tags) {
+				
+				TagDS tmpTag = new TagDS(tag);
+				tagSet.add(tmpTag);
+				
 			}
-
-			collectionDS.setTags(tagsStr.toString());
+			collectionDS.setTags(tagSet);
 		}
+		
 		return collectionDS;
 	}
 
@@ -64,14 +67,15 @@ public class CollectionMapper {
 		collectionDTO.setModifiedDate(collectionDS.getModifiedDate());
 		collectionDTO.setName(collectionDS.getName());
 		collectionDTO.setOwner(collectionDS.getOwner());
-
-		if (collectionDS.getTags() != null) {
-			String regex = "@NEXT@";
-			String[] split = collectionDS.getTags().split(regex);
-			List<String> wordList = Arrays.asList(split);
-			collectionDTO.setTags(wordList);
-		}
-
+		
+		List<String> tagi = new ArrayList<String>();
+		Set<TagDS> tagList = collectionDS.getTags();
+		
+		for(TagDS tmp : tagList)
+			tagi.add(tmp.getName());
+		
+		collectionDTO.setTags(tagi);
+		
 		return collectionDTO;
 	}
 
@@ -86,7 +90,7 @@ public class CollectionMapper {
 		for (CollectionDS collection : collectionDS) {
 			collectionDTOs.add(map(collection));
 		}
-
+		
 		return collectionDTOs;
 	}
 

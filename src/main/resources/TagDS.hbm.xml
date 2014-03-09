@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+	<class name="com.blstream.myhoard.db.model.TagDS" table="Tag">
+
+		<id name="id" type="int">
+			<column name="id" />
+			<generator class="identity" />
+		</id>
+
+		<property name="name" type="string" >
+			<column name="name" length="250" not-null="false" unique="false" />
+		</property>
+
+        <set name="collections" table="CollectionTag"
+        	inverse="false" lazy="false" fetch="select" cascade="all" >
+            <key>
+                <column name="tag_id" not-null="true" />
+            </key>
+            <many-to-many entity-name="com.blstream.myhoard.db.model.CollectionDS">
+                <column name="collection_id" not-null="true" />
+            </many-to-many>
+        </set>
+        
+	</class>
+</hibernate-mapping>
