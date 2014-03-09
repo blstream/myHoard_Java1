@@ -14,8 +14,8 @@ public class MediaMapper {
 		mediaDS.setCreatedDate(mediaDTO.getCreatedDate());
 		mediaDS.setFile(mediaDTO.getFile());
 		try {
-		mediaDS.setId(Integer.parseInt(mediaDTO.getId()));
-		} catch  (Exception e) {
+			mediaDS.setId(Integer.parseInt(mediaDTO.getId()));
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		mediaDS.setThumbnail(mediaDTO.getThumbnail());
@@ -30,8 +30,8 @@ public class MediaMapper {
 		mediaDTO.setId(String.valueOf(mediaDS.getId()));
 		mediaDTO.setThumbnail(mediaDS.getThumbnail());
 		// TODO generate media URL
-		mediaDTO.setUrl("http://78.133.154.39:1080/media/"+mediaDTO.getId());
-		
+		mediaDTO.setUrl("http://78.133.154.39:1080/media/" + mediaDTO.getId());
+
 		return mediaDTO;
 	}
 
@@ -42,7 +42,7 @@ public class MediaMapper {
 		}
 		return mediaDTOs;
 	}
-	
+
 	public static Set<MediaDTO> mapToSetDTO(Set<MediaDS> mediaDsSet) {
 		Set<MediaDTO> mediaDTOs = new HashSet<MediaDTO>();
 		for (MediaDS mediaDS : mediaDsSet) {
@@ -50,7 +50,7 @@ public class MediaMapper {
 		}
 		return mediaDTOs;
 	}
-	
+
 	public static Set<MediaDS> mapToSetDS(Set<MediaDTO> mediaDtoSet) {
 		Set<MediaDS> mediaDsSet = new HashSet<MediaDS>();
 		for (MediaDTO mediaDTO : mediaDtoSet) {
@@ -58,6 +58,5 @@ public class MediaMapper {
 		}
 		return mediaDsSet;
 	}
-	
 
 }
