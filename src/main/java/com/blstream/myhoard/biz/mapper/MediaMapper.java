@@ -13,7 +13,11 @@ public class MediaMapper {
 		MediaDS mediaDS = new MediaDS();
 		mediaDS.setCreatedDate(mediaDTO.getCreatedDate());
 		mediaDS.setFile(mediaDTO.getFile());
+		try {
 		mediaDS.setId(Integer.parseInt(mediaDTO.getId()));
+		} catch  (Exception e) {
+			e.printStackTrace();
+		}
 		mediaDS.setThumbnail(mediaDTO.getThumbnail());
 
 		return mediaDS;
