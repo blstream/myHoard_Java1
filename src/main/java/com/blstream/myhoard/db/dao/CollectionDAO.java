@@ -2,11 +2,7 @@ package com.blstream.myhoard.db.dao;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
-
 import org.hibernate.SessionFactory;
-import org.hibernate.criterion.Criterion;
-import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -43,24 +39,44 @@ public class CollectionDAO implements ResourceDAO<CollectionDS> {
 		List<TagDS> tags = this.getTagsFromDB(obj);
 		
 		for(TagDS tag : obj.getTags()) {
-			boolean toSave = false;
+			boolean toSave = true;
 			for(TagDS dbTag : tags) {
 				if(tag.getName().equals(dbTag.getName())) {
-					toSave = true;
+					toSave = false;
 					//org.hibernate.NonUniqueObjectException
 					//tag.setId(dbTag.getId());
 					break;
 				}
 			}
-			if(toSave == false) {
+			if(toSave == true) {
 				sessionFactory.getCurrentSession().save(tag);
 			}
 		}
+		
+		//sessionFactory.getCurrentSession().clear();
 		sessionFactory.getCurrentSession().save(obj);
 	}
 
 	public void update(CollectionDS obj) {
 
+		List<TagDS> tags = this.getTagsFromDB(obj);
+		
+		for(TagDS tag : obj.getTags()) {
+			boolean toSave = true;
+			for(TagDS dbTag : tags) {
+				if(tag.getName().equals(dbTag.getName())) {
+					toSave = false;
+					//org.hibernate.NonUniqueObjectException
+					//tag.setId(dbTag.getId());
+					break;
+				}
+			}
+			if(toSave == true) {
+				sessionFactory.getCurrentSession().save(tag);
+			}
+		}
+		
+		sessionFactory.getCurrentSession().clear();
 		sessionFactory.getCurrentSession().update(obj);
 	}
 
