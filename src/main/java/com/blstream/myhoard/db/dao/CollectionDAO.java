@@ -22,8 +22,7 @@ public class CollectionDAO implements ResourceDAO<CollectionDS> {
 	public List<CollectionDS> getList() {
 
 		List<CollectionDS> collections = sessionFactory.getCurrentSession()
-				.createCriteria(CollectionDS.class)
-				.list();
+				.createCriteria(CollectionDS.class).list();
 		return collections;
 	}
 
@@ -33,49 +32,51 @@ public class CollectionDAO implements ResourceDAO<CollectionDS> {
 				.getCurrentSession().get(CollectionDS.class, id);
 		return collection;
 	}
-	
+
 	public void create(CollectionDS obj) {
-		
-		List<TagDS> tags = this.getTagsFromDB(obj);
-		
-		for(TagDS tag : obj.getTags()) {
-			boolean toSave = true;
-			for(TagDS dbTag : tags) {
-				if(tag.getName().equals(dbTag.getName())) {
-					toSave = false;
-					//org.hibernate.NonUniqueObjectException
-					//tag.setId(dbTag.getId());
+
+		List<TagDS> tagsFromDb = getTagsFromDB(obj);
+		Set<TagDS> tagsSrc = obj.getTags();
+		Set<TagDS> tagsToSave = new HashSet<TagDS>();
+
+		for (TagDS tagSrc : tagsSrc) {
+			boolean juzJest = false;
+			for (TagDS tagDb : tagsFromDb) {
+				if (tagDb.getName().equals(tagSrc.getName())) {
+					juzJest = true;
+					tagsToSave.add(tagDb);
 					break;
 				}
 			}
-			if(toSave == true) {
-				sessionFactory.getCurrentSession().save(tag);
+			if (!juzJest) {
+				tagsToSave.add(tagSrc);
 			}
 		}
-		
-		//sessionFactory.getCurrentSession().clear();
+
+		obj.setTags(null);
+		obj.setTags(tagsToSave);
 		sessionFactory.getCurrentSession().save(obj);
 	}
 
 	public void update(CollectionDS obj) {
 
 		List<TagDS> tags = this.getTagsFromDB(obj);
-		
-		for(TagDS tag : obj.getTags()) {
+
+		for (TagDS tag : obj.getTags()) {
 			boolean toSave = true;
-			for(TagDS dbTag : tags) {
-				if(tag.getName().equals(dbTag.getName())) {
+			for (TagDS dbTag : tags) {
+				if (tag.getName().equals(dbTag.getName())) {
 					toSave = false;
-					//org.hibernate.NonUniqueObjectException
-					//tag.setId(dbTag.getId());
+					// org.hibernate.NonUniqueObjectException
+					// tag.setId(dbTag.getId());
 					break;
 				}
 			}
-			if(toSave == true) {
+			if (toSave == true) {
 				sessionFactory.getCurrentSession().save(tag);
 			}
 		}
-		
+
 		sessionFactory.getCurrentSession().clear();
 		sessionFactory.getCurrentSession().update(obj);
 	}
@@ -88,21 +89,20 @@ public class CollectionDAO implements ResourceDAO<CollectionDS> {
 			sessionFactory.getCurrentSession().delete(collection);
 		}
 	}
-	
+
 	@SuppressWarnings("unchecked")
 	private List<TagDS> getTagsFromDB(CollectionDS obj) {
-		
+
 		List<String> tagsName = new ArrayList<String>();
-		
-		for(TagDS tag : obj.getTags()) {
+
+		for (TagDS tag : obj.getTags()) {
 			tagsName.add(tag.getName());
 		}
-		
+
 		List<TagDS> tags = sessionFactory.getCurrentSession()
-			.createCriteria(TagDS.class)
-			.add(Restrictions.in("name", tagsName.toArray()))
-			.list();
-		
+				.createCriteria(TagDS.class)
+				.add(Restrictions.in("name", tagsName.toArray())).list();
+
 		return tags;
 	}
 
