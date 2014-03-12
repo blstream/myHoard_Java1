@@ -89,7 +89,7 @@ public class CollectionService extends ResourceService<CollectionDTO> {
 		if (collectionDS != null) {
 			collectionDAO.remove(i);
 		} else {
-                        logger.error("CollectionDS object is null");
+            logger.error("CollectionDS object is null");
 			throw new MyHoardException();
 		}
 	}

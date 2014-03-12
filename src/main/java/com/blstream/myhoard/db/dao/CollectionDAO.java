@@ -43,15 +43,15 @@ public class CollectionDAO implements ResourceDAO<CollectionDS> {
 		Set<TagDS> tagsToSave = new HashSet<TagDS>();
 
 		for (TagDS tagSrc : tagsSrc) {
-			boolean juzJest = false;
+			boolean isExisting = false;
 			for (TagDS tagDb : tagsFromDb) {
 				if (tagDb.getName().equals(tagSrc.getName())) {
-					juzJest = true;
+					isExisting = true;
 					tagsToSave.add(tagDb);
 					break;
 				}
 			}
-			if (!juzJest) {
+			if (!isExisting) {
 				tagsToSave.add(tagSrc);
 			}
 		}
@@ -63,25 +63,29 @@ public class CollectionDAO implements ResourceDAO<CollectionDS> {
 
 	public void update(CollectionDS obj) {
 
-		List<TagDS> tags = this.getTagsFromDB(obj);
-
-		for (TagDS tag : obj.getTags()) {
-			boolean toSave = true;
-			for (TagDS dbTag : tags) {
-				if (tag.getName().equals(dbTag.getName())) {
-					toSave = false;
-					// org.hibernate.NonUniqueObjectException
-					// tag.setId(dbTag.getId());
+		CollectionDS objectFromDb = (CollectionDS) sessionFactory.getCurrentSession().get(CollectionDS.class, obj.getId());
+		Set<TagDS> tagsToSave = new HashSet<TagDS>();
+		
+		for (TagDS tagSrc : obj.getTags()) {
+			boolean isExisting = false;
+			for (TagDS tagDb : this.getTagsFromDB(obj)) {
+				if (tagSrc.getName().equals(tagDb.getName())) {
+					isExisting = true;
+					tagsToSave.add(tagDb);
 					break;
 				}
 			}
-			if (toSave == true) {
-				sessionFactory.getCurrentSession().save(tag);
+			if (!isExisting) {
+				tagsToSave.add(tagSrc);
 			}
 		}
-
-		sessionFactory.getCurrentSession().clear();
-		sessionFactory.getCurrentSession().update(obj);
+		
+		objectFromDb.setName(obj.getName());
+		objectFromDb.setDescription(obj.getDescription());
+		objectFromDb.setTags(tagsToSave);
+		objectFromDb.setModifiedDate(obj.getModifiedDate());
+		
+		sessionFactory.getCurrentSession().update(objectFromDb);
 	}
 
 	public void remove(int id) {
