@@ -7,7 +7,7 @@ import org.codehaus.jackson.annotate.JsonIgnore;
 
 public class MediaDTO {
 
-	private String id;
+	private String id = "0";
 	private String url;
 	@JsonIgnore
 	private byte[] file;
@@ -18,12 +18,13 @@ public class MediaDTO {
 
 	public MediaDTO() {
 	}
-	
+
 	public MediaDTO(String id) {
 		this.id = id;
-	}	
+	}
 
-	public MediaDTO(String id, byte[] file, byte[] thumbnail, Date createdDate, String url) {
+	public MediaDTO(String id, byte[] file, byte[] thumbnail, Date createdDate,
+			String url) {
 		this.id = id;
 		this.file = file;
 		this.thumbnail = thumbnail;
@@ -75,7 +76,8 @@ public class MediaDTO {
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + ((createdDate == null) ? 0 : createdDate.hashCode());
+		result = prime * result
+				+ ((createdDate == null) ? 0 : createdDate.hashCode());
 		result = prime * result + Arrays.hashCode(file);
 		result = prime * result + ((id == null) ? 0 : id.hashCode());
 		result = prime * result + Arrays.hashCode(thumbnail);
@@ -116,8 +118,10 @@ public class MediaDTO {
 
 	@Override
 	public String toString() {
-		return "MediaDTO [id=" + id + ", url=" + url + ", file=" + Arrays.toString(file) + ", thumbnail=" + Arrays.toString(thumbnail)
-				+ ", createdDate=" + createdDate + "]";
+		return "MediaDTO [id=" + id + ", url=" + url + ", file="
+				+ Arrays.toString(file) + ", thumbnail="
+				+ Arrays.toString(thumbnail) + ", createdDate=" + createdDate
+				+ "]";
 	}
 
 }

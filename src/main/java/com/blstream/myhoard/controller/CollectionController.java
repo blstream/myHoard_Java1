@@ -2,7 +2,7 @@ package com.blstream.myhoard.controller;
 
 import com.blstream.myhoard.biz.model.CollectionDTO;
 import com.blstream.myhoard.biz.service.IResourceService;
-import com.blstream.myhoard.exception.CollectionRestException;
+import com.blstream.myhoard.exception.MyHoardRestException;
 import com.blstream.myhoard.exception.ErrorCodeEnum;
 import java.util.List;
 import javax.validation.Valid;
@@ -34,7 +34,7 @@ public class CollectionController {
                         return collectionService.create(collection);
                 } catch (Exception e) {
                         logger.error(e.getMessage(), e);
-                        throw new CollectionRestException(ErrorCodeEnum.CREATE.getValue());
+                        throw new MyHoardRestException(ErrorCodeEnum.CREATE.getValue());
                 }
         }
 
@@ -47,7 +47,7 @@ public class CollectionController {
                         return collectionService.get(id);
                 } catch (Exception e) {
                         logger.error(e.getMessage(), e);
-                        throw new CollectionRestException(ErrorCodeEnum.READ.getValue());
+                        throw new MyHoardRestException(ErrorCodeEnum.READ.getValue());
                 }
         }
 
@@ -59,7 +59,7 @@ public class CollectionController {
                         return collectionService.getList();
                 } catch (Exception e) {
                         logger.error(e.getMessage(), e);
-                        throw new CollectionRestException(ErrorCodeEnum.READ.getValue());
+                        throw new MyHoardRestException(ErrorCodeEnum.READ.getValue());
                 }
         }
 
@@ -72,7 +72,7 @@ public class CollectionController {
                         collectionService.remove(id);
                 } catch (Exception ex) {
                         logger.error(ex.getMessage(), ex);
-                        throw new CollectionRestException(ErrorCodeEnum.DELETE.getValue());
+                        throw new MyHoardRestException(ErrorCodeEnum.DELETE.getValue());
                 }
         }
 
@@ -86,7 +86,7 @@ public class CollectionController {
                         return collectionService.update(collection);
                 } catch (Exception ex) {
                         logger.error(ex.getMessage(), ex);
-                        throw new CollectionRestException(ErrorCodeEnum.UPDATE.getValue());
+                        throw new MyHoardRestException(ErrorCodeEnum.UPDATE.getValue());
                 }
         }
 }

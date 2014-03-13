@@ -1,14 +1,9 @@
 package com.blstream.myhoard.controller;
 
-import com.blstream.myhoard.biz.model.MediaDTO;
-import com.blstream.myhoard.biz.service.ResourceService;
-import com.blstream.myhoard.exception.CollectionRestException;
-import com.blstream.myhoard.exception.ErrorCodeEnum;
-import com.blstream.myhoard.exception.MyHoardException;
 import java.io.IOException;
-import java.util.Date;
-import java.util.List;
+
 import javax.servlet.http.HttpServletRequest;
+
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -22,47 +17,56 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.blstream.myhoard.biz.model.MediaDTO;
+import com.blstream.myhoard.biz.service.ResourceService;
+import com.blstream.myhoard.biz.util.MediaUtils;
+import com.blstream.myhoard.exception.ErrorCodeEnum;
+import com.blstream.myhoard.exception.MyHoardRestException;
+import com.blstream.myhoard.exception.NotFoundException;
+
 @Controller
 @RequestMapping("/media")
 public class MediaController {
 
-        private static final Logger logger = Logger.getLogger(MediaController.class.getCanonicalName());
+	private static final Logger logger = Logger.getLogger(MediaController.class
+			.getCanonicalName());
 
 	@Autowired
 	@Qualifier("mediaService")
 	ResourceService<MediaDTO> mediaService;
 
+	@Autowired
+	MediaUtils mediaUtils;
+
 	@RequestMapping(method = RequestMethod.POST)
 	@ResponseBody
 	@ResponseStatus(HttpStatus.CREATED)
-	public String create(MultipartFile file, HttpServletRequest request)
+	public MediaDTO create(MultipartFile file, HttpServletRequest request)
 			throws IOException {
 
-                logger.info(getClass().toString() + ": create");
+		logger.info(getClass().toString() + ": create");
 
 		MediaDTO media = new MediaDTO();
-		media.setCreatedDate(new Date());
 
 		if (file.isEmpty()) {
-			throw new CollectionRestException(ErrorCodeEnum.CREATE.getValue());
+			throw new MyHoardRestException(ErrorCodeEnum.CREATE.getValue());
 		}
 
 		try {
 			media.setFile(file.getBytes());
-			media.setThumbnail(file.getBytes());
 		} catch (Exception e) {
 			logger.error(e.getMessage(), e);
-			throw new CollectionRestException(ErrorCodeEnum.CREATE.getValue());
+			throw new MyHoardRestException(ErrorCodeEnum.CREATE.getValue());
 		}
 
 		try {
-			mediaService.create(media);
+			media = mediaService.create(media);
 		} catch (Exception e) {
 			logger.error(e.getMessage(), e);
-			throw new CollectionRestException(ErrorCodeEnum.CREATE.getValue());
+			throw new MyHoardRestException(ErrorCodeEnum.CREATE.getValue());
 		}
 
-		return "upload.jsp";
+		return media;
 
 	}
 
@@ -74,13 +78,12 @@ public class MediaController {
 		logger.info(getClass().toString() + ": read");
 
 		int id = 0;
-
 		try {
 			id = Integer.parseInt(idStr);
 			return mediaService.get(id).getFile();
 		} catch (Exception e) {
 			logger.error(e.getMessage(), e);
-			throw new CollectionRestException(ErrorCodeEnum.READ.getValue());
+			throw new NotFoundException(e.getMessage());
 		}
 	}
 
@@ -90,15 +93,14 @@ public class MediaController {
 	public MediaDTO update(@PathVariable("id") String idStr,
 			@RequestBody MultipartFile file) {
 
-                logger.info(getClass().toString() + ": update");
+		logger.info(getClass().toString() + ": update");
 
 		int id = 0;
 		try {
 			id = Integer.parseInt(idStr);
 			MediaDTO mediaDTO = mediaService.get(id);
 			if (mediaDTO == null) {
-				throw new CollectionRestException(
-						ErrorCodeEnum.UPDATE.getValue());
+				throw new MyHoardRestException(ErrorCodeEnum.UPDATE.getValue());
 			}
 
 			mediaDTO.setFile(file.getBytes());
@@ -106,7 +108,7 @@ public class MediaController {
 			return mediaDTO;
 		} catch (Exception ex) {
 			logger.error(ex.getMessage(), ex);
-			throw new CollectionRestException(ErrorCodeEnum.UPDATE.getValue());
+			throw new MyHoardRestException(ErrorCodeEnum.UPDATE.getValue());
 		}
 	}
 
@@ -115,7 +117,7 @@ public class MediaController {
 	@ResponseBody
 	public void delete(@PathVariable("id") String idStr) {
 
-                logger.info(getClass().toString() + ": delete");
+		logger.info(getClass().toString() + ": delete");
 
 		int id = 0;
 		try {
@@ -123,7 +125,7 @@ public class MediaController {
 			mediaService.remove(id);
 		} catch (Exception ex) {
 			logger.error(ex.getMessage(), ex);
-			throw new CollectionRestException(ErrorCodeEnum.DELETE.getValue());
+			throw new MyHoardRestException(ErrorCodeEnum.DELETE.getValue());
 		}
 	}
 
@@ -132,16 +134,17 @@ public class MediaController {
 	@ResponseBody
 	public byte[] readThumbnail(@PathVariable("id") String idStr) {
 
-                logger.info(getClass().toString() + ": readThumbnail");
+		logger.info(getClass().toString() + ": readThumbnail");
 
 		int id = 0;
-
 		try {
 			id = Integer.parseInt(idStr);
-			return mediaService.get(id).getThumbnail();
+			byte[] thumbnail = mediaService.get(id).getThumbnail();
+			return mediaUtils.getThumbnail(thumbnail, 64);
 		} catch (Exception e) {
 			logger.error(e.getMessage(), e);
-			throw new CollectionRestException(ErrorCodeEnum.READ.getValue());
+			throw new NotFoundException(String.format(
+					"Media with id = %s not exist", id));
 		}
 	}
 
@@ -149,16 +152,8 @@ public class MediaController {
 	@ResponseBody
 	public byte[] getFile() {
 
-                logger.info(getClass().toString() + ": getFile");
+		return readThumbnail("13");
 
-		List<MediaDTO> lista = null;
-		try {
-			lista = mediaService.getList();
-		} catch (MyHoardException e) {
-			logger.error(e.getMessage(), e);
-		}
-
-		return lista.get(lista.size() - 1).getFile();
 	}
 
 }

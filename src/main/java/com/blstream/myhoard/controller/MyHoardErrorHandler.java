@@ -1,6 +1,6 @@
 package com.blstream.myhoard.controller;
 
-import com.blstream.myhoard.exception.CollectionRestException;
+import com.blstream.myhoard.exception.MyHoardRestException;
 import com.blstream.myhoard.exception.ErrorCode;
 import com.blstream.myhoard.exception.NotFoundException;
 import java.util.List;
@@ -25,10 +25,10 @@ public class MyHoardErrorHandler {
 
         private static final Logger logger = Logger.getLogger(MyHoardErrorHandler.class.getCanonicalName());
 
-        @ExceptionHandler(CollectionRestException.class)
+        @ExceptionHandler(MyHoardRestException.class)
         @ResponseStatus(HttpStatus.BAD_REQUEST)
         @ResponseBody
-        public ErrorCode handleCollectionException(CollectionRestException ex) {
+        public ErrorCode handleCollectionException(MyHoardRestException ex) {
                 logger.error("handleCollectionException", ex);
                 return new ErrorCode(ex.getCode());
         }

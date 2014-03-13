@@ -1,15 +1,15 @@
 package com.blstream.myhoard.exception;
 
-public class CollectionRestException extends RuntimeException {
+public class MyHoardRestException extends RuntimeException {
 
 	private static final long serialVersionUID = -2241431205864065754L;
 
 	private int code;
 
-	public CollectionRestException() {
+	public MyHoardRestException() {
 	}
 
-	public CollectionRestException(int code) {
+	public MyHoardRestException(int code) {
 		this.code = code;
 	}
 
