@@ -164,8 +164,8 @@ public class MediaController {
 		int id = 0;
 		try {
 			id = Integer.parseInt(idStr);
-			byte[] thumbnail = mediaService.get(id).getThumbnail();
-			return mediaUtils.getThumbnail(thumbnail, size);
+			byte[] image = mediaService.get(id).getFile();
+			return mediaUtils.getThumbnail(image, size);
 		} catch (Exception e) {
 			logger.error(e.getMessage(), e);
 			throw new NotFoundException(String.format(
