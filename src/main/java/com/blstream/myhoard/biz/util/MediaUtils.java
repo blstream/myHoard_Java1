@@ -15,13 +15,13 @@ public class MediaUtils {
 	private static final Logger logger = Logger.getLogger(MediaUtils.class
 			.getCanonicalName());
 
-	public byte[] getThumbnail(byte[] thumbnail, int size) {
+	public byte[] getThumbnail(byte[] image, int size) {
 
 		ByteArrayOutputStream baos = new ByteArrayOutputStream();
 
 		try {
 			long start = new Date().getTime();
-			Thumbnails.of(new ByteArrayInputStream(thumbnail))
+			Thumbnails.of(new ByteArrayInputStream(image))
 					.outputFormat("jpg").size(size, size).toOutputStream(baos);
 			long elapsed = new Date().getTime() - start;
 
