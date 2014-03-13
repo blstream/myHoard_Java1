@@ -132,15 +132,40 @@ public class MediaController {
 	@RequestMapping(value = "/{id}/thumbnail", method = RequestMethod.GET)
 	@ResponseStatus(HttpStatus.OK)
 	@ResponseBody
-	public byte[] readThumbnail(@PathVariable("id") String idStr) {
+	public byte[] readThumbnail(@PathVariable("id") String idStr,
+			HttpServletRequest request) {
 
 		logger.info(getClass().toString() + ": readThumbnail");
+
+		int size = 64;
+		String parameter = request.getParameter("size");
+
+		if (parameter != null) {
+			switch (parameter) {
+			case "large":
+				size = 500;
+				break;
+			case "medium":
+				size = 340;
+				break;
+			case "small":
+				size = 300;
+				break;
+			case "tiny":
+				size = 160;
+				break;
+			default:
+				break;
+			}
+		}
+
+		logger.info("size [request param]: " + size);
 
 		int id = 0;
 		try {
 			id = Integer.parseInt(idStr);
 			byte[] thumbnail = mediaService.get(id).getThumbnail();
-			return mediaUtils.getThumbnail(thumbnail, 64);
+			return mediaUtils.getThumbnail(thumbnail, size);
 		} catch (Exception e) {
 			logger.error(e.getMessage(), e);
 			throw new NotFoundException(String.format(
@@ -152,7 +177,7 @@ public class MediaController {
 	@ResponseBody
 	public byte[] getFile() {
 
-		return readThumbnail("13");
+		return null;
 
 	}
 
