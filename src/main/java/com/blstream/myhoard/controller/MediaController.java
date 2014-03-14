@@ -137,26 +137,23 @@ public class MediaController {
 
 		logger.info(getClass().toString() + ": readThumbnail");
 
-		int size = 64;
+		int size = 0;
 		String parameter = request.getParameter("size");
 
 		if (parameter != null) {
-			switch (parameter) {
-			case "large":
-				size = 500;
-				break;
-			case "medium":
-				size = 340;
-				break;
-			case "small":
-				size = 300;
-				break;
-			case "tiny":
-				size = 160;
-				break;
-			default:
-				break;
+
+			try {
+				size = Integer.parseInt(parameter);
+			} catch (Exception e) {
+				logger.error(e.getMessage(), e);
 			}
+
+			if (size != 500 && size != 340 && size != 300 && size != 140) {
+				logger.error("Bad size: " + size);
+				throw new NotFoundException(String.format(
+						"Media with size = %s not exist", size));
+			}
+
 		}
 
 		logger.info("size [request param]: " + size);
