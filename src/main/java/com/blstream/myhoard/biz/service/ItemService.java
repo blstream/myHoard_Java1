@@ -41,7 +41,6 @@ public class ItemService extends ResourceService<ItemDTO> {
                 itemDAO.create(itemDS);
 
                 itemDTO = ItemMapper.map(itemDS);
-
                 return itemDTO;
         }
 
@@ -49,15 +48,16 @@ public class ItemService extends ResourceService<ItemDTO> {
         public List<ItemDTO> getList() {
                 List<ItemDS> itemDSList = itemDAO.getList();
                 List<ItemDTO> itemList = ItemMapper.map(itemDSList);
-
                 return itemList;
         }
 
         @Override
         public ItemDTO get(int id) {
                 ItemDS itemDS = itemDAO.get(id);
+                if (itemDS == null) {
+                        throw new NotFoundException(String.format("Item with id = %s not exist", id));
+                }
                 ItemDTO itemDTO = ItemMapper.map(itemDS);
-
                 return itemDTO;
         }
 
@@ -79,13 +79,11 @@ public class ItemService extends ResourceService<ItemDTO> {
                 itemDAO.update(itemDS);
 
                 itemDTO = ItemMapper.map(itemDS);
-
                 return itemDTO;
         }
 
         @Override
         public void remove(int id) {
-
                 itemDAO.remove(id);
         }
 
@@ -94,9 +92,9 @@ public class ItemService extends ResourceService<ItemDTO> {
                 try {
                         int collectionId = Integer.parseInt(itemDTO.getCollection());
                         collectionDS = collectionDAO.get(collectionId);
-                } catch (Exception e) {
-                        logger.error(e.toString(), e);
-                }
+                } catch (NumberFormatException e) {
+                        logger.error("getItemCollection - Invalid Collection Id", e);
+                } 
                 if (collectionDS == null) {
                         throw new NotFoundException(String.format("Collection with id = %s not exist", itemDTO.getCollection()));
                 }
@@ -109,9 +107,9 @@ public class ItemService extends ResourceService<ItemDTO> {
                         MediaDS mediaDS = null;
                         try {
                                 mediaDS = mediaDAO.get(Integer.parseInt(mediaDTO.getId()));
-                        } catch (Exception e) {
-                                logger.error(e.toString(), e);
-                        }
+                        } catch (NumberFormatException e) {
+                                logger.error("getItemMedia - Invalid Media Id", e);
+                        } 
                         if (mediaDS == null) {
                                 throw new NotFoundException(String.format("Media with id = %s not exist", mediaDTO.getId()));
                         }

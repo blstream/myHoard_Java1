@@ -21,6 +21,12 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 @RequestMapping("/items")
 public class ItemController {
 
+        private static final String ITEM_NOT_EXIST = "Item with id = %s not exist";
+        private static final String ITEM_NOT_EXIST_INVALID_ID = "Item with id = %s not exist; Invalid Id";
+        private static final String GET_ITEM = "getItem";
+        private static final String UPDATE_ITEM = "updateItem";
+        private static final String DELETE_ITEM = "deleteItem";
+
         private static final Logger logger = Logger.getLogger(ItemController.class.getCanonicalName());
 
         @Autowired
@@ -30,8 +36,6 @@ public class ItemController {
         @ResponseStatus(HttpStatus.OK)
         @ResponseBody
         public List<ItemDTO> getItems() throws MyHoardException {
-                logger.info("Getting all items");
-
                 return itemService.getList();
         }
 
@@ -39,7 +43,6 @@ public class ItemController {
         @ResponseStatus(HttpStatus.CREATED)
         @ResponseBody
         public ItemDTO addItem(@Valid @RequestBody ItemDTO item) throws MyHoardException {
-
                 return itemService.create(item);
         }
 
@@ -50,9 +53,12 @@ public class ItemController {
                 try {
                         ItemDTO itemDTO = itemService.get(Integer.parseInt(id));
                         return itemDTO;
-                } catch (Exception e) {
-                        logger.info("Item not found", e);
-                        throw new NotFoundException();
+                } catch (NumberFormatException e) {
+                        logger.error(GET_ITEM, e);
+                        throw new NotFoundException(String.format(ITEM_NOT_EXIST_INVALID_ID, id));
+                } catch (MyHoardException mhe) {
+                        logger.error(GET_ITEM, mhe);
+                        throw new NotFoundException(String.format(ITEM_NOT_EXIST, id));
                 }
         }
 
@@ -62,12 +68,16 @@ public class ItemController {
         public ItemDTO updateItem(@PathVariable("id") String id, @Valid @RequestBody ItemDTO item) throws MyHoardException {
                 try {
                         itemService.get(Integer.parseInt(id));
-                } catch (Exception e) {
-                        logger.info("Item not found", e);
-                        throw new NotFoundException();
+                } catch (NumberFormatException e) {
+                        logger.error(UPDATE_ITEM, e);
+                        throw new NotFoundException(String.format(ITEM_NOT_EXIST_INVALID_ID, id));
+                } catch (MyHoardException mhe) {
+                        logger.info(UPDATE_ITEM, mhe);
+                        throw new NotFoundException(String.format(ITEM_NOT_EXIST, id));
                 }
                 item.setId(id);
                 ItemDTO itemDTO = itemService.update(item);
+
                 return itemDTO;
         }
 
@@ -77,11 +87,13 @@ public class ItemController {
         public void deleteItem(@PathVariable("id") String id) throws MyHoardException {
                 try {
                         itemService.get(Integer.parseInt(id));
-                } catch (Exception e) {
-                        logger.info("Item not found", e);
-                        throw new NotFoundException();
+                } catch (NumberFormatException e) {
+                        logger.error(DELETE_ITEM, e);
+                        throw new NotFoundException(String.format(ITEM_NOT_EXIST_INVALID_ID, id));
+                } catch (MyHoardException mhe) {
+                        logger.error(DELETE_ITEM, mhe);
+                        throw new NotFoundException(String.format(ITEM_NOT_EXIST, id));
                 }
                 itemService.remove(Integer.parseInt(id));
         }
-
 }
