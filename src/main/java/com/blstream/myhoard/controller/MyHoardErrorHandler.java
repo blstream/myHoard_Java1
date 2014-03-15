@@ -1,8 +1,9 @@
 package com.blstream.myhoard.controller;
 
-import com.blstream.myhoard.exception.MyHoardRestException;
 import com.blstream.myhoard.exception.ErrorCode;
+import com.blstream.myhoard.exception.MyHoardRestException;
 import com.blstream.myhoard.exception.NotFoundException;
+import com.blstream.myhoard.exception.ResourceAlreadyExistException;
 import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import org.apache.log4j.Logger;
@@ -22,6 +23,7 @@ public class MyHoardErrorHandler {
 
         private final static String ERROR_REASON_NOT_FOUND = "Resource Not Found";
         private final static String ERROR_REASON_INCORRECT = "Incorrect Data";
+        private final static String ERROR_REASON_ALREADY_EXIST = "Resource Already Exist";
 
         private static final Logger logger = Logger.getLogger(MyHoardErrorHandler.class.getCanonicalName());
 
@@ -72,6 +74,18 @@ public class MyHoardErrorHandler {
                         return new ErrorCode(404, e.getMessage());
                 }
                 return new ErrorCode(404, ERROR_REASON_NOT_FOUND);
+        }
+        
+        @ExceptionHandler
+        @ResponseStatus(value = HttpStatus.CONFLICT)
+        @ResponseBody
+        public ErrorCode handleException(ResourceAlreadyExistException e) {
+                logger.error("handleException 409 " + e.getMessage(), e);
+
+                if (e.getMessage() != null) {
+                        return new ErrorCode(409, e.getMessage());
+                }
+                return new ErrorCode(409, ERROR_REASON_ALREADY_EXIST);
         }
 
         @ExceptionHandler

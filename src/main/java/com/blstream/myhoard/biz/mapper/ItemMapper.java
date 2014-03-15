@@ -11,7 +11,7 @@ import java.util.Set;
 
 public class ItemMapper {
 
-        public static final ItemDS map(ItemDTO itemDTO, CollectionDS collection, Set<MediaDS> media) {
+        public static ItemDS map(ItemDTO itemDTO, CollectionDS collection, Set<MediaDS> media) {
                 ItemDS itemDS = new ItemDS();
                 itemDS.setName(itemDTO.getName());
                 itemDS.setDescription(itemDTO.getDescription());
