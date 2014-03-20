@@ -5,6 +5,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import org.apache.log4j.Logger;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,11 +14,14 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.blstream.myhoard.db.model.CollectionDS;
 import com.blstream.myhoard.db.model.TagDS;
+import com.blstream.myhoard.exception.MyHoardException;
 
 @Repository
 @Transactional
 public class CollectionDAO implements ResourceDAO<CollectionDS> {
 
+    private static final Logger logger = Logger.getLogger(CollectionDS.class.getCanonicalName());
+    
 	@Autowired
 	private SessionFactory sessionFactory;
 
@@ -36,8 +40,13 @@ public class CollectionDAO implements ResourceDAO<CollectionDS> {
 		return collection;
 	}
 
-	public void create(CollectionDS obj) {
+	public void create(CollectionDS obj) throws MyHoardException {
 
+		if(!this.isUnique(obj)) {
+			logger.error("Collection exist!");
+			throw new MyHoardException();
+		}
+		
 		List<TagDS> tagsFromDb = getTagsFromDB(obj);
 		Set<TagDS> tagsSrc = obj.getTags();
 		Set<TagDS> tagsToSave = new HashSet<TagDS>();
@@ -61,8 +70,13 @@ public class CollectionDAO implements ResourceDAO<CollectionDS> {
 		sessionFactory.getCurrentSession().save(obj);
 	}
 
-	public void update(CollectionDS obj) {
+	public void update(CollectionDS obj) throws MyHoardException {
 
+		if(!this.isUnique(obj)) {
+			logger.error("Collection exist!");
+			throw new MyHoardException();
+		}
+		
 		CollectionDS objectFromDb = (CollectionDS) sessionFactory.getCurrentSession().get(CollectionDS.class, obj.getId());
 		Set<TagDS> tagsToSave = new HashSet<TagDS>();
 		
@@ -111,6 +125,19 @@ public class CollectionDAO implements ResourceDAO<CollectionDS> {
 				.add(Restrictions.in("name", tagsName.toArray())).list();
 
 		return tags;
+	}
+	
+	private boolean isUnique(CollectionDS obj) {
+		
+		int numberOfCollections = sessionFactory.getCurrentSession()
+				.createCriteria(CollectionDS.class)
+				.add(Restrictions.eq("name", obj.getName()))
+				.add(Restrictions.eq("owner", obj.getOwner()))
+				.list().size();
+		if(numberOfCollections > 0)
+			return false;
+		else
+			return true;
 	}
 
 }

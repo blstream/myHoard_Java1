@@ -44,7 +44,7 @@ public class CollectionService extends ResourceService<CollectionDTO> {
 	}
 
 	@Override
-	public CollectionDTO create(CollectionDTO collection) {
+	public CollectionDTO create(CollectionDTO collection) throws MyHoardException {
 		Date date = new java.util.Date();
 		collection.setCreatedDate(new Timestamp(date.getTime()));
 		collection.setModifiedDate(new Timestamp(date.getTime()));
