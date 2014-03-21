@@ -75,17 +75,17 @@ public class CollectionController {
 				String[] availableDirection = { "asc", "desc" };
 
 				for (String sortByElem : sortBy) {
-					boolean everythinkOk = false;
+					boolean everythingOk = false;
 					for (String available : availableFields) {
 						if (sortByElem.equals(available)) {
-							everythinkOk = true;
+							everythingOk = true;
 							break;
 						}
 					}
-					if (!everythinkOk) {
+					if (!everythingOk) {
 						throw new MyHoardRestException(1000);
 					}
-					everythinkOk = false;
+					everythingOk = false;
 				}
 
 				if (!sortDirection.equals(availableDirection[0])
