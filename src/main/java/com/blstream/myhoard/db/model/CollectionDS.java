@@ -14,7 +14,7 @@ public class CollectionDS {
 	private Date createdDate;
 	private Date modifiedDate;
 	private String owner;
-        private Set<ItemDS> items;
+	private Set<ItemDS> items;
 
 	public CollectionDS() {
 	}
@@ -59,7 +59,7 @@ public class CollectionDS {
 	public Set<TagDS> getTags() {
 		return tags;
 	}
-	
+
 	public void setTags(Set<TagDS> tags) {
 		this.tags = tags;
 	}
@@ -96,24 +96,27 @@ public class CollectionDS {
 		this.owner = owner;
 	}
 
-        public Set<ItemDS> getItems() {
-                return items;
-        }
+	public Set<ItemDS> getItems() {
+		return items;
+	}
 
-        public void setItems(Set<ItemDS> items) {
-                this.items = items;
-        }
+	public void setItems(Set<ItemDS> items) {
+		this.items = items;
+	}
 
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + ((createdDate == null) ? 0 : createdDate.hashCode());
-		result = prime * result + ((description == null) ? 0 : description.hashCode());
+		result = prime * result
+				+ ((createdDate == null) ? 0 : createdDate.hashCode());
+		result = prime * result
+				+ ((description == null) ? 0 : description.hashCode());
 		result = prime * result + id;
 		result = prime * result + itemsNumber;
-		result = prime * result + ((description == null) ? 0 : tags.hashCode() );
-		result = prime * result + ((modifiedDate == null) ? 0 : modifiedDate.hashCode());
+		result = prime * result + ((description == null) ? 0 : tags.hashCode());
+		result = prime * result
+				+ ((modifiedDate == null) ? 0 : modifiedDate.hashCode());
 		result = prime * result + ((name == null) ? 0 : name.hashCode());
 		result = prime * result + ((owner == null) ? 0 : owner.hashCode());
 		return result;
@@ -163,9 +166,9 @@ public class CollectionDS {
 	@Override
 	public String toString() {
 		return "CollectionDS [id=" + id + ", name=" + name + ", description="
-				+ description + ", itemsNumber="
-				+ itemsNumber + ", createdDate=" + createdDate
-				+ ", modifiedDate=" + modifiedDate + ", owner=" + owner + "]";
+				+ description + ", itemsNumber=" + itemsNumber
+				+ ", createdDate=" + createdDate + ", modifiedDate="
+				+ modifiedDate + ", owner=" + owner + "]";
 	}
 
 }

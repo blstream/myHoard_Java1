@@ -20,94 +20,102 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 @ControllerAdvice
 public class MyHoardErrorHandler {
 
-        private final static String ERROR_REASON_NOT_FOUND = "Resource Not Found";
-        private final static String ERROR_REASON_INCORRECT = "Incorrect Data";
+	private final static String ERROR_REASON_NOT_FOUND = "Resource Not Found";
+	private final static String ERROR_REASON_INCORRECT = "Incorrect Data";
 
-        private static final Logger logger = Logger.getLogger(MyHoardErrorHandler.class.getCanonicalName());
+	private static final Logger logger = Logger
+			.getLogger(MyHoardErrorHandler.class.getCanonicalName());
 
-        @ExceptionHandler(MyHoardRestException.class)
-        @ResponseStatus(HttpStatus.BAD_REQUEST)
-        @ResponseBody
-        public ErrorCode handleCollectionException(MyHoardRestException ex) {
-                logger.error("handleCollectionException", ex);
-                return new ErrorCode(ex.getCode());
-        }
+	@ExceptionHandler(MyHoardRestException.class)
+	@ResponseStatus(HttpStatus.BAD_REQUEST)
+	@ResponseBody
+	public ErrorCode handleCollectionException(MyHoardRestException ex) {
+		logger.error("handleCollectionException", ex);
 
-        // tymczasowe
-        @ExceptionHandler(org.hibernate.PropertyValueException.class)
-        @ResponseStatus(HttpStatus.BAD_REQUEST)
-        @ResponseBody
-        public ErrorCode handleCollectionExceptionA(org.hibernate.PropertyValueException ex) {
-                logger.error("handleCollectionExceptionA", ex);
-                return new ErrorCode(111);
-        }
+		if (ex.getCode() == 1000) {
+			return new ErrorCode(400, "Very bad request parameters!");
+		}
+		return new ErrorCode(ex.getCode(), "Very bad request!");
+	}
 
-        @ExceptionHandler
-        @ResponseBody
-        @ResponseStatus(value = HttpStatus.BAD_REQUEST)
-        public ErrorCode handleException(Exception exception, HttpServletRequest request) {
-                String method = request.getMethod();
-                logger.error("handleException", exception);
+	// tymczasowe
+	@ExceptionHandler(org.hibernate.PropertyValueException.class)
+	@ResponseStatus(HttpStatus.BAD_REQUEST)
+	@ResponseBody
+	public ErrorCode handleCollectionExceptionA(
+			org.hibernate.PropertyValueException ex) {
+		logger.error("handleCollectionExceptionA", ex);
+		return new ErrorCode(111);
+	}
 
-                switch (method) {
-                        case "POST":
-                                logger.info("ErrorCode 400");
-                                return new ErrorCode(400);
-                        case "PUT":
-                                logger.info("ErrorCode 111");
-                                return new ErrorCode(111);
-                        default:
-                                logger.info("ErrorCode default");
-                                return new ErrorCode(0);
-                }
-        }
+	@ExceptionHandler
+	@ResponseBody
+	@ResponseStatus(value = HttpStatus.BAD_REQUEST)
+	public ErrorCode handleException(Exception exception,
+			HttpServletRequest request) {
+		String method = request.getMethod();
+		logger.error("handleException", exception);
 
-        @ExceptionHandler
-        @ResponseStatus(value = HttpStatus.NOT_FOUND)
-        @ResponseBody
-        public ErrorCode handleException(NotFoundException e) {
-                logger.error("handleException 404 " + e.getMessage(), e);
+		switch (method) {
+		case "POST":
+			logger.info("ErrorCode 400");
+			return new ErrorCode(400);
+		case "PUT":
+			logger.info("ErrorCode 111");
+			return new ErrorCode(111);
+		default:
+			logger.info("ErrorCode default");
+			return new ErrorCode(0);
+		}
+	}
 
-                if (e.getMessage() != null) {
-                        return new ErrorCode(404, e.getMessage());
-                }
-                return new ErrorCode(404, ERROR_REASON_NOT_FOUND);
-        }
+	@ExceptionHandler
+	@ResponseStatus(value = HttpStatus.NOT_FOUND)
+	@ResponseBody
+	public ErrorCode handleException(NotFoundException e) {
+		logger.error("handleException 404 " + e.getMessage(), e);
 
-        @ExceptionHandler
-        @ResponseStatus(value = HttpStatus.BAD_REQUEST)
-        @ResponseBody
-        public ErrorCode handleException(HttpRequestMethodNotSupportedException e) {
-                logger.error("handleException 400", e);
+		if (e.getMessage() != null) {
+			return new ErrorCode(404, e.getMessage());
+		}
+		return new ErrorCode(404, ERROR_REASON_NOT_FOUND);
+	}
 
-                return new ErrorCode(400, e.getMessage());
-        }
+	@ExceptionHandler
+	@ResponseStatus(value = HttpStatus.BAD_REQUEST)
+	@ResponseBody
+	public ErrorCode handleException(HttpRequestMethodNotSupportedException e) {
+		logger.error("handleException 400", e);
 
-        @ExceptionHandler
-        @ResponseStatus(value = HttpStatus.BAD_REQUEST)
-        @ResponseBody
-        public ErrorCode handleException(HttpMessageNotReadableException e) {
-                logger.error("handleException 400", e);
+		return new ErrorCode(400, e.getMessage());
+	}
 
-                return new ErrorCode(400, String.format("%s", ERROR_REASON_INCORRECT));
-        }
+	@ExceptionHandler
+	@ResponseStatus(value = HttpStatus.BAD_REQUEST)
+	@ResponseBody
+	public ErrorCode handleException(HttpMessageNotReadableException e) {
+		logger.error("handleException 400", e);
 
-        // DTO objects validation
-        @ExceptionHandler(MethodArgumentNotValidException.class)
-        @ResponseStatus(HttpStatus.BAD_REQUEST)
-        @ResponseBody
-        public ErrorCode processValidationError(MethodArgumentNotValidException e) {
-                logger.error("Validation Error", e);
+		return new ErrorCode(400, String.format("%s", ERROR_REASON_INCORRECT));
+	}
 
-                BindingResult result = e.getBindingResult();
-                List<FieldError> fieldErrors = result.getFieldErrors();
+	// DTO objects validation
+	@ExceptionHandler(MethodArgumentNotValidException.class)
+	@ResponseStatus(HttpStatus.BAD_REQUEST)
+	@ResponseBody
+	public ErrorCode processValidationError(MethodArgumentNotValidException e) {
+		logger.error("Validation Error", e);
 
-                StringBuilder sb = new StringBuilder();
-                for (FieldError fieldError : fieldErrors) {
-                        sb.append(String.format("%s: %s; ", fieldError.getField(), fieldError.getDefaultMessage()));
-                }
+		BindingResult result = e.getBindingResult();
+		List<FieldError> fieldErrors = result.getFieldErrors();
 
-                return new ErrorCode(400, sb.toString());
-        }
+		StringBuilder sb = new StringBuilder();
+		for (FieldError fieldError : fieldErrors) {
+			sb.append(String.format("%s: %s; ", fieldError.getField(),
+					fieldError.getDefaultMessage()));
+		}
+
+		return new ErrorCode(400, sb.toString());
+	}
 
 }
