@@ -32,10 +32,17 @@ public class MyHoardErrorHandler {
 	public ErrorCode handleCollectionException(MyHoardRestException ex) {
 		logger.error("handleCollectionException", ex);
 
-		if (ex.getCode() == 1000) {
+		switch (ex.getCode()) {
+		case 1000:
 			return new ErrorCode(400, "Very bad request parameters!");
+		case 1001:
+			return new ErrorCode(400,
+					"Http Media Size Not Acceptable. Max size 10MB!");
+		case 1002:
+			return new ErrorCode(400, "Http Media Type Not Acceptable");
+		default:
+			return new ErrorCode(ex.getCode(), "Very bad request!");
 		}
-		return new ErrorCode(ex.getCode(), "Very bad request!");
 	}
 
 	// tymczasowe

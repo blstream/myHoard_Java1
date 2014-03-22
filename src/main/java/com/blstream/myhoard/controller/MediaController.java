@@ -1,16 +1,21 @@
 package com.blstream.myhoard.controller;
 
 import java.io.IOException;
+import java.io.InputStream;
+import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.commons.fileupload.FileItem;
+import org.apache.commons.fileupload.disk.DiskFileItemFactory;
+import org.apache.commons.fileupload.servlet.ServletFileUpload;
+import org.apache.commons.io.IOUtils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -44,12 +49,23 @@ public class MediaController {
 	public MediaDTO create(MultipartFile file, HttpServletRequest request)
 			throws IOException {
 
-		logger.info(getClass().toString() + ": create");
+		logger.info("create");
 
 		MediaDTO media = new MediaDTO();
 
 		if (file.isEmpty()) {
 			throw new MyHoardRestException(ErrorCodeEnum.CREATE.getValue());
+		}
+
+		long maxSize = 10485760;
+		if (file.getSize() > maxSize) {
+			logger.info("Przekroczono max size!");
+			throw new MyHoardRestException(1001);
+		}
+
+		if (!file.getContentType().contains("image")) {
+			logger.info("Tylko zdjecia!");
+			throw new MyHoardRestException(1002);
 		}
 
 		try {
@@ -75,7 +91,7 @@ public class MediaController {
 	@ResponseBody
 	public byte[] read(@PathVariable("id") String idStr) {
 
-		logger.info(getClass().toString() + ": read");
+		logger.info("read");
 
 		int id = 0;
 		try {
@@ -91,9 +107,21 @@ public class MediaController {
 	@ResponseStatus(HttpStatus.OK)
 	@ResponseBody
 	public MediaDTO update(@PathVariable("id") String idStr,
-			@RequestBody MultipartFile file) {
+			HttpServletRequest request) {
 
-		logger.info(getClass().toString() + ": update");
+		logger.info("update");
+
+		ServletFileUpload fileUpload = new ServletFileUpload(
+				new DiskFileItemFactory());
+		List<FileItem> fileItems = null;
+		byte[] fileUploadBytes = null;
+		try {
+			fileItems = fileUpload.parseRequest(request);
+			InputStream in = fileItems.get(0).getInputStream();
+			fileUploadBytes = IOUtils.toByteArray(in);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 
 		int id = 0;
 		try {
@@ -103,7 +131,7 @@ public class MediaController {
 				throw new MyHoardRestException(ErrorCodeEnum.UPDATE.getValue());
 			}
 
-			mediaDTO.setFile(file.getBytes());
+			mediaDTO.setFile(fileUploadBytes);
 			mediaService.update(mediaDTO);
 			return mediaDTO;
 		} catch (Exception ex) {
@@ -117,7 +145,7 @@ public class MediaController {
 	@ResponseBody
 	public void delete(@PathVariable("id") String idStr) {
 
-		logger.info(getClass().toString() + ": delete");
+		logger.info("delete");
 
 		int id = 0;
 		try {
@@ -135,7 +163,7 @@ public class MediaController {
 	public byte[] readThumbnail(@PathVariable("id") String idStr,
 			HttpServletRequest request) {
 
-		logger.info(getClass().toString() + ": readThumbnail");
+		logger.info("readThumbnail");
 
 		int size = 0;
 		String parameter = request.getParameter("size");
