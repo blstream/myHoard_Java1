@@ -1,6 +1,7 @@
 package com.blstream.myhoard.biz.model;
 
 import com.blstream.myhoard.biz.serializer.RestDateSerializer;
+import com.blstream.myhoard.biz.serializer.UserSerializer;
 import java.util.Date;
 import java.util.Set;
 import org.codehaus.jackson.annotate.JsonProperty;
@@ -25,8 +26,8 @@ public class ItemDTO {
 	@JsonProperty("modified_date")
 	@JsonSerialize(using = RestDateSerializer.class)
 	private Date modifiedDate;
-	// TODO owner will be set in the future
-	private String owner;
+	@JsonSerialize(using = UserSerializer.class)
+	private UserDTO owner;
 	private String collection;
 
 	public ItemDTO() {
@@ -34,7 +35,7 @@ public class ItemDTO {
 
 	public ItemDTO(String id, String name, String description,
 			GeoPointDTO location, int quantity, Set<MediaDTO> media,
-			Date createdDate, Date modifiedDate, String owner, String collection) {
+			Date createdDate, Date modifiedDate, UserDTO owner, String collection) {
 		this.id = id;
 		this.name = name;
 		this.description = description;
@@ -111,11 +112,11 @@ public class ItemDTO {
 		this.modifiedDate = modifiedDate;
 	}
 
-	public String getOwner() {
+	public UserDTO getOwner() {
 		return owner;
 	}
 
-	public void setOwner(String owner) {
+	public void setOwner(UserDTO owner) {
 		this.owner = owner;
 	}
 

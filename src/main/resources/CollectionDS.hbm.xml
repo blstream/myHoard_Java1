@@ -4,51 +4,49 @@
 "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
 
 <hibernate-mapping>
-	<class name="com.blstream.myhoard.db.model.CollectionDS" table="Collection">
+        <class name="com.blstream.myhoard.db.model.CollectionDS" table="Collection">
 
-		<id name="id" type="int">
-			<column name="id" />
-			<generator class="identity" />
-		</id>
+                <id name="id" type="int">
+                        <column name="id" />
+                        <generator class="identity" />
+                </id>
 
-		<property name="name" type="string" >
-			<column name="name" length="50" not-null="false" unique="false" />
-		</property>
+                <property name="name" type="string" >
+                        <column name="name" length="50" not-null="false" unique="false" />
+                </property>
 
-		<property name="description" type="string">
-			<column name="description" length="250" not-null="false"
-				unique="false" />
-		</property>
+                <property name="description" type="string">
+                        <column name="description" length="250" not-null="false"
+                                unique="false" />
+                </property>
 
-		<property name="itemsNumber" type="int">
-			<column name="items_number" not-null="true" unique="false" />
-		</property>
+                <property name="itemsNumber" type="int">
+                        <column name="items_number" not-null="true" unique="false" />
+                </property>
 
-		<property name="createdDate" type="timestamp">
-			<column name="created_date" not-null="true" unique="false" />
-		</property>
+                <property name="createdDate" type="timestamp">
+                        <column name="created_date" not-null="true" unique="false" />
+                </property>
 
-		<property name="modifiedDate" type="timestamp">
-			<column name="modified_date" not-null="true" unique="false" />
-		</property>
+                <property name="modifiedDate" type="timestamp">
+                        <column name="modified_date" not-null="true" unique="false" />
+                </property>
 
-		<property name="owner" type="string" >
-			<column name="owner" not-null="true" unique="false" />
-		</property>
+                <many-to-one name="owner" column="owner" lazy="false"
+			class="com.blstream.myhoard.db.model.UserDS" not-null="false"/>
                 
-		<set name="items" cascade="all" fetch="select" lazy="false">
-			<key column="collection" />
-			<one-to-many class="com.blstream.myhoard.db.model.ItemDS" />
-		</set>
+                <set name="items" cascade="all" fetch="select" lazy="false">
+                        <key column="collection" />
+                        <one-to-many class="com.blstream.myhoard.db.model.ItemDS" />
+                </set>
 		
-        <set name="tags" table="CollectionTag" 
-        	inverse="false" lazy="false" fetch="select" cascade="all" >
-            <key>
-                <column name="collection_id" not-null="true" />
-            </key>
-            <many-to-many entity-name="com.blstream.myhoard.db.model.TagDS">
-                <column name="tag_id" not-null="true" />
-            </many-to-many>
-        </set>
-	</class>
+                <set name="tags" table="CollectionTag" inverse="false" lazy="false" fetch="select" cascade="all" >
+                        <key>
+                                <column name="collection_id" not-null="true" />
+                        </key>
+                        <many-to-many entity-name="com.blstream.myhoard.db.model.TagDS">
+                                <column name="tag_id" not-null="true" />
+                        </many-to-many>
+                </set>
+        </class>
 </hibernate-mapping>

@@ -4,6 +4,7 @@ import com.blstream.myhoard.biz.model.TokenDTO;
 import com.blstream.myhoard.biz.service.TokenService;
 import com.blstream.myhoard.biz.service.UserService;
 import com.blstream.myhoard.constants.Constants;
+import static com.blstream.myhoard.constants.Constants.USER;
 import com.blstream.myhoard.exception.AuthorizationException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -35,7 +36,7 @@ public class MyHoardInterceptor implements HandlerInterceptor {
 
                 TokenDTO tokenDTO = tokenService.getByAccessToken(AccessToken);
 
-                request.setAttribute("user", tokenDTO.getUser());
+                request.setAttribute(USER, tokenDTO.getUser());
 
                 // TODO RT remove
                 logger.info(String.format("\nAccess Token: %s\nToken ID: %s\nUser ID: %s\nUser email: %s",

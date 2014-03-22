@@ -14,7 +14,7 @@ public class ItemDS {
 	private Date createdDate;
 	private Date modifiedDate;
 	// TODO owner will be set in the future, maybe in the next sprint.
-	private String owner;
+	private UserDS owner;
 	private CollectionDS collection;
 	private Set<MediaDS> media;
 
@@ -82,13 +82,13 @@ public class ItemDS {
 		this.modifiedDate = modifiedDate;
 	}
 
-	public String getOwner() {
-		return owner;
-	}
+    public UserDS getOwner() {
+        return owner;
+    }
 
-	public void setOwner(String owner) {
-		this.owner = owner;
-	}
+    public void setOwner(UserDS owner) {
+        this.owner = owner;
+    }
 
 	public CollectionDS getCollection() {
 		return collection;

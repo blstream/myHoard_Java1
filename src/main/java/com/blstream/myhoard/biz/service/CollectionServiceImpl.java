@@ -1,18 +1,17 @@
 package com.blstream.myhoard.biz.service;
 
-import java.sql.Timestamp;
-import java.util.Date;
-import java.util.List;
-
-import org.apache.log4j.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
 import com.blstream.myhoard.biz.mapper.CollectionMapper;
 import com.blstream.myhoard.biz.model.CollectionDTO;
 import com.blstream.myhoard.db.dao.CollectionDAO;
+import com.blstream.myhoard.db.dao.UserDAO;
 import com.blstream.myhoard.db.model.CollectionDS;
 import com.blstream.myhoard.exception.MyHoardException;
+import java.sql.Timestamp;
+import java.util.Date;
+import java.util.List;
+import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 @Service("collectionService")
 public class CollectionServiceImpl implements CollectionService {
@@ -22,6 +21,9 @@ public class CollectionServiceImpl implements CollectionService {
 
 	@Autowired
 	private CollectionDAO collectionDAO;
+    
+    @Autowired
+    UserDAO userDao;
 
 	@Override
 	public List<CollectionDTO> getList() {
@@ -52,9 +54,10 @@ public class CollectionServiceImpl implements CollectionService {
 		Date date = new java.util.Date();
 		collection.setCreatedDate(new Timestamp(date.getTime()));
 		collection.setModifiedDate(new Timestamp(date.getTime()));
-		collection.setOwner("Moj dziadek");
 
 		CollectionDS collectionDS = CollectionMapper.map(collection);
+        collectionDS.setOwner(userDao.get(Integer.parseInt(collection.getOwner().getId())));
+        
 		collectionDAO.create(collectionDS);
 		CollectionDTO collectionDTO = CollectionMapper.map(collectionDS);
 
@@ -78,7 +81,7 @@ public class CollectionServiceImpl implements CollectionService {
 		obiektZBazy.setName(collectionDS.getName());
 
 		if (collectionDS.getOwner() != null) {
-			obiektZBazy.setOwner(collectionDS.getOwner());
+			obiektZBazy.setOwner(userDao.get(Integer.parseInt(collection.getOwner().getId())));
 		}
 		obiektZBazy.setTags(collectionDS.getTags());
 		collectionDAO.update(obiektZBazy);

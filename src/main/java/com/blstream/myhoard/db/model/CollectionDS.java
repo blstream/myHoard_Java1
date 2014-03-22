@@ -13,14 +13,14 @@ public class CollectionDS {
 	private int itemsNumber;
 	private Date createdDate;
 	private Date modifiedDate;
-	private String owner;
+	private UserDS owner;
 	private Set<ItemDS> items;
 
 	public CollectionDS() {
 	}
 
 	public CollectionDS(String name, String description, Set<TagDS> tags,
-			int itemsNumber, Date createdDate, Date modifiedDate, String owner) {
+			int itemsNumber, Date createdDate, Date modifiedDate, UserDS owner) {
 
 		this.id = 0;
 		this.name = name;
@@ -88,11 +88,11 @@ public class CollectionDS {
 		this.modifiedDate = modifiedDate;
 	}
 
-	public String getOwner() {
+	public UserDS getOwner() {
 		return owner;
 	}
 
-	public void setOwner(String owner) {
+	public void setOwner(UserDS owner) {
 		this.owner = owner;
 	}
 

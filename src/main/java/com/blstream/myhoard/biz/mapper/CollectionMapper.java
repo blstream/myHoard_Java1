@@ -2,12 +2,12 @@ package com.blstream.myhoard.biz.mapper;
 
 import com.blstream.myhoard.biz.model.CollectionDTO;
 import com.blstream.myhoard.db.model.CollectionDS;
+import com.blstream.myhoard.db.model.TagDS;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
-import org.apache.log4j.Logger;
 import java.util.Set;
-import com.blstream.myhoard.db.model.TagDS;
+import org.apache.log4j.Logger;
 
 public class CollectionMapper {
 
@@ -33,7 +33,7 @@ public class CollectionMapper {
 		collectionDS.setItemsNumber(collectionDTO.getItemsNumber());
 		collectionDS.setModifiedDate(collectionDTO.getModifiedDate());
 		collectionDS.setName(collectionDTO.getName());
-		collectionDS.setOwner(collectionDTO.getOwner());
+		collectionDS.setOwner(UserMapper.map(collectionDTO.getOwner()));
 
 		if (collectionDTO.getTags() != null) {
 
@@ -69,7 +69,7 @@ public class CollectionMapper {
 						.getItems().size() : 0); // TODO
 		collectionDTO.setModifiedDate(collectionDS.getModifiedDate());
 		collectionDTO.setName(collectionDS.getName());
-		collectionDTO.setOwner(collectionDS.getOwner());
+		collectionDTO.setOwner(UserMapper.map(collectionDS.getOwner()));
 
 		List<String> tagi = new ArrayList<String>();
 		Set<TagDS> tagList = collectionDS.getTags();

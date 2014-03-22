@@ -12,5 +12,7 @@ public class Constants {
         public final static int ERROR_CODE_NOT_FOUND = 202;
         public final static int ERROR_CODE_INTERNAL_SERVER_ERROR = 301;
         public final static int ERROR_CODE_AUTH_UNKNOW_ERROR = 400;
+        
+        public final static String USER = "user";
 
 }

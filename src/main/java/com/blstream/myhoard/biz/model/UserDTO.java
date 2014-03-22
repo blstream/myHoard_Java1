@@ -2,28 +2,30 @@ package com.blstream.myhoard.biz.model;
 
 import org.codehaus.jackson.annotate.JsonIgnore;
 import org.codehaus.jackson.map.annotate.JsonSerialize;
+import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotEmpty;
 
 public class UserDTO {
 
         @JsonIgnore
-        private int id;
+        private String id;
         @Length(min = 2, max = 250)
         private String username;
         @NotEmpty
         @Length(min = 2, max = 250)
+        @Email
         private String email;
         @NotEmpty
         @Length(min = 4, max = 250)
         @JsonSerialize(include = JsonSerialize.Inclusion.NON_NULL)
         private String password;
 
-        public int getId() {
+        public String getId() {
                 return id;
         }
 
-        public void setId(int id) {
+        public void setId(String id) {
                 this.id = id;
         }
 

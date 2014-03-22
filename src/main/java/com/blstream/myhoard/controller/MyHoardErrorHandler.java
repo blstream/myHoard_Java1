@@ -1,7 +1,14 @@
 package com.blstream.myhoard.controller;
 
+import com.blstream.myhoard.constants.Constants;
+import static com.blstream.myhoard.constants.Constants.ERROR_CODE_AUTH_BAD_CREDENTIALS;
+import static com.blstream.myhoard.constants.Constants.ERROR_CODE_AUTH_TOKEN_INVALID;
+import static com.blstream.myhoard.constants.Constants.ERROR_CODE_AUTH_TOKEN_NOT_PROVIDED;
+import static com.blstream.myhoard.constants.Constants.ERROR_CODE_AUTH_UNKNOW_ERROR;
+import static com.blstream.myhoard.constants.Constants.ERROR_CODE_FORBIDDEN;
 import com.blstream.myhoard.exception.AuthorizationException;
 import com.blstream.myhoard.exception.ErrorCode;
+import com.blstream.myhoard.exception.ForbiddenException;
 import com.blstream.myhoard.exception.MyHoardRestException;
 import com.blstream.myhoard.exception.NotFoundException;
 import com.blstream.myhoard.exception.ResourceAlreadyExistException;
@@ -29,6 +36,7 @@ public class MyHoardErrorHandler {
     private final static String ERROR_MESSAGE_AUTH_BAD_CREDENTIALS = "Bad credentials";
     private final static String ERROR_MESSAGE_AUTH_TOKEN_NOT_PROVIDED = "Token not provided";
     private final static String ERROR_MESSAGE_AUTH_TOKEN_INVALID_TOKEN = "Invalid token";
+    private final static String ERROR_MESSAGE_AUTH_FORBIDDEN = "Forbidded";
     private final static String ERROR_MESSAGE_AUTH_UNKNOW_ERROR = "Unknown error";
 
     private static final Logger logger = Logger.getLogger(MyHoardErrorHandler.class.getCanonicalName());
@@ -130,16 +138,27 @@ public class MyHoardErrorHandler {
     public ErrorCode handleException(AuthorizationException e) {
         logger.error("handleException AuthorizationException 401 ", e);
 
-        switch (e.getErrorCode()) {
-            case 101:
-                return new ErrorCode(101, ERROR_MESSAGE_AUTH_BAD_CREDENTIALS);
-            case 102:
-                return new ErrorCode(102, ERROR_MESSAGE_AUTH_TOKEN_NOT_PROVIDED);
-            case 103:
-                return new ErrorCode(103, ERROR_MESSAGE_AUTH_TOKEN_INVALID_TOKEN);
+        int errorCode = e.getErrorCode();
+
+        switch (errorCode) {
+            case ERROR_CODE_AUTH_BAD_CREDENTIALS:
+                return new ErrorCode(errorCode, ERROR_MESSAGE_AUTH_BAD_CREDENTIALS);
+            case ERROR_CODE_AUTH_TOKEN_NOT_PROVIDED:
+                return new ErrorCode(errorCode, ERROR_MESSAGE_AUTH_TOKEN_NOT_PROVIDED);
+            case ERROR_CODE_AUTH_TOKEN_INVALID:
+                return new ErrorCode(errorCode, ERROR_MESSAGE_AUTH_TOKEN_INVALID_TOKEN);
             default:
-                return new ErrorCode(401, ERROR_MESSAGE_AUTH_UNKNOW_ERROR);
+                return new ErrorCode(ERROR_CODE_AUTH_UNKNOW_ERROR, ERROR_MESSAGE_AUTH_UNKNOW_ERROR);
         }
+    }
+
+    @ExceptionHandler
+    @ResponseStatus(value = HttpStatus.FORBIDDEN)
+    @ResponseBody
+    public ErrorCode handleException(ForbiddenException e) {
+        logger.error("handleException ForbiddedException 403 ", e);
+
+        return new ErrorCode(ERROR_CODE_FORBIDDEN, ERROR_MESSAGE_AUTH_FORBIDDEN);
     }
 
     // DTO objects validation
@@ -157,7 +176,7 @@ public class MyHoardErrorHandler {
             sb.append(String.format("%s: %s; ", fieldError.getField(), fieldError.getDefaultMessage()));
         }
 
-        return new ErrorCode(400, sb.toString());
+        return new ErrorCode(Constants.ERROR_CODE_BAD_REQUEST, sb.toString());
     }
 
 }

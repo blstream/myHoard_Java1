@@ -1,9 +1,15 @@
 package com.blstream.myhoard.controller;
 
+import com.blstream.myhoard.biz.model.CollectionDTO;
+import com.blstream.myhoard.biz.model.UserDTO;
+import com.blstream.myhoard.biz.service.CollectionService;
+import static com.blstream.myhoard.constants.Constants.USER;
+import com.blstream.myhoard.exception.ErrorCodeEnum;
+import com.blstream.myhoard.exception.MyHoardException;
+import com.blstream.myhoard.exception.MyHoardRestException;
 import java.util.List;
-
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
-
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -16,34 +22,24 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
-import com.blstream.myhoard.biz.model.CollectionDTO;
-import com.blstream.myhoard.biz.service.CollectionService;
-import com.blstream.myhoard.exception.ErrorCodeEnum;
-import com.blstream.myhoard.exception.MyHoardException;
-import com.blstream.myhoard.exception.MyHoardRestException;
-
 @Controller
 @RequestMapping("/collections")
 public class CollectionController {
 
-	private static final Logger logger = Logger
-			.getLogger(CollectionController.class.getCanonicalName());
+	private static final Logger logger = Logger.getLogger(CollectionController.class.getCanonicalName());
 
 	@Autowired
 	CollectionService collectionService;
 
-	@RequestMapping(method = RequestMethod.POST)
-	@ResponseBody
-	@ResponseStatus(HttpStatus.CREATED)
-	public CollectionDTO addCollection(
-			@Valid @RequestBody CollectionDTO collection) {
-		try {
-			return collectionService.create(collection);
-		} catch (Exception e) {
-			logger.error(e.getMessage(), e);
-			throw new MyHoardRestException(ErrorCodeEnum.CREATE.getValue());
-		}
-	}
+    @RequestMapping(method = RequestMethod.POST)
+    @ResponseBody
+    @ResponseStatus(HttpStatus.CREATED)
+    public CollectionDTO addCollection(HttpServletRequest request, @Valid @RequestBody CollectionDTO collection) throws MyHoardException {
+        UserDTO userDTO = (UserDTO) request.getAttribute(USER);
+        collection.setOwner(userDTO);
+
+        return collectionService.create(collection);
+    }
 
 	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
 	@ResponseStatus(HttpStatus.OK)
@@ -102,9 +98,9 @@ public class CollectionController {
 				}
 
 				try {
-					return collectionService.getList(sortBy, sortDirection);
+					return collectionService.getList(sortBy, sortDirection); // TODO Matuesz - owner
 				} catch (MyHoardException e) {
-					e.printStackTrace();
+                    logger.error("getList error", e);
 				}
 			}
 		}

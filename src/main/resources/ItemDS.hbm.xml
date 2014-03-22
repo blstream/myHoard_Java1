@@ -31,9 +31,10 @@
 		<property name="modifiedDate" type="timestamp">
 			<column name="modified_date" not-null="true" unique="false" />
 		</property>
-		<property name="owner" type="string">
-			<column name="owner" not-null="true" unique="false" />
-		</property>
+                
+                <many-to-one name="owner" column="owner" lazy="false"
+			class="com.blstream.myhoard.db.model.UserDS" not-null="false"/>
+                
 		<many-to-one name="collection" column="collection"
 			class="com.blstream.myhoard.db.model.CollectionDS" not-null="true" />
 		<set name="media" cascade="all" fetch="select" lazy="false">
