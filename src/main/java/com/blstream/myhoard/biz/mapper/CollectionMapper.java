@@ -10,8 +10,9 @@ import java.util.Set;
 import com.blstream.myhoard.db.model.TagDS;
 
 public class CollectionMapper {
-        
-        private static final Logger logger = Logger.getLogger(CollectionMapper.class.getCanonicalName());
+
+	private static final Logger logger = Logger
+			.getLogger(CollectionMapper.class.getCanonicalName());
 
 	/**
 	 * Metoda przepisuje obiekt CollectionDTO na obiekt CollectionDS
@@ -38,16 +39,16 @@ public class CollectionMapper {
 
 			List<String> tags = collectionDTO.getTags();
 			Set<TagDS> tagSet = new HashSet<TagDS>();
-			
-			for(String tag : tags) {
-				
+
+			for (String tag : tags) {
+
 				TagDS tmpTag = new TagDS(tag);
 				tagSet.add(tmpTag);
-				
+
 			}
 			collectionDS.setTags(tagSet);
 		}
-		
+
 		return collectionDS;
 	}
 
@@ -63,19 +64,21 @@ public class CollectionMapper {
 		collectionDTO.setCreatedDate(collectionDS.getCreatedDate());
 		collectionDTO.setDescription(collectionDS.getDescription());
 		collectionDTO.setId(String.valueOf(collectionDS.getId()));
-		collectionDTO.setItemsNumber(collectionDS.getItems() != null ? collectionDS.getItems().size() : 0); // TODO
+		collectionDTO
+				.setItemsNumber(collectionDS.getItems() != null ? collectionDS
+						.getItems().size() : 0); // TODO
 		collectionDTO.setModifiedDate(collectionDS.getModifiedDate());
 		collectionDTO.setName(collectionDS.getName());
 		collectionDTO.setOwner(collectionDS.getOwner());
-		
+
 		List<String> tagi = new ArrayList<String>();
 		Set<TagDS> tagList = collectionDS.getTags();
-		
-		for(TagDS tmp : tagList)
+
+		for (TagDS tmp : tagList)
 			tagi.add(tmp.getName());
-		
+
 		collectionDTO.setTags(tagi);
-		
+
 		return collectionDTO;
 	}
 
@@ -90,7 +93,7 @@ public class CollectionMapper {
 		for (CollectionDS collection : collectionDS) {
 			collectionDTOs.add(map(collection));
 		}
-		
+
 		return collectionDTOs;
 	}
 
