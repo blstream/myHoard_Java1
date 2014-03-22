@@ -15,7 +15,7 @@ import com.blstream.myhoard.db.model.CollectionDS;
 import com.blstream.myhoard.exception.MyHoardException;
 
 @Service("collectionService")
-public class CollectionServiceImpl implements CollectionService<CollectionDTO> {
+public class CollectionServiceImpl implements CollectionService {
 
 	private static final Logger logger = Logger
 			.getLogger(CollectionServiceImpl.class.getCanonicalName());
@@ -78,7 +78,6 @@ public class CollectionServiceImpl implements CollectionService<CollectionDTO> {
 		obiektZBazy.setName(collectionDS.getName());
 
 		if (collectionDS.getOwner() != null) {
-			// czy mozemy zmienic?
 			obiektZBazy.setOwner(collectionDS.getOwner());
 		}
 		obiektZBazy.setTags(collectionDS.getTags());

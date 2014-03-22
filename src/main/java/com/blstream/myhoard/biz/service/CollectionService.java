@@ -5,14 +5,14 @@ import java.util.List;
 import com.blstream.myhoard.biz.model.CollectionDTO;
 import com.blstream.myhoard.exception.MyHoardException;
 
-public interface CollectionService<T> {
-	List<T> getList() throws MyHoardException;
+public interface CollectionService {
+	List<CollectionDTO> getList() throws MyHoardException;
 
-	T get(int i) throws MyHoardException;
+	CollectionDTO get(int i) throws MyHoardException;
 
-	T create(T t) throws MyHoardException;
+	CollectionDTO create(CollectionDTO collectionDTO) throws MyHoardException;
 
-	T update(T t) throws MyHoardException;
+	CollectionDTO update(CollectionDTO collectionDTO) throws MyHoardException;
 
 	void remove(int i) throws MyHoardException;
 

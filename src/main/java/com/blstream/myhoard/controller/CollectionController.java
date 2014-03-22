@@ -30,7 +30,7 @@ public class CollectionController {
 			.getLogger(CollectionController.class.getCanonicalName());
 
 	@Autowired
-	CollectionService<CollectionDTO> collectionService;
+	CollectionService collectionService;
 
 	@RequestMapping(method = RequestMethod.POST)
 	@ResponseBody
