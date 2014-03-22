@@ -2,40 +2,40 @@ package com.blstream.myhoard.exception;
 
 import org.codehaus.jackson.annotate.JsonProperty;
 
+// TODO errors array
 public class ErrorCode {
 
-	@JsonProperty("error_code")
-	private int errorCode;
+        @JsonProperty("error_code")
+        private int errorCode;
+        @JsonProperty("error_message")
+        private String errorMessage;
 
-	@JsonProperty("error_reason")
-	private String errorReason;
+        public ErrorCode() {
+        }
 
-	public ErrorCode() {
-	}
+        public ErrorCode(int errorCode) {
+                this.errorCode = errorCode;
+        }
 
-	public ErrorCode(int errorCode) {
-		this.errorCode = errorCode;
-	}
+        public ErrorCode(int errorCode, String errorMessage) {
+                this.errorCode = errorCode;
+                this.errorMessage = errorMessage;
+        }
 
-	public ErrorCode(int errorCode, String errorReason) {
-		this.errorCode = errorCode;
-		this.errorReason = errorReason;
-	}
+        public int getErrorCode() {
+                return errorCode;
+        }
 
-	public int getErrorCode() {
-		return errorCode;
-	}
+        public void setErrorCode(int errorCode) {
+                this.errorCode = errorCode;
+        }
 
-	public void setErrorCode(int errorCode) {
-		this.errorCode = errorCode;
-	}
+        public String getErrorMessage() {
+                return errorMessage;
+        }
 
-	public String getErrorReason() {
-		return errorReason;
-	}
-
-	public void setErrorReason(String errorReason) {
-		this.errorReason = errorReason;
-	}
+        public void setErrorMessage(String errorMessage) {
+                this.errorMessage = errorMessage;
+        }
 
 }

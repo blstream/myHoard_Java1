@@ -1,5 +1,6 @@
 package com.blstream.myhoard.controller;
 
+import com.blstream.myhoard.exception.AuthorizationException;
 import com.blstream.myhoard.exception.ErrorCode;
 import com.blstream.myhoard.exception.MyHoardRestException;
 import com.blstream.myhoard.exception.NotFoundException;
@@ -21,9 +22,14 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 @ControllerAdvice
 public class MyHoardErrorHandler {
 
-        private final static String ERROR_REASON_NOT_FOUND = "Resource Not Found";
-        private final static String ERROR_REASON_INCORRECT = "Incorrect Data";
-        private final static String ERROR_REASON_ALREADY_EXIST = "Resource Already Exist";
+        private final static String ERROR_MESSAGE_NOT_FOUND = "Resource Not Found";
+        private final static String ERROR_MESSAGE_INCORRECT = "Incorrect Data";
+        private final static String ERROR_MESSAGE_ALREADY_EXIST = "Resource Already Exist";
+
+        private final static String ERROR_MESSAGE_AUTH_BAD_CREDENTIALS = "Bad credentials";
+        private final static String ERROR_MESSAGE_AUTH_TOKEN_NOT_PROVIDED = "Token not provided";
+        private final static String ERROR_MESSAGE_AUTH_TOKEN_INVALID_TOKEN = "Invalid token";
+        private final static String ERROR_MESSAGE_AUTH_UNKNOW_ERROR = "Unknown error";
 
         private static final Logger logger = Logger.getLogger(MyHoardErrorHandler.class.getCanonicalName());
 
@@ -73,9 +79,9 @@ public class MyHoardErrorHandler {
                 if (e.getMessage() != null) {
                         return new ErrorCode(404, e.getMessage());
                 }
-                return new ErrorCode(404, ERROR_REASON_NOT_FOUND);
+                return new ErrorCode(404, ERROR_MESSAGE_NOT_FOUND);
         }
-        
+
         @ExceptionHandler
         @ResponseStatus(value = HttpStatus.CONFLICT)
         @ResponseBody
@@ -85,7 +91,7 @@ public class MyHoardErrorHandler {
                 if (e.getMessage() != null) {
                         return new ErrorCode(409, e.getMessage());
                 }
-                return new ErrorCode(409, ERROR_REASON_ALREADY_EXIST);
+                return new ErrorCode(409, ERROR_MESSAGE_ALREADY_EXIST);
         }
 
         @ExceptionHandler
@@ -103,7 +109,26 @@ public class MyHoardErrorHandler {
         public ErrorCode handleException(HttpMessageNotReadableException e) {
                 logger.error("handleException 400", e);
 
-                return new ErrorCode(400, String.format("%s", ERROR_REASON_INCORRECT));
+                return new ErrorCode(400, String.format("%s", ERROR_MESSAGE_INCORRECT));
+        }
+
+        // TODO RT
+        @ExceptionHandler
+        @ResponseStatus(value = HttpStatus.UNAUTHORIZED)
+        @ResponseBody
+        public ErrorCode handleException(AuthorizationException e) {
+                logger.error("handleException AuthorizationException 401 ", e);
+
+                switch (e.getErrorCode()) {
+                        case 101:
+                                return new ErrorCode(101, ERROR_MESSAGE_AUTH_BAD_CREDENTIALS);
+                        case 102:
+                                return new ErrorCode(102, ERROR_MESSAGE_AUTH_TOKEN_NOT_PROVIDED);
+                        case 103:
+                                return new ErrorCode(103, ERROR_MESSAGE_AUTH_TOKEN_INVALID_TOKEN);
+                        default:
+                                return new ErrorCode(401, ERROR_MESSAGE_AUTH_UNKNOW_ERROR);
+                }
         }
 
         // DTO objects validation

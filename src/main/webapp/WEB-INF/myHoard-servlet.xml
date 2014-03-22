@@ -49,5 +49,15 @@
         
         <!-- PASSWORD ENCODER -->
         <bean id="passwordEncoder" class="org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder"/>
+        
+        <!-- INTERCEPTOR -->
+        <mvc:interceptors>
+                <mvc:interceptor>
+                        <mvc:mapping path="/items/**"/>
+                        <mvc:mapping path="/collections/**"/>
+                        <mvc:mapping path="/media/**"/>
+                        <bean class="com.blstream.myhoard.authorization.MyHoardInterceptor" />
+                </mvc:interceptor>
+        </mvc:interceptors>
 
 </beans>
