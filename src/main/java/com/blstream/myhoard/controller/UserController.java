@@ -19,17 +19,17 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 @RequestMapping("/users")
 public class UserController {
 
-        private static final Logger logger = Logger.getLogger(UserController.class.getCanonicalName());
+    private static final Logger logger = Logger.getLogger(UserController.class.getCanonicalName());
 
-        @Autowired
-        UserService userService;
+    @Autowired
+    UserService userService;
 
-        @RequestMapping(method = RequestMethod.POST)
-        @ResponseStatus(HttpStatus.CREATED)
-        @ResponseBody
-        public UserDTO addUser(@Valid @RequestBody UserDTO user) throws MyHoardException {
+    @RequestMapping(method = RequestMethod.POST)
+    @ResponseStatus(HttpStatus.CREATED)
+    @ResponseBody
+    public UserDTO addUser(@Valid @RequestBody UserDTO user) throws MyHoardException {
 
-                return userService.create(user);
-        }
+        return userService.create(user);
+    }
 
 }

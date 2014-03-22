@@ -4,61 +4,61 @@ import java.util.Date;
 
 public class TokenDS {
 
-        private int id;
-        private String accessToken;
-        private int expiresIn;
-        private String refreshToken;
-        private Date createdDate;
-        private UserDS user;
+    private int id;
+    private String accessToken;
+    private int expiresIn;
+    private String refreshToken;
+    private Date createdDate;
+    private UserDS user;
 
-        public TokenDS() {
-        }
+    public TokenDS() {
+    }
 
-        public int getId() {
-                return id;
-        }
+    public int getId() {
+        return id;
+    }
 
-        public void setId(int id) {
-                this.id = id;
-        }
+    public void setId(int id) {
+        this.id = id;
+    }
 
-        public String getAccessToken() {
-                return accessToken;
-        }
+    public String getAccessToken() {
+        return accessToken;
+    }
 
-        public void setAccessToken(String accessToken) {
-                this.accessToken = accessToken;
-        }
+    public void setAccessToken(String accessToken) {
+        this.accessToken = accessToken;
+    }
 
-        public int getExpiresIn() {
-                return expiresIn;
-        }
+    public int getExpiresIn() {
+        return expiresIn;
+    }
 
-        public void setExpiresIn(int expiresIn) {
-                this.expiresIn = expiresIn;
-        }
+    public void setExpiresIn(int expiresIn) {
+        this.expiresIn = expiresIn;
+    }
 
-        public String getRefreshToken() {
-                return refreshToken;
-        }
+    public String getRefreshToken() {
+        return refreshToken;
+    }
 
-        public void setRefreshToken(String refreshToken) {
-                this.refreshToken = refreshToken;
-        }
+    public void setRefreshToken(String refreshToken) {
+        this.refreshToken = refreshToken;
+    }
 
-        public Date getCreatedDate() {
-                return createdDate;
-        }
+    public Date getCreatedDate() {
+        return createdDate;
+    }
 
-        public void setCreatedDate(Date createdDate) {
-                this.createdDate = createdDate;
-        }
+    public void setCreatedDate(Date createdDate) {
+        this.createdDate = createdDate;
+    }
 
-        public UserDS getUser() {
-                return user;
-        }
+    public UserDS getUser() {
+        return user;
+    }
 
-        public void setUser(UserDS user) {
-                this.user = user;
-        }
+    public void setUser(UserDS user) {
+        this.user = user;
+    }
 }

@@ -16,100 +16,89 @@ import org.springframework.stereotype.Service;
 @Service("collectionService")
 public class CollectionServiceImpl implements CollectionService {
 
-	private static final Logger logger = Logger
-			.getLogger(CollectionServiceImpl.class.getCanonicalName());
+    private static final Logger logger = Logger.getLogger(CollectionServiceImpl.class.getCanonicalName());
 
-	@Autowired
-	private CollectionDAO collectionDAO;
-    
+    @Autowired
+    private CollectionDAO collectionDAO;
+
     @Autowired
     UserDAO userDao;
 
-	@Override
-	public List<CollectionDTO> getList() {
+    @Override
+    public List<CollectionDTO> getList() {
+        List<CollectionDS> collectionDSs = collectionDAO.getList();
+        List<CollectionDTO> collectionDTOs = CollectionMapper.map(collectionDSs);
 
-		List<CollectionDS> collectionDSs = collectionDAO.getList();
-		List<CollectionDTO> collectionDTOs = CollectionMapper
-				.map(collectionDSs);
+        return collectionDTOs;
+    }
 
-		return collectionDTOs;
-	}
+    @Override
+    public CollectionDTO get(int i) throws MyHoardException {
+        CollectionDS collectionDS = collectionDAO.get(i);
+        if (collectionDS == null) {
+            logger.error("CollectionDS object is null");
+            throw new MyHoardException();
+        }
+        CollectionDTO collectionDTO = CollectionMapper.map(collectionDS);
 
-	@Override
-	public CollectionDTO get(int i) throws MyHoardException {
+        return collectionDTO;
+    }
 
-		CollectionDS collectionDS = collectionDAO.get(i);
-		if (collectionDS == null) {
-			logger.error("CollectionDS object is null");
-			throw new MyHoardException();
-		}
-		CollectionDTO collectionDTO = CollectionMapper.map(collectionDS);
+    @Override
+    public CollectionDTO create(CollectionDTO collection) throws MyHoardException {
+        Date date = new java.util.Date();
+        collection.setCreatedDate(new Timestamp(date.getTime()));
+        collection.setModifiedDate(new Timestamp(date.getTime()));
 
-		return collectionDTO;
-	}
-
-	@Override
-	public CollectionDTO create(CollectionDTO collection)
-			throws MyHoardException {
-		Date date = new java.util.Date();
-		collection.setCreatedDate(new Timestamp(date.getTime()));
-		collection.setModifiedDate(new Timestamp(date.getTime()));
-
-		CollectionDS collectionDS = CollectionMapper.map(collection);
+        CollectionDS collectionDS = CollectionMapper.map(collection);
         collectionDS.setOwner(userDao.get(Integer.parseInt(collection.getOwner().getId())));
-        
-		collectionDAO.create(collectionDS);
-		CollectionDTO collectionDTO = CollectionMapper.map(collectionDS);
 
-		return collectionDTO;
-	}
+        collectionDAO.create(collectionDS);
+        CollectionDTO collectionDTO = CollectionMapper.map(collectionDS);
 
-	@Override
-	public CollectionDTO update(CollectionDTO collection)
-			throws MyHoardException {
+        return collectionDTO;
+    }
 
-		CollectionDS collectionDS = CollectionMapper.map(collection);
-		CollectionDS obiektZBazy = collectionDAO.get(collectionDS.getId());
+    @Override
+    public CollectionDTO update(CollectionDTO collection) throws MyHoardException {
+        CollectionDS collectionDS = CollectionMapper.map(collection);
+        CollectionDS srcCollectionDS = collectionDAO.get(collectionDS.getId());
 
-		if (obiektZBazy == null) {
-			throw new MyHoardException();
-		}
+        if (srcCollectionDS == null) {
+            throw new MyHoardException();
+        }
 
-		obiektZBazy.setDescription(collectionDS.getDescription());
-		obiektZBazy.setItemsNumber(collectionDS.getItemsNumber());
-		obiektZBazy.setModifiedDate(new Date());
-		obiektZBazy.setName(collectionDS.getName());
+        srcCollectionDS.setDescription(collectionDS.getDescription());
+        srcCollectionDS.setItemsNumber(collectionDS.getItemsNumber());
+        srcCollectionDS.setModifiedDate(new Date());
+        srcCollectionDS.setName(collectionDS.getName());
 
-		if (collectionDS.getOwner() != null) {
-			obiektZBazy.setOwner(userDao.get(Integer.parseInt(collection.getOwner().getId())));
-		}
-		obiektZBazy.setTags(collectionDS.getTags());
-		collectionDAO.update(obiektZBazy);
+        if (collectionDS.getOwner() != null) {
+            srcCollectionDS.setOwner(userDao.get(Integer.parseInt(collection.getOwner().getId())));
+        }
+        srcCollectionDS.setTags(collectionDS.getTags());
+        collectionDAO.update(srcCollectionDS);
 
-		return CollectionMapper.map(obiektZBazy);
-	}
+        return CollectionMapper.map(srcCollectionDS);
+    }
 
-	@Override
-	public void remove(int i) throws MyHoardException {
-		CollectionDS collectionDS = collectionDAO.get(i);
-		if (collectionDS != null) {
-			collectionDAO.remove(i);
-		} else {
-			logger.error("CollectionDS object is null");
-			throw new MyHoardException();
-		}
-	}
+    @Override
+    public void remove(int i) throws MyHoardException {
+        CollectionDS collectionDS = collectionDAO.get(i);
+        if (collectionDS != null) {
+            collectionDAO.remove(i);
+        } else {
+            logger.error("CollectionDS object is null");
+            throw new MyHoardException();
+        }
+    }
 
-	@Override
-	public List<CollectionDTO> getList(List<String> sortBy, String sortDirection)
-			throws MyHoardException {
+    @Override
+    public List<CollectionDTO> getList(List<String> sortBy, String sortDirection) throws MyHoardException {
+        List<CollectionDS> collectionDSs = collectionDAO.getList(sortBy, sortDirection);
+        List<CollectionDTO> collectionDTOs = CollectionMapper.map(collectionDSs);
 
-		List<CollectionDS> collectionDSs = collectionDAO.getList(sortBy,
-				sortDirection);
-		List<CollectionDTO> collectionDTOs = CollectionMapper
-				.map(collectionDSs);
-
-		return collectionDTOs;
-	}
+        return collectionDTOs;
+    }
 
 }

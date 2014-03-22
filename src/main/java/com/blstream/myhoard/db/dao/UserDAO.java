@@ -13,38 +13,38 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 public class UserDAO {
 
-        @Autowired
-        private SessionFactory sessionFactory;
+    @Autowired
+    private SessionFactory sessionFactory;
 
-        // TODO RT implement
-        public List<UserDS> getList() {
-                throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-        }
+    // TODO RT implement
+    public List<UserDS> getList() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
 
-        public UserDS get(int id) {
-                return (UserDS) sessionFactory.getCurrentSession().get(UserDS.class, id);
-        }
+    public UserDS get(int id) {
+        return (UserDS) sessionFactory.getCurrentSession().get(UserDS.class, id);
+    }
 
-        public UserDS getByEmail(String email) {
-                Criteria criteria = sessionFactory.getCurrentSession().createCriteria(UserDS.class);
-                criteria.add(Restrictions.eq("email", email));
-                criteria.setMaxResults(1);
+    public UserDS getByEmail(String email) {
+        Criteria criteria = sessionFactory.getCurrentSession().createCriteria(UserDS.class);
+        criteria.add(Restrictions.eq("email", email));
+        criteria.setMaxResults(1);
 
-                return (UserDS) criteria.uniqueResult();
-        }
+        return (UserDS) criteria.uniqueResult();
+    }
 
-        public void create(UserDS object) {
-                sessionFactory.getCurrentSession().save(object);
-        }
+    public void create(UserDS object) {
+        sessionFactory.getCurrentSession().save(object);
+    }
 
-        // TODO RT implement
-        public void update(UserDS object) {
-                throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-        }
+    // TODO RT implement
+    public void update(UserDS object) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
 
-        // TODO RT implement
-        public void remove(int id) {
-                throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-        }
+    // TODO RT implement
+    public void remove(int id) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
 
 }

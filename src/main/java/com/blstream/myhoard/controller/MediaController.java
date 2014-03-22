@@ -1,11 +1,15 @@
 package com.blstream.myhoard.controller;
 
+import com.blstream.myhoard.biz.model.MediaDTO;
+import com.blstream.myhoard.biz.service.ResourceService;
+import com.blstream.myhoard.biz.util.MediaUtils;
+import com.blstream.myhoard.exception.ErrorCodeEnum;
+import com.blstream.myhoard.exception.MyHoardRestException;
+import com.blstream.myhoard.exception.NotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
-
 import javax.servlet.http.HttpServletRequest;
-
 import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
@@ -22,19 +26,11 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.blstream.myhoard.biz.model.MediaDTO;
-import com.blstream.myhoard.biz.service.ResourceService;
-import com.blstream.myhoard.biz.util.MediaUtils;
-import com.blstream.myhoard.exception.ErrorCodeEnum;
-import com.blstream.myhoard.exception.MyHoardRestException;
-import com.blstream.myhoard.exception.NotFoundException;
-
 @Controller
 @RequestMapping("/media")
 public class MediaController {
 
-	private static final Logger logger = Logger.getLogger(MediaController.class
-			.getCanonicalName());
+	private static final Logger logger = Logger.getLogger(MediaController.class.getCanonicalName());
 
 	@Autowired
 	@Qualifier("mediaService")

@@ -26,74 +26,74 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 @RequestMapping("/oauth/token/")
 public class TokenController {
 
-        private final static String GRNAT_TYPE_PASSWORD = "password";
-        private final static String GRNAT_TYPE_REFRESH_TOKEN = "refresh_token";
+    private final static String GRNAT_TYPE_PASSWORD = "password";
+    private final static String GRNAT_TYPE_REFRESH_TOKEN = "refresh_token";
 
-        private static final Logger logger = Logger.getLogger(TokenController.class.getCanonicalName());
+    private static final Logger logger = Logger.getLogger(TokenController.class.getCanonicalName());
 
-        @Autowired
-        PasswordEncoder passwordEncoder;
+    @Autowired
+    PasswordEncoder passwordEncoder;
 
-        @Autowired
-        TokenService tokenService;
+    @Autowired
+    TokenService tokenService;
 
-        @Autowired
-        UserService userService;
+    @Autowired
+    UserService userService;
 
-        @RequestMapping(method = RequestMethod.POST)
-        @ResponseStatus(HttpStatus.CREATED)
-        @ResponseBody
-        public TokenDTO newToken(@Valid @RequestBody UserCredentialsDTO credentials) throws MyHoardException {
+    @RequestMapping(method = RequestMethod.POST)
+    @ResponseStatus(HttpStatus.CREATED)
+    @ResponseBody
+    public TokenDTO newToken(@Valid @RequestBody UserCredentialsDTO credentials) throws MyHoardException {
 
-                TokenDTO tokenDTO = new TokenDTO();
+        TokenDTO tokenDTO = new TokenDTO();
 
-                switch (credentials.getGrantType()) {
-                        case GRNAT_TYPE_PASSWORD:
-                                tokenDTO = createToken(credentials);
-                                break;
-                        case GRNAT_TYPE_REFRESH_TOKEN:
-                                tokenDTO = refreshToken(credentials);
-                                break;
-                        default:
-                                throw new AuthorizationException(Constants.ERROR_CODE_AUTH_BAD_CREDENTIALS);
-                }
-
-                return tokenDTO;
+        switch (credentials.getGrantType()) {
+            case GRNAT_TYPE_PASSWORD:
+                tokenDTO = createToken(credentials);
+                break;
+            case GRNAT_TYPE_REFRESH_TOKEN:
+                tokenDTO = refreshToken(credentials);
+                break;
+            default:
+                throw new AuthorizationException(Constants.ERROR_CODE_AUTH_BAD_CREDENTIALS);
         }
 
-        private TokenDTO createToken(UserCredentialsDTO credentials) throws MyHoardException {
-                TokenDTO tokenDTO = new TokenDTO();
-                UserDTO userDTO = userService.getUserByEmail(credentials.getUsername());
+        return tokenDTO;
+    }
 
-                if (userDTO != null && !passwordEncoder.matches(credentials.getPassword(), userDTO.getPassword())) {
-                        logger.info(String.format("Incorrect password for user: %s", userDTO.getEmail()));
-                        throw new AuthorizationException(Constants.ERROR_CODE_AUTH_BAD_CREDENTIALS);
-                }
+    private TokenDTO createToken(UserCredentialsDTO credentials) throws MyHoardException {
+        TokenDTO tokenDTO = new TokenDTO();
+        UserDTO userDTO = userService.getUserByEmail(credentials.getUsername());
 
-                tokenDTO.setAccessToken(UUID.randomUUID().toString());
-                tokenDTO.setExpiresIn(Constants.TOKEN_KEEP_ALIVE_TIME);
-                tokenDTO.setRefreshToken(UUID.randomUUID().toString());
-                tokenDTO.setEmail(credentials.getUsername());
-                
-                tokenService.create(tokenDTO);
-
-                return tokenDTO;
+        if (userDTO != null && !passwordEncoder.matches(credentials.getPassword(), userDTO.getPassword())) {
+            logger.info(String.format("Incorrect password for user: %s", userDTO.getEmail()));
+            throw new AuthorizationException(Constants.ERROR_CODE_AUTH_BAD_CREDENTIALS);
         }
 
-        private TokenDTO refreshToken(UserCredentialsDTO credentials) throws MyHoardException {
-                TokenDTO tokenDTO = tokenService.getByRefreshToken(credentials.getRefreshToken());
+        tokenDTO.setAccessToken(UUID.randomUUID().toString());
+        tokenDTO.setExpiresIn(Constants.TOKEN_KEEP_ALIVE_TIME);
+        tokenDTO.setRefreshToken(UUID.randomUUID().toString());
+        tokenDTO.setEmail(credentials.getUsername());
 
-                if (tokenDTO == null || !tokenDTO.getUser().getEmail().equals(credentials.getUsername())) {
-                        logger.info(String.format("Incorrect refresh token for user: %s", credentials.getUsername()));
-                        throw new AuthorizationException(Constants.ERROR_CODE_AUTH_TOKEN_INVALID);
-                }
+        tokenService.create(tokenDTO);
 
-                tokenDTO.setAccessToken(UUID.randomUUID().toString());
-                tokenDTO.setExpiresIn(Constants.TOKEN_KEEP_ALIVE_TIME);
-                tokenDTO.setRefreshToken(UUID.randomUUID().toString());
-                
-                tokenService.update(tokenDTO);
+        return tokenDTO;
+    }
 
-                return tokenDTO;
+    private TokenDTO refreshToken(UserCredentialsDTO credentials) throws MyHoardException {
+        TokenDTO tokenDTO = tokenService.getByRefreshToken(credentials.getRefreshToken());
+
+        if (tokenDTO == null || !tokenDTO.getUser().getEmail().equals(credentials.getUsername())) {
+            logger.info(String.format("Incorrect refresh token for user: %s", credentials.getUsername()));
+            throw new AuthorizationException(Constants.ERROR_CODE_AUTH_TOKEN_INVALID);
         }
+
+        tokenDTO.setAccessToken(UUID.randomUUID().toString());
+        tokenDTO.setExpiresIn(Constants.TOKEN_KEEP_ALIVE_TIME);
+        tokenDTO.setRefreshToken(UUID.randomUUID().toString());
+
+        tokenService.update(tokenDTO);
+
+        return tokenDTO;
+    }
 }

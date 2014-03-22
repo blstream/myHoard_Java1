@@ -26,10 +26,10 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 @RequestMapping("/collections")
 public class CollectionController {
 
-	private static final Logger logger = Logger.getLogger(CollectionController.class.getCanonicalName());
+    private static final Logger logger = Logger.getLogger(CollectionController.class.getCanonicalName());
 
-	@Autowired
-	CollectionService collectionService;
+    @Autowired
+    CollectionService collectionService;
 
     @RequestMapping(method = RequestMethod.POST)
     @ResponseBody
@@ -41,103 +41,102 @@ public class CollectionController {
         return collectionService.create(collection);
     }
 
-	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
-	@ResponseStatus(HttpStatus.OK)
-	@ResponseBody
-	public CollectionDTO getCollection(@PathVariable("id") String idStr) {
-		try {
-			int id = Integer.parseInt(idStr);
-			return collectionService.get(id);
-		} catch (Exception e) {
-			logger.error(e.getMessage(), e);
-			throw new MyHoardRestException(ErrorCodeEnum.READ.getValue());
-		}
-	}
+    @RequestMapping(value = "/{id}", method = RequestMethod.GET)
+    @ResponseStatus(HttpStatus.OK)
+    @ResponseBody
+    public CollectionDTO getCollection(@PathVariable("id") String idStr) {
+        try {
+            int id = Integer.parseInt(idStr);
+            return collectionService.get(id);
+        } catch (Exception e) {
+            logger.error(e.getMessage(), e);
+            throw new MyHoardRestException(ErrorCodeEnum.READ.getValue());
+        }
+    }
 
-	@RequestMapping(method = RequestMethod.GET)
-	@ResponseStatus(HttpStatus.OK)
-	@ResponseBody
-	public List<CollectionDTO> getCollections(
-			@RequestParam(value = "sort_by", required = false) List<String> sortBy,
-			@RequestParam(value = "sort_direction", required = false) String sortDirection) {
+    @RequestMapping(method = RequestMethod.GET)
+    @ResponseStatus(HttpStatus.OK)
+    @ResponseBody
+    public List<CollectionDTO> getCollections(
+            @RequestParam(value = "sort_by", required = false) List<String> sortBy,
+            @RequestParam(value = "sort_direction", required = false) String sortDirection) {
 
-		if (sortBy != null || sortDirection != null) {
-			if (sortBy == null || sortDirection == null) {
-				throw new MyHoardRestException(400);
-			} else {
+        if (sortBy != null || sortDirection != null) {
+            if (sortBy == null || sortDirection == null) {
+                throw new MyHoardRestException(400);
+            } else {
 
-				String[] availableFields = { "name", "description",
-						"created_date", "modified_date", "owner" };
-				String[] availableDirection = { "asc", "desc" };
+                String[] availableFields = {"name", "description",
+                    "created_date", "modified_date", "owner"};
+                String[] availableDirection = {"asc", "desc"};
 
-				for (String sortByElem : sortBy) {
-					boolean everythingOk = false;
-					for (String available : availableFields) {
-						if (sortByElem.equals(available)) {
-							everythingOk = true;
-							break;
-						}
-					}
-					if (!everythingOk) {
-						throw new MyHoardRestException(1000);
-					}
-					everythingOk = false;
-				}
+                for (String sortByElem : sortBy) {
+                    boolean everythingOk = false;
+                    for (String available : availableFields) {
+                        if (sortByElem.equals(available)) {
+                            everythingOk = true;
+                            break;
+                        }
+                    }
+                    if (!everythingOk) {
+                        throw new MyHoardRestException(1000);
+                    }
+                    everythingOk = false;
+                }
 
-				if (!sortDirection.equals(availableDirection[0])
-						&& !sortDirection.equals(availableDirection[1])) {
-					throw new MyHoardRestException(1000);
-				}
+                if (!sortDirection.equals(availableDirection[0])
+                        && !sortDirection.equals(availableDirection[1])) {
+                    throw new MyHoardRestException(1000);
+                }
 
-				for (int i = 0; i < sortBy.size(); i++) {
-					if (sortBy.get(i).equals("modified_date")) {
-						sortBy.set(i, "modifiedDate");
-					} else if (sortBy.get(i).equals("created_date")) {
-						sortBy.set(i, "createdDate");
-					}
-				}
+                for (int i = 0; i < sortBy.size(); i++) {
+                    if (sortBy.get(i).equals("modified_date")) {
+                        sortBy.set(i, "modifiedDate");
+                    } else if (sortBy.get(i).equals("created_date")) {
+                        sortBy.set(i, "createdDate");
+                    }
+                }
 
-				try {
-					return collectionService.getList(sortBy, sortDirection); // TODO Matuesz - owner
-				} catch (MyHoardException e) {
+                try {
+                    return collectionService.getList(sortBy, sortDirection); // TODO Matuesz - owner
+                } catch (MyHoardException e) {
                     logger.error("getList error", e);
-				}
-			}
-		}
+                }
+            }
+        }
 
-		try {
-			return collectionService.getList();
-		} catch (Exception e) {
-			logger.error(e.getMessage(), e);
-			throw new MyHoardRestException(ErrorCodeEnum.READ.getValue());
-		}
-	}
+        try {
+            return collectionService.getList();
+        } catch (Exception e) {
+            logger.error(e.getMessage(), e);
+            throw new MyHoardRestException(ErrorCodeEnum.READ.getValue());
+        }
+    }
 
-	@RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
-	@ResponseStatus(HttpStatus.NO_CONTENT)
-	@ResponseBody
-	public void deleteCollection(@PathVariable("id") String idStr) {
-		try {
-			int id = Integer.parseInt(idStr);
-			collectionService.remove(id);
-		} catch (Exception ex) {
-			logger.error(ex.getMessage(), ex);
-			throw new MyHoardRestException(ErrorCodeEnum.DELETE.getValue());
-		}
-	}
+    @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    @ResponseBody
+    public void deleteCollection(@PathVariable("id") String idStr) {
+        try {
+            int id = Integer.parseInt(idStr);
+            collectionService.remove(id);
+        } catch (Exception ex) {
+            logger.error(ex.getMessage(), ex);
+            throw new MyHoardRestException(ErrorCodeEnum.DELETE.getValue());
+        }
+    }
 
-	@RequestMapping(value = "/{id}", method = RequestMethod.PUT)
-	@ResponseStatus(HttpStatus.OK)
-	@ResponseBody
-	public CollectionDTO updateCollection(@PathVariable("id") String idStr,
-			@Valid @RequestBody CollectionDTO collection) {
-		try {
-			Integer.parseInt(idStr);
-			collection.setId(idStr);
-			return collectionService.update(collection);
-		} catch (Exception ex) {
-			logger.error(ex.getMessage(), ex);
-			throw new MyHoardRestException(ErrorCodeEnum.UPDATE.getValue());
-		}
-	}
+    @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
+    @ResponseStatus(HttpStatus.OK)
+    @ResponseBody
+    public CollectionDTO updateCollection(@PathVariable("id") String idStr, @Valid @RequestBody CollectionDTO collection) {
+        try {
+            Integer.parseInt(idStr);
+            collection.setId(idStr);
+            return collectionService.update(collection);
+        } catch (Exception ex) {
+            logger.error(ex.getMessage(), ex);
+            throw new MyHoardRestException(ErrorCodeEnum.UPDATE.getValue());
+        }
+    }
 }

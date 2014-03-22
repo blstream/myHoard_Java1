@@ -15,45 +15,45 @@ import org.springframework.web.servlet.ModelAndView;
 
 public class MyHoardInterceptor implements HandlerInterceptor {
 
-        private static final Logger logger = Logger.getLogger(MyHoardInterceptor.class.getCanonicalName());
+    private static final Logger logger = Logger.getLogger(MyHoardInterceptor.class.getCanonicalName());
 
-        @Autowired
-        UserService userService;
+    @Autowired
+    UserService userService;
 
-        @Autowired
-        TokenService tokenService;
+    @Autowired
+    TokenService tokenService;
 
-        @Override
-        public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
-                logger.info("MyHoardInterceptor - preHandle");
+    @Override
+    public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
+        logger.info("MyHoardInterceptor - preHandle");
 
-                final String AccessToken = request.getHeader("Authorization");
+        final String AccessToken = request.getHeader("Authorization");
 
-                if (AccessToken == null) {
-                        logger.error("AccessToken is null");
-                        throw new AuthorizationException(Constants.ERROR_CODE_AUTH_TOKEN_INVALID);
-                }
-
-                TokenDTO tokenDTO = tokenService.getByAccessToken(AccessToken);
-
-                request.setAttribute(USER, tokenDTO.getUser());
-
-                // TODO RT remove
-                logger.info(String.format("\nAccess Token: %s\nToken ID: %s\nUser ID: %s\nUser email: %s",
-                        AccessToken, tokenDTO.getId(), tokenDTO.getUser().getId(), tokenDTO.getUser().getEmail()));
-                return true;
+        if (AccessToken == null) {
+            logger.error("AccessToken is null");
+            throw new AuthorizationException(Constants.ERROR_CODE_AUTH_TOKEN_INVALID);
         }
 
-        @Override
-        public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler, ModelAndView modelAndView) throws Exception {
+        TokenDTO tokenDTO = tokenService.getByAccessToken(AccessToken);
 
-                logger.info("MyHoardInterceptor - postHandle");
-        }
+        request.setAttribute(USER, tokenDTO.getUser());
 
-        @Override
-        public void afterCompletion(HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex) throws Exception {
+        // TODO RT remove
+        logger.info(String.format("\nAccess Token: %s\nToken ID: %s\nUser ID: %s\nUser email: %s",
+                AccessToken, tokenDTO.getId(), tokenDTO.getUser().getId(), tokenDTO.getUser().getEmail()));
+        return true;
+    }
 
-                logger.info("MyHoardInterceptor - afterCompletion");
-        }
+    @Override
+    public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler, ModelAndView modelAndView) throws Exception {
+
+        logger.info("MyHoardInterceptor - postHandle");
+    }
+
+    @Override
+    public void afterCompletion(HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex) throws Exception {
+
+        logger.info("MyHoardInterceptor - afterCompletion");
+    }
 
 }

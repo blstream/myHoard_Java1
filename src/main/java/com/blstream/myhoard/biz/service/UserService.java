@@ -16,56 +16,56 @@ import org.springframework.stereotype.Service;
 // TODO RT implement
 @Service("userService")
 public class UserService {
-        
-        private static final Logger logger = Logger.getLogger(UserService.class.getCanonicalName());
-        
-        @Autowired
-        PasswordEncoder passwordEncoder;
 
-        @Autowired
-        private UserDAO userDAO;
+    private static final Logger logger = Logger.getLogger(UserService.class.getCanonicalName());
 
-        // TODO RT implement
-        public List<UserDTO> getList() throws MyHoardException {
-                throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    @Autowired
+    PasswordEncoder passwordEncoder;
+
+    @Autowired
+    private UserDAO userDAO;
+
+    // TODO RT implement
+    public List<UserDTO> getList() throws MyHoardException {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    // TODO RT implement
+    public UserDTO get(int i) throws MyHoardException {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    public UserDTO getUserByEmail(String email) throws MyHoardException {
+        UserDS userDS = userDAO.getByEmail(email);
+        if (userDS == null) {
+            throw new NotFoundException("User not found");
+        }
+        return UserMapper.map(userDS);
+    }
+
+    public UserDTO create(UserDTO userDTO) throws MyHoardException {
+        if (userDAO.getByEmail(userDTO.getEmail()) != null) {
+            throw new ResourceAlreadyExistException(String.format("User with email: %s already exist", userDTO.getEmail()));
         }
 
-        // TODO RT implement
-        public UserDTO get(int i) throws MyHoardException {
-                throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-        }
+        // hashing user password
+        String hashedPassword = passwordEncoder.encode(userDTO.getPassword());
+        userDTO.setPassword(hashedPassword);
 
-        public UserDTO getUserByEmail(String email) throws MyHoardException {
-                UserDS userDS = userDAO.getByEmail(email);
-                if (userDS == null) {
-                        throw new NotFoundException("User not found");
-                }
-                return UserMapper.map(userDS);
-        }
+        userDAO.create(UserMapper.map(userDTO));
 
-        public UserDTO create(UserDTO userDTO) throws MyHoardException {
-                if (userDAO.getByEmail(userDTO.getEmail()) != null) {
-                        throw new ResourceAlreadyExistException(String.format("User with email: %s already exist", userDTO.getEmail()));
-                }
-                
-                // hashing user password
-                String hashedPassword = passwordEncoder.encode(userDTO.getPassword());
-                userDTO.setPassword(hashedPassword);
-                
-                userDAO.create(UserMapper.map(userDTO));
+        userDTO.setPassword(null); // set password to null because is not should be returned to the controller
+        return userDTO;
+    }
 
-                userDTO.setPassword(null); // set password to null because is not should be returned to the controller
-                return userDTO;
-        }
+    // TODO RT implement
+    public UserDTO update(UserDTO t) throws MyHoardException {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
 
-        // TODO RT implement
-        public UserDTO update(UserDTO t) throws MyHoardException {
-                throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-        }
-
-        // TODO RT implement
-        public void remove(int i) throws MyHoardException {
-                throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-        }
+    // TODO RT implement
+    public void remove(int i) throws MyHoardException {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
 
 }
