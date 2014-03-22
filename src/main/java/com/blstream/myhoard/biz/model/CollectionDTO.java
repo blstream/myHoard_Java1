@@ -11,10 +11,10 @@ import org.hibernate.validator.constraints.NotEmpty;
 public class CollectionDTO {
 
 	private String id = "0";
-        @NotEmpty
-        @Length(min = 2, max = 50)
+	@NotEmpty
+	@Length(min = 2, max = 50)
 	private String name;
-        @Length(max = 250)
+	@Length(max = 250)
 	private String description;
 	List<String> tags;
 	@JsonProperty("items_number")

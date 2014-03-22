@@ -1,7 +1,7 @@
 <%@page import="java.text.SimpleDateFormat"%>
 <%@page import="java.util.Date"%>
 <%@page import="java.util.List"%>
-<%@page import="com.blstream.myhoard.db.dao.CollectionDAO"%>
+<%@page import="com.blstream.myhoard.db.dao.CollectionDAOImpl"%>
 <%@page import="com.blstream.myhoard.db.model.CollectionDS"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>

@@ -110,14 +110,18 @@ public class ItemDS {
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + ((collection == null) ? 0 : collection.hashCode());
-		result = prime * result + ((createdDate == null) ? 0 : createdDate.hashCode());
-		result = prime * result + ((description == null) ? 0 : description.hashCode());
+		result = prime * result
+				+ ((collection == null) ? 0 : collection.hashCode());
+		result = prime * result
+				+ ((createdDate == null) ? 0 : createdDate.hashCode());
+		result = prime * result
+				+ ((description == null) ? 0 : description.hashCode());
 		result = prime * result + id;
 		result = prime * result + ((lat == null) ? 0 : lat.hashCode());
 		result = prime * result + ((lng == null) ? 0 : lng.hashCode());
 		result = prime * result + ((media == null) ? 0 : media.hashCode());
-		result = prime * result + ((modifiedDate == null) ? 0 : modifiedDate.hashCode());
+		result = prime * result
+				+ ((modifiedDate == null) ? 0 : modifiedDate.hashCode());
 		result = prime * result + ((name == null) ? 0 : name.hashCode());
 		result = prime * result + ((owner == null) ? 0 : owner.hashCode());
 		result = prime * result + quantity;
@@ -184,5 +188,5 @@ public class ItemDS {
 			return false;
 		return true;
 	}
-	
+
 }

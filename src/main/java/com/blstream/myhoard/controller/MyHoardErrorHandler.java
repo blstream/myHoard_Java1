@@ -21,107 +21,118 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 @ControllerAdvice
 public class MyHoardErrorHandler {
 
-        private final static String ERROR_REASON_NOT_FOUND = "Resource Not Found";
-        private final static String ERROR_REASON_INCORRECT = "Incorrect Data";
-        private final static String ERROR_REASON_ALREADY_EXIST = "Resource Already Exist";
+    private final static String ERROR_REASON_NOT_FOUND = "Resource Not Found";
+    private final static String ERROR_REASON_INCORRECT = "Incorrect Data";
+    private final static String ERROR_REASON_ALREADY_EXIST = "Resource Already Exist";
 
-        private static final Logger logger = Logger.getLogger(MyHoardErrorHandler.class.getCanonicalName());
+    private static final Logger logger = Logger.getLogger(MyHoardErrorHandler.class.getCanonicalName());
 
-        @ExceptionHandler(MyHoardRestException.class)
-        @ResponseStatus(HttpStatus.BAD_REQUEST)
-        @ResponseBody
-        public ErrorCode handleCollectionException(MyHoardRestException ex) {
-                logger.error("handleCollectionException", ex);
-                return new ErrorCode(ex.getCode());
+    @ExceptionHandler(MyHoardRestException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ResponseBody
+    public ErrorCode handleCollectionException(MyHoardRestException ex) {
+        logger.error("handleCollectionException", ex);
+
+        switch (ex.getCode()) {
+            case 1000:
+                return new ErrorCode(400, "Very bad request parameters!");
+            case 1001:
+                return new ErrorCode(400,
+                        "Http Media Size Not Acceptable. Max size 10MB!");
+            case 1002:
+                return new ErrorCode(400, "Http Media Type Not Acceptable");
+            default:
+                return new ErrorCode(ex.getCode(), "Very bad request!");
         }
+    }
 
-        // tymczasowe
-        @ExceptionHandler(org.hibernate.PropertyValueException.class)
-        @ResponseStatus(HttpStatus.BAD_REQUEST)
-        @ResponseBody
-        public ErrorCode handleCollectionExceptionA(org.hibernate.PropertyValueException ex) {
-                logger.error("handleCollectionExceptionA", ex);
+    // tymczasowe
+    @ExceptionHandler(org.hibernate.PropertyValueException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ResponseBody
+    public ErrorCode handleCollectionExceptionA(org.hibernate.PropertyValueException ex) {
+        logger.error("handleCollectionExceptionA", ex);
+        return new ErrorCode(111);
+    }
+
+    @ExceptionHandler
+    @ResponseBody
+    @ResponseStatus(value = HttpStatus.BAD_REQUEST)
+    public ErrorCode handleException(Exception exception, HttpServletRequest request) {
+        String method = request.getMethod();
+        logger.error("handleException", exception);
+
+        switch (method) {
+            case "POST":
+                logger.info("ErrorCode 400");
+                return new ErrorCode(400);
+            case "PUT":
+                logger.info("ErrorCode 111");
                 return new ErrorCode(111);
+            default:
+                logger.info("ErrorCode default");
+                return new ErrorCode(0);
+        }
+    }
+
+    @ExceptionHandler
+    @ResponseStatus(value = HttpStatus.NOT_FOUND)
+    @ResponseBody
+    public ErrorCode handleException(NotFoundException e) {
+        logger.error("handleException 404 " + e.getMessage(), e);
+
+        if (e.getMessage() != null) {
+            return new ErrorCode(404, e.getMessage());
+        }
+        return new ErrorCode(404, ERROR_REASON_NOT_FOUND);
+    }
+
+    @ExceptionHandler
+    @ResponseStatus(value = HttpStatus.CONFLICT)
+    @ResponseBody
+    public ErrorCode handleException(ResourceAlreadyExistException e) {
+        logger.error("handleException 409 " + e.getMessage(), e);
+
+        if (e.getMessage() != null) {
+            return new ErrorCode(409, e.getMessage());
+        }
+        return new ErrorCode(409, ERROR_REASON_ALREADY_EXIST);
+    }
+
+    @ExceptionHandler
+    @ResponseStatus(value = HttpStatus.BAD_REQUEST)
+    @ResponseBody
+    public ErrorCode handleException(HttpRequestMethodNotSupportedException e) {
+        logger.error("handleException 400", e);
+
+        return new ErrorCode(400, e.getMessage());
+    }
+
+    @ExceptionHandler
+    @ResponseStatus(value = HttpStatus.BAD_REQUEST)
+    @ResponseBody
+    public ErrorCode handleException(HttpMessageNotReadableException e) {
+        logger.error("handleException 400", e);
+
+        return new ErrorCode(400, String.format("%s", ERROR_REASON_INCORRECT));
+    }
+
+    // DTO objects validation
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ResponseBody
+    public ErrorCode processValidationError(MethodArgumentNotValidException e) {
+        logger.error("Validation Error", e);
+
+        BindingResult result = e.getBindingResult();
+        List<FieldError> fieldErrors = result.getFieldErrors();
+
+        StringBuilder sb = new StringBuilder();
+        for (FieldError fieldError : fieldErrors) {
+            sb.append(String.format("%s: %s; ", fieldError.getField(), fieldError.getDefaultMessage()));
         }
 
-        @ExceptionHandler
-        @ResponseBody
-        @ResponseStatus(value = HttpStatus.BAD_REQUEST)
-        public ErrorCode handleException(Exception exception, HttpServletRequest request) {
-                String method = request.getMethod();
-                logger.error("handleException", exception);
-
-                switch (method) {
-                        case "POST":
-                                logger.info("ErrorCode 400");
-                                return new ErrorCode(400);
-                        case "PUT":
-                                logger.info("ErrorCode 111");
-                                return new ErrorCode(111);
-                        default:
-                                logger.info("ErrorCode default");
-                                return new ErrorCode(0);
-                }
-        }
-
-        @ExceptionHandler
-        @ResponseStatus(value = HttpStatus.NOT_FOUND)
-        @ResponseBody
-        public ErrorCode handleException(NotFoundException e) {
-                logger.error("handleException 404 " + e.getMessage(), e);
-
-                if (e.getMessage() != null) {
-                        return new ErrorCode(404, e.getMessage());
-                }
-                return new ErrorCode(404, ERROR_REASON_NOT_FOUND);
-        }
-        
-        @ExceptionHandler
-        @ResponseStatus(value = HttpStatus.CONFLICT)
-        @ResponseBody
-        public ErrorCode handleException(ResourceAlreadyExistException e) {
-                logger.error("handleException 409 " + e.getMessage(), e);
-
-                if (e.getMessage() != null) {
-                        return new ErrorCode(409, e.getMessage());
-                }
-                return new ErrorCode(409, ERROR_REASON_ALREADY_EXIST);
-        }
-
-        @ExceptionHandler
-        @ResponseStatus(value = HttpStatus.BAD_REQUEST)
-        @ResponseBody
-        public ErrorCode handleException(HttpRequestMethodNotSupportedException e) {
-                logger.error("handleException 400", e);
-
-                return new ErrorCode(400, e.getMessage());
-        }
-
-        @ExceptionHandler
-        @ResponseStatus(value = HttpStatus.BAD_REQUEST)
-        @ResponseBody
-        public ErrorCode handleException(HttpMessageNotReadableException e) {
-                logger.error("handleException 400", e);
-
-                return new ErrorCode(400, String.format("%s", ERROR_REASON_INCORRECT));
-        }
-
-        // DTO objects validation
-        @ExceptionHandler(MethodArgumentNotValidException.class)
-        @ResponseStatus(HttpStatus.BAD_REQUEST)
-        @ResponseBody
-        public ErrorCode processValidationError(MethodArgumentNotValidException e) {
-                logger.error("Validation Error", e);
-
-                BindingResult result = e.getBindingResult();
-                List<FieldError> fieldErrors = result.getFieldErrors();
-
-                StringBuilder sb = new StringBuilder();
-                for (FieldError fieldError : fieldErrors) {
-                        sb.append(String.format("%s: %s; ", fieldError.getField(), fieldError.getDefaultMessage()));
-                }
-
-                return new ErrorCode(400, sb.toString());
-        }
+        return new ErrorCode(400, sb.toString());
+    }
 
 }
