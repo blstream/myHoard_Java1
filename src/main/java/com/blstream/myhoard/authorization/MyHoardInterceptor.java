@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -30,7 +31,7 @@ public class MyHoardInterceptor implements HandlerInterceptor {
         if (isAllowed(request)) {
             return true;
         }
-
+        
         final String AccessToken = request.getHeader("Authorization");
 
         if (AccessToken == null) {
@@ -39,8 +40,10 @@ public class MyHoardInterceptor implements HandlerInterceptor {
         }
 
         TokenDTO tokenDTO = tokenService.getByAccessToken(AccessToken);
-
+        
         request.setAttribute(USER, tokenDTO.getUser());
+        
+        SecurityContextHolder.getContext().setAuthentication(new UserAuthentication(tokenDTO.getUser()));
 
         // TODO RT remove
         logger.info(String.format("\nAccess Token: %s\nToken ID: %s\nUser ID: %s\nUser email: %s",

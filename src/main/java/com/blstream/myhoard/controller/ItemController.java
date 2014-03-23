@@ -46,7 +46,7 @@ public class ItemController {
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
     public List<ItemDTO> getItems(@ModelAttribute(USER) UserDTO userDTO) throws MyHoardException {
-
+        
         return itemService.getListByUser(userDTO);
     }
 
