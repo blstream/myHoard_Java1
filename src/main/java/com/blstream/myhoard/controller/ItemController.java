@@ -3,20 +3,13 @@ package com.blstream.myhoard.controller;
 import com.blstream.myhoard.biz.model.ItemDTO;
 import com.blstream.myhoard.biz.model.UserDTO;
 import com.blstream.myhoard.biz.service.ItemService;
-
 import static com.blstream.myhoard.constants.Constants.USER;
-
-import com.blstream.myhoard.exception.ErrorCodeEnum;
 import com.blstream.myhoard.exception.ForbiddenException;
 import com.blstream.myhoard.exception.MyHoardException;
-import com.blstream.myhoard.exception.MyHoardRestException;
 import com.blstream.myhoard.exception.NotFoundException;
-
 import java.util.List;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
-
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -114,8 +107,9 @@ public class ItemController {
     @ResponseBody
     public ItemDTO updateItem(@ModelAttribute(USER) UserDTO userDTO, @PathVariable("itemId") String id,
             @Valid @RequestBody ItemDTO itemDTO) throws MyHoardException {
+        ItemDTO srcItemDTO;
         try {
-            itemService.get(Integer.parseInt(id));
+            srcItemDTO = itemService.get(Integer.parseInt(id));
             itemDTO.setId(id);
         } catch (NumberFormatException e) {
             logger.error(UPDATE_ITEM, e);
@@ -125,7 +119,7 @@ public class ItemController {
             throw new NotFoundException(String.format(ITEM_NOT_EXIST, id));
         }
 
-        if (!userDTO.getId().equals(itemDTO.getOwner().getId())) {
+        if (!userDTO.getId().equals(srcItemDTO.getOwner().getId())) {
             throw new ForbiddenException();
         }
 
