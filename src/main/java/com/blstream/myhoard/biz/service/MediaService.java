@@ -18,8 +18,8 @@ import org.springframework.stereotype.Service;
 @Service("mediaService")
 public class MediaService extends ResourceService<MediaDTO> {
 
-    private static final Logger logger = Logger.getLogger(MediaService.class
-            .getCanonicalName());
+    private static final Logger logger =
+            Logger.getLogger(MediaService.class.getCanonicalName());
 
     @Autowired
     @Qualifier("mediaDAO")
@@ -31,7 +31,6 @@ public class MediaService extends ResourceService<MediaDTO> {
 
     @Override
     public List<MediaDTO> getList() throws MyHoardException {
-
         List<MediaDS> mediaDSs = mediaDao.getList();
         if (mediaDSs == null) {
             logger.info("Media Service list is null");
@@ -43,7 +42,6 @@ public class MediaService extends ResourceService<MediaDTO> {
 
     @Override
     public MediaDTO get(int id) throws MyHoardException {
-
         MediaDS mediaDS = mediaDao.get(id);
 
         if (mediaDS == null) {
@@ -59,15 +57,9 @@ public class MediaService extends ResourceService<MediaDTO> {
 
     @Override
     public MediaDTO create(MediaDTO mediaDTO) throws MyHoardException {
-
         Date date = new java.util.Date();
-
         mediaDTO.setCreatedDate(new Timestamp(date.getTime()));
-
         MediaDS mediaDS = MediaMapper.map(mediaDTO);
-
-        // pozniej poprawie
-        mediaDS.setItemDS(itemDao.get(1));
 
         mediaDao.create(mediaDS);
 
@@ -80,27 +72,26 @@ public class MediaService extends ResourceService<MediaDTO> {
     public MediaDTO update(MediaDTO mediaDTO) throws MyHoardException {
 
         MediaDS mediaDS = MediaMapper.map(mediaDTO);
-        MediaDS mediaDSBaza = mediaDao.get(mediaDS.getId());
+        MediaDS sourceMediaDS = mediaDao.get(mediaDS.getId());
 
-        if (mediaDSBaza == null) {
+        if (sourceMediaDS == null) {
             logger.error("mediaDSBaza == null");
             throw new MyHoardException();
         }
 
-        mediaDSBaza.setFile(mediaDS.getFile());
-        mediaDSBaza.setItemDS(mediaDS.getItemDS());
-        mediaDSBaza.setThumbnail(mediaDTO.getThumbnail());
+        sourceMediaDS.setFile(mediaDS.getFile());
+        sourceMediaDS.setItemDS(mediaDS.getItemDS());
+        sourceMediaDS.setThumbnail(mediaDTO.getThumbnail());
 
-        mediaDao.update(mediaDSBaza);
+        mediaDao.update(sourceMediaDS);
 
-        MediaDTO mediaDTOBaza = MediaMapper.map(mediaDSBaza);
+        MediaDTO mediaDTOBaza = MediaMapper.map(sourceMediaDS);
 
         return mediaDTOBaza;
     }
 
     @Override
     public void remove(int id) throws MyHoardException {
-
         MediaDS mediaDS = mediaDao.get(id);
 
         if (mediaDS == null) {

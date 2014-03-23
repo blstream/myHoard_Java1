@@ -14,6 +14,7 @@ import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -31,20 +32,24 @@ public class CollectionController {
     @Autowired
     CollectionService collectionService;
 
+    @ModelAttribute(USER)
+    public UserDTO getUser(HttpServletRequest request) {
+        return (UserDTO) request.getAttribute(USER);
+    }
+
     @RequestMapping(method = RequestMethod.POST)
     @ResponseBody
     @ResponseStatus(HttpStatus.CREATED)
-    public CollectionDTO addCollection(HttpServletRequest request, @Valid @RequestBody CollectionDTO collection) throws MyHoardException {
-        UserDTO userDTO = (UserDTO) request.getAttribute(USER);
+    public CollectionDTO addCollection(@ModelAttribute(USER) UserDTO userDTO, @Valid @RequestBody CollectionDTO collection) throws MyHoardException {
         collection.setOwner(userDTO);
 
         return collectionService.create(collection);
     }
 
-    @RequestMapping(value = "/{id}", method = RequestMethod.GET)
+    @RequestMapping(value = "/{collectionId}", method = RequestMethod.GET)
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
-    public CollectionDTO getCollection(@PathVariable("id") String idStr) {
+    public CollectionDTO getCollection(@PathVariable("collectionId") String idStr) {
         try {
             int id = Integer.parseInt(idStr);
             return collectionService.get(id);
@@ -113,10 +118,10 @@ public class CollectionController {
         }
     }
 
-    @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
+    @RequestMapping(value = "/{collectionId}", method = RequestMethod.DELETE)
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @ResponseBody
-    public void deleteCollection(@PathVariable("id") String idStr) {
+    public void deleteCollection(@PathVariable("collectionId") String idStr) {
         try {
             int id = Integer.parseInt(idStr);
             collectionService.remove(id);
@@ -126,10 +131,10 @@ public class CollectionController {
         }
     }
 
-    @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
+    @RequestMapping(value = "/{collectionId}", method = RequestMethod.PUT)
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
-    public CollectionDTO updateCollection(@PathVariable("id") String idStr, @Valid @RequestBody CollectionDTO collection) {
+    public CollectionDTO updateCollection(@PathVariable("collectionId") String idStr, @Valid @RequestBody CollectionDTO collection) {
         try {
             Integer.parseInt(idStr);
             collection.setId(idStr);

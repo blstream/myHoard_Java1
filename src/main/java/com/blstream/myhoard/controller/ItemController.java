@@ -14,6 +14,7 @@ import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -36,31 +37,35 @@ public class ItemController {
     @Autowired
     IResourceService<ItemDTO> itemService;
 
+    @ModelAttribute(USER)
+    public UserDTO getUser(HttpServletRequest request) {
+        return (UserDTO) request.getAttribute(USER);
+    }
+
     @RequestMapping(method = RequestMethod.GET)
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
-    public List<ItemDTO> getItems() throws MyHoardException {
+    public List<ItemDTO> getItems(@ModelAttribute(USER) UserDTO userDTO) throws MyHoardException {
 
-        return itemService.getList();
+        return itemService.getList(); // TODO user items only
     }
 
     @RequestMapping(method = RequestMethod.POST)
     @ResponseStatus(HttpStatus.CREATED)
     @ResponseBody
-    public ItemDTO addItem(HttpServletRequest request, @Valid @RequestBody ItemDTO item) throws MyHoardException {
-        UserDTO userDTO = (UserDTO) request.getAttribute(USER);
+    public ItemDTO addItem(@ModelAttribute(USER) UserDTO userDTO, @Valid @RequestBody ItemDTO item) throws MyHoardException {
         item.setOwner(userDTO);
 
         return itemService.create(item);
     }
 
-    @RequestMapping(value = "/{id}", method = RequestMethod.GET)
+    @RequestMapping(value = "/{itemId}", method = RequestMethod.GET)
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
-    public ItemDTO getItem(@PathVariable("id") String id) {
+    public ItemDTO getItem(@ModelAttribute(USER) UserDTO userDTO, @PathVariable("itemId") String id) {
+        ItemDTO itemDTO;
         try {
-            ItemDTO itemDTO = itemService.get(Integer.parseInt(id));
-            return itemDTO;
+            itemDTO = itemService.get(Integer.parseInt(id));
         } catch (NumberFormatException e) {
             logger.error(GET_ITEM, e);
             throw new NotFoundException(String.format(ITEM_NOT_EXIST_INVALID_ID, id));
@@ -68,14 +73,22 @@ public class ItemController {
             logger.error(GET_ITEM, mhe);
             throw new NotFoundException(String.format(ITEM_NOT_EXIST, id));
         }
+
+        if (!userDTO.getId().equals(itemDTO.getOwner().getId())) {
+            throw new ForbiddenException();
+        }
+
+        return itemDTO;
     }
 
-    @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
+    @RequestMapping(value = "/{itemId}", method = RequestMethod.PUT)
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
-    public ItemDTO updateItem(@PathVariable("id") String id, @Valid @RequestBody ItemDTO item) throws MyHoardException {
+    public ItemDTO updateItem(@ModelAttribute(USER) UserDTO userDTO, @PathVariable("itemId") String id,
+            @Valid @RequestBody ItemDTO itemDTO) throws MyHoardException {
         try {
             itemService.get(Integer.parseInt(id));
+            itemDTO.setId(id);
         } catch (NumberFormatException e) {
             logger.error(UPDATE_ITEM, e);
             throw new NotFoundException(String.format(ITEM_NOT_EXIST_INVALID_ID, id));
@@ -83,17 +96,18 @@ public class ItemController {
             logger.info(UPDATE_ITEM, mhe);
             throw new NotFoundException(String.format(ITEM_NOT_EXIST, id));
         }
-        item.setId(id);
-        ItemDTO itemDTO = itemService.update(item);
 
-        return itemDTO;
+        if (!userDTO.getId().equals(itemDTO.getOwner().getId())) {
+            throw new ForbiddenException();
+        }
+
+        return itemService.update(itemDTO);
     }
 
-    @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
+    @RequestMapping(value = "/{itemId}", method = RequestMethod.DELETE)
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @ResponseBody
-    public void deleteItem(HttpServletRequest request, @PathVariable("id") String id) throws MyHoardException {
-        UserDTO userDTO = (UserDTO) request.getAttribute(USER);
+    public void deleteItem(@ModelAttribute(USER) UserDTO userDTO, @PathVariable("itemId") String id) throws MyHoardException {
         ItemDTO itemDTO;
         try {
             itemDTO = itemService.get(Integer.parseInt(id));
