@@ -60,5 +60,8 @@
                         <bean class="com.blstream.myhoard.authorization.MyHoardInterceptor" />
                 </mvc:interceptor>
         </mvc:interceptors>
+        
+        <!-- SECURITY SERVICE -->
+        <bean id="securityService" class="com.blstream.myhoard.authorization.service.SecurityServiceImpl"/>
 
 </beans>
