@@ -3,6 +3,7 @@ package com.blstream.myhoard.biz.service;
 import com.blstream.myhoard.biz.model.ItemDTO;
 import com.blstream.myhoard.biz.model.UserDTO;
 import com.blstream.myhoard.exception.MyHoardException;
+
 import java.util.List;
 
 public interface ItemService {
@@ -10,6 +11,8 @@ public interface ItemService {
     public List<ItemDTO> getList() throws MyHoardException;
 
     public List<ItemDTO> getListByUser(UserDTO userDTO) throws MyHoardException;
+    
+    public List<ItemDTO> getList(String name, int collection, String owner) throws MyHoardException;
 
     public ItemDTO get(int id) throws MyHoardException;
 

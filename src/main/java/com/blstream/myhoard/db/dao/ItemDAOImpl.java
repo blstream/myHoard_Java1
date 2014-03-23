@@ -1,7 +1,9 @@
 package com.blstream.myhoard.db.dao;
 
 import com.blstream.myhoard.db.model.ItemDS;
+
 import java.util.List;
+
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,13 +17,15 @@ public class ItemDAOImpl implements ItemDAO {
     @Autowired
     private SessionFactory sessionFactory;
 
-    @Override
+    @SuppressWarnings("unchecked")
+	@Override
     public List<ItemDS> getListByUser(int id) {
         return sessionFactory.getCurrentSession().createCriteria(ItemDS.class)
                 .add(Restrictions.eq("owner.id", id)).list();
     }
 
-    @Override
+    @SuppressWarnings("unchecked")
+	@Override
     public List<ItemDS> getList() {
         return sessionFactory.getCurrentSession().createCriteria(ItemDS.class).list();
     }
@@ -45,5 +49,19 @@ public class ItemDAOImpl implements ItemDAO {
     public void remove(int id) {
         sessionFactory.getCurrentSession().delete(get(id));
     }
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<ItemDS> getList(String name, int collection, String owner) {
+		
+		
+		return sessionFactory.getCurrentSession().createCriteria(ItemDS.class)
+				.add(Restrictions.disjunction()
+						.add(Restrictions.ilike("name", name))
+						.add(Restrictions.ilike("description", "%" + name + "%"))
+					)
+				.add(Restrictions.eq("collection.id", collection))
+				.list();
+	}
 
 }

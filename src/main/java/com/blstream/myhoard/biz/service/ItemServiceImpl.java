@@ -14,11 +14,13 @@ import com.blstream.myhoard.db.model.MediaDS;
 import com.blstream.myhoard.db.model.UserDS;
 import com.blstream.myhoard.exception.MyHoardException;
 import com.blstream.myhoard.exception.NotFoundException;
+
 import java.sql.Timestamp;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -67,6 +69,12 @@ public class ItemServiceImpl implements ItemService {
 
         return ItemMapper.map(itemDSList);
     }
+    
+	@Override
+	public List<ItemDTO> getList(String name, int collection, String owner) {
+		
+		return ItemMapper.map(itemDAO.getList(name, collection, owner));
+	}
 
     @Override
     public ItemDTO get(int id) {

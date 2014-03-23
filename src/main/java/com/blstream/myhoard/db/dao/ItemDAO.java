@@ -8,6 +8,8 @@ public interface ItemDAO {
     public List<ItemDS> getListByUser(int id);
 
     public List<ItemDS> getList();
+    
+    public List<ItemDS> getList(String name, int collection, String owner);
 
     public ItemDS get(int id);
 

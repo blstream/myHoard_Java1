@@ -3,13 +3,20 @@ package com.blstream.myhoard.controller;
 import com.blstream.myhoard.biz.model.ItemDTO;
 import com.blstream.myhoard.biz.model.UserDTO;
 import com.blstream.myhoard.biz.service.ItemService;
+
 import static com.blstream.myhoard.constants.Constants.USER;
+
+import com.blstream.myhoard.exception.ErrorCodeEnum;
 import com.blstream.myhoard.exception.ForbiddenException;
 import com.blstream.myhoard.exception.MyHoardException;
+import com.blstream.myhoard.exception.MyHoardRestException;
 import com.blstream.myhoard.exception.NotFoundException;
+
 import java.util.List;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
+
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -19,6 +26,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
@@ -45,11 +53,31 @@ public class ItemController {
     @RequestMapping(method = RequestMethod.GET)
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
-    public List<ItemDTO> getItems(@ModelAttribute(USER) UserDTO userDTO) throws MyHoardException {
-        
-        return itemService.getListByUser(userDTO);
-    }
+    public List<ItemDTO> getItems(
+    		@ModelAttribute(USER) UserDTO userDTO,
+            @RequestParam(value = "name", required = false) String name,
+            @RequestParam(value = "collection", required = false) String collectionId,
+            @RequestParam(value = "owner", required = false) String owner) throws MyHoardException {
 
+    		if(name == null && collectionId == null && owner == null) {
+    			return itemService.getListByUser(userDTO);
+    		}
+    		else if(name != null && collectionId != null && owner != null) {
+    	    	
+    			try {
+    	        	int collection = Integer.parseInt(collectionId);
+    	            return itemService.getList(name,collection, owner);    		
+    	    	}
+    	    	catch(Exception e) {
+    	    		logger.error(e.getMessage(), e);
+    	    		throw new NotFoundException(String.format(ITEM_NOT_EXIST_INVALID_ID, collectionId));
+    	    	}
+    		}
+    		else {
+    			throw new NotFoundException(String.format(ITEM_NOT_EXIST_INVALID_ID, collectionId));
+    		}
+    }
+    
     @RequestMapping(method = RequestMethod.POST)
     @ResponseStatus(HttpStatus.CREATED)
     @ResponseBody
