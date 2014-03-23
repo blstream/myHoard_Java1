@@ -2,7 +2,6 @@ package com.blstream.myhoard.authorization;
 
 import com.blstream.myhoard.biz.model.TokenDTO;
 import com.blstream.myhoard.biz.service.TokenService;
-import com.blstream.myhoard.biz.service.UserService;
 import com.blstream.myhoard.constants.Constants;
 import static com.blstream.myhoard.constants.Constants.USER;
 import com.blstream.myhoard.exception.AuthorizationException;
@@ -19,9 +18,6 @@ public class MyHoardInterceptor implements HandlerInterceptor {
     private static final Logger logger = Logger.getLogger(MyHoardInterceptor.class.getCanonicalName());
 
     @Autowired
-    private UserService userService;
-
-    @Autowired
     private TokenService tokenService;
 
     @Override
@@ -31,7 +27,7 @@ public class MyHoardInterceptor implements HandlerInterceptor {
         if (isAllowed(request)) {
             return true;
         }
-        
+
         final String AccessToken = request.getHeader("Authorization");
 
         if (AccessToken == null) {
@@ -40,9 +36,9 @@ public class MyHoardInterceptor implements HandlerInterceptor {
         }
 
         TokenDTO tokenDTO = tokenService.getByAccessToken(AccessToken);
-        
+
         request.setAttribute(USER, tokenDTO.getUser());
-        
+
         SecurityContextHolder.getContext().setAuthentication(new UserAuthentication(tokenDTO.getUser()));
 
         // TODO RT remove

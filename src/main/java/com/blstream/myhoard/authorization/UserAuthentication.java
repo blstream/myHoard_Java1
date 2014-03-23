@@ -7,7 +7,7 @@ import org.springframework.security.core.GrantedAuthority;
 
 public class UserAuthentication implements Authentication {
 
-    UserDTO userDTO;
+    private UserDTO userDTO;
 
     public UserAuthentication() {
     }
