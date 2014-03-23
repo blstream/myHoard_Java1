@@ -2,41 +2,18 @@ package com.blstream.myhoard.db.dao;
 
 import com.blstream.myhoard.db.model.ItemDS;
 import java.util.List;
-import org.hibernate.SessionFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Transactional;
 
-@Repository
-@Transactional
-public class ItemDAO implements ResourceDAO<ItemDS> {
+public interface ItemDAO {
 
-    @Autowired
-    private SessionFactory sessionFactory;
+    public List<ItemDS> getListByUser(int id);
 
-    @Override
-    public List<ItemDS> getList() {
-        return sessionFactory.getCurrentSession().createCriteria(ItemDS.class).list();
-    }
+    public List<ItemDS> getList();
 
-    @Override
-    public ItemDS get(int id) {
-        return (ItemDS) sessionFactory.getCurrentSession().get(ItemDS.class, id);
-    }
+    public ItemDS get(int id);
 
-    @Override
-    public void create(ItemDS object) {
-        sessionFactory.getCurrentSession().save(object);
-    }
+    public void create(ItemDS object);
 
-    @Override
-    public void update(ItemDS object) {
-        sessionFactory.getCurrentSession().update(object);
-    }
+    public void update(ItemDS object);
 
-    @Override
-    public void remove(int id) {
-        sessionFactory.getCurrentSession().delete(get(id));
-    }
-
+    public void remove(int id);
 }

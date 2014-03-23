@@ -20,7 +20,7 @@ import org.springframework.stereotype.Service;
 @Service("tokenService")
 public class TokenServiceImpl implements TokenService {
 
-    private static final Logger logger = Logger.getLogger(TokenService.class.getCanonicalName());
+    private static final Logger logger = Logger.getLogger(TokenServiceImpl.class.getCanonicalName());
 
     @Autowired
     UserService userService;

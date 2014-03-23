@@ -22,7 +22,7 @@ public class CollectionServiceImpl implements CollectionService {
     private CollectionDAO collectionDAO;
 
     @Autowired
-    UserDAO userDao;
+    private UserDAO userDao;
 
     @Override
     public List<CollectionDTO> getList() {

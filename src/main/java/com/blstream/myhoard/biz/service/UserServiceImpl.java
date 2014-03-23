@@ -15,10 +15,10 @@ import org.springframework.stereotype.Service;
 @Service("userService")
 public class UserServiceImpl implements UserService {
 
-    private static final Logger logger = Logger.getLogger(UserService.class.getCanonicalName());
+    private static final Logger logger = Logger.getLogger(UserServiceImpl.class.getCanonicalName());
 
     @Autowired
-    PasswordEncoder passwordEncoder;
+    private PasswordEncoder passwordEncoder;
 
     @Autowired
     private UserDAO userDAO;

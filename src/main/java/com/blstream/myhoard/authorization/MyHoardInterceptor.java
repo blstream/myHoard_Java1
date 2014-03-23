@@ -18,10 +18,10 @@ public class MyHoardInterceptor implements HandlerInterceptor {
     private static final Logger logger = Logger.getLogger(MyHoardInterceptor.class.getCanonicalName());
 
     @Autowired
-    UserService userService;
+    private UserService userService;
 
     @Autowired
-    TokenService tokenService;
+    private TokenService tokenService;
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {

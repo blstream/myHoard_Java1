@@ -30,7 +30,7 @@ public class CollectionController {
     private static final Logger logger = Logger.getLogger(CollectionController.class.getCanonicalName());
 
     @Autowired
-    CollectionService collectionService;
+    private CollectionService collectionService;
 
     @ModelAttribute(USER)
     public UserDTO getUser(HttpServletRequest request) {

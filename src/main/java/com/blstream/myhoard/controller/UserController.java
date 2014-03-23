@@ -27,7 +27,7 @@ public class UserController {
     private static final Logger logger = Logger.getLogger(UserController.class.getCanonicalName());
 
     @Autowired
-    UserService userService;
+    private UserService userService;
 
     @ModelAttribute(USER)
     public UserDTO getUser(HttpServletRequest request) {

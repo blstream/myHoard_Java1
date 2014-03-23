@@ -1,7 +1,7 @@
 package com.blstream.myhoard.controller;
 
 import com.blstream.myhoard.biz.model.MediaDTO;
-import com.blstream.myhoard.biz.service.ResourceService;
+import com.blstream.myhoard.biz.service.MediaService;
 import com.blstream.myhoard.biz.util.MediaUtils;
 import com.blstream.myhoard.exception.ErrorCodeEnum;
 import com.blstream.myhoard.exception.MyHoardRestException;
@@ -16,7 +16,6 @@ import org.apache.commons.fileupload.servlet.ServletFileUpload;
 import org.apache.commons.io.IOUtils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -33,11 +32,10 @@ public class MediaController {
 	private static final Logger logger = Logger.getLogger(MediaController.class.getCanonicalName());
 
 	@Autowired
-	@Qualifier("mediaService")
-	ResourceService<MediaDTO> mediaService;
+	private MediaService mediaService;
 
 	@Autowired
-	MediaUtils mediaUtils;
+	private MediaUtils mediaUtils;
 
 	@RequestMapping(method = RequestMethod.POST)
 	@ResponseBody

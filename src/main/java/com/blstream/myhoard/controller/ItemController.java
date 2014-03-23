@@ -2,7 +2,7 @@ package com.blstream.myhoard.controller;
 
 import com.blstream.myhoard.biz.model.ItemDTO;
 import com.blstream.myhoard.biz.model.UserDTO;
-import com.blstream.myhoard.biz.service.IResourceService;
+import com.blstream.myhoard.biz.service.ItemService;
 import static com.blstream.myhoard.constants.Constants.USER;
 import com.blstream.myhoard.exception.ForbiddenException;
 import com.blstream.myhoard.exception.MyHoardException;
@@ -35,7 +35,7 @@ public class ItemController {
     private static final Logger logger = Logger.getLogger(ItemController.class.getCanonicalName());
 
     @Autowired
-    IResourceService<ItemDTO> itemService;
+    private ItemService itemService;
 
     @ModelAttribute(USER)
     public UserDTO getUser(HttpServletRequest request) {
@@ -47,7 +47,7 @@ public class ItemController {
     @ResponseBody
     public List<ItemDTO> getItems(@ModelAttribute(USER) UserDTO userDTO) throws MyHoardException {
 
-        return itemService.getList(); // TODO user items only
+        return itemService.getListByUser(userDTO);
     }
 
     @RequestMapping(method = RequestMethod.POST)
