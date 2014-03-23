@@ -26,7 +26,7 @@ public class CollectionMapper {
         collectionDS.setItemsNumber(collectionDTO.getItemsNumber());
         collectionDS.setModifiedDate(collectionDTO.getModifiedDate());
         collectionDS.setName(collectionDTO.getName());
-        collectionDS.setOwner(UserMapper.map(collectionDTO.getOwner()));
+        //collectionDS.setOwner(UserMapper.map(collectionDTO.getOwner()));
 
         if (collectionDTO.getTags() != null) {
 

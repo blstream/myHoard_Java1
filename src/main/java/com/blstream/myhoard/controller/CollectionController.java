@@ -3,13 +3,20 @@ package com.blstream.myhoard.controller;
 import com.blstream.myhoard.biz.model.CollectionDTO;
 import com.blstream.myhoard.biz.model.UserDTO;
 import com.blstream.myhoard.biz.service.CollectionService;
+
 import static com.blstream.myhoard.constants.Constants.USER;
+
 import com.blstream.myhoard.exception.ErrorCodeEnum;
 import com.blstream.myhoard.exception.MyHoardException;
 import com.blstream.myhoard.exception.MyHoardRestException;
+import com.blstream.myhoard.exception.NotFoundException;
+import com.blstream.myhoard.exception.ResourceAlreadyExistException;
+
 import java.util.List;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
+
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -55,7 +62,7 @@ public class CollectionController {
             return collectionService.get(id);
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
-            throw new MyHoardRestException(ErrorCodeEnum.READ.getValue());
+            throw new NotFoundException(String.format("Collection with id = %s not exist", idStr));
         }
     }
 
@@ -127,7 +134,8 @@ public class CollectionController {
             collectionService.remove(id);
         } catch (Exception ex) {
             logger.error(ex.getMessage(), ex);
-            throw new MyHoardRestException(ErrorCodeEnum.DELETE.getValue());
+            //throw new MyHoardRestException(ErrorCodeEnum.DELETE.getValue());
+            throw new NotFoundException(String.format("Collection with id = %s not exist", idStr));
         }
     }
 
@@ -139,9 +147,12 @@ public class CollectionController {
             Integer.parseInt(idStr);
             collection.setId(idStr);
             return collectionService.update(collection);
-        } catch (Exception ex) {
+        } catch (ResourceAlreadyExistException ex) {
             logger.error(ex.getMessage(), ex);
-            throw new MyHoardRestException(ErrorCodeEnum.UPDATE.getValue());
+            //throw new MyHoardRestException(ErrorCodeEnum.UPDATE.getValue());
+            throw new ResourceAlreadyExistException(String.format("Collection with name: %s already exist!", collection.getName()));
+        } catch (Exception e) {
+        	throw new NotFoundException(String.format("Collection with id = %s not exist", idStr));
         }
     }
 }

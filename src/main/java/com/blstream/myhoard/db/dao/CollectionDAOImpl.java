@@ -1,13 +1,18 @@
 package com.blstream.myhoard.db.dao;
 
+import com.blstream.myhoard.authorization.service.SecurityService;
 import com.blstream.myhoard.db.model.CollectionDS;
 import com.blstream.myhoard.db.model.TagDS;
+import com.blstream.myhoard.db.model.UserDS;
 import com.blstream.myhoard.exception.MyHoardException;
 import com.blstream.myhoard.exception.ResourceAlreadyExistException;
+
+import java.awt.image.RescaleOp;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+
 import org.apache.log4j.Logger;
 import org.hibernate.Criteria;
 import org.hibernate.SessionFactory;
@@ -25,20 +30,37 @@ public class CollectionDAOImpl implements CollectionDAO {
 
     @Autowired
     private SessionFactory sessionFactory;
+    
+    @Autowired
+    private SecurityService securityService;
+    
+    @Autowired
+    private UserDAO userDAO;
 
     @SuppressWarnings("unchecked")
     public List<CollectionDS> getList() {
 
+    	UserDS userDs = userDAO.getByEmail((securityService.getCurrentUser().getEmail()));
+    	
         List<CollectionDS> collections = sessionFactory.getCurrentSession()
-                .createCriteria(CollectionDS.class).list();
+                .createCriteria(CollectionDS.class).add(Restrictions.eq("owner", userDs)).list();
+        
         return collections;
     }
 
     public CollectionDS get(int id) {
+    	
+		UserDS userDs = userDAO.getByEmail((securityService.getCurrentUser()
+				.getEmail()));
 
-        CollectionDS collection = (CollectionDS) sessionFactory
-                .getCurrentSession().get(CollectionDS.class, id);
-        return collection;
+		Criteria criteria = sessionFactory.getCurrentSession().createCriteria(
+				CollectionDS.class);
+		criteria.add(Restrictions.eq("id", id));
+		criteria.add(Restrictions.eq("owner", userDs));
+		criteria.setMaxResults(1);
+
+		return (CollectionDS) criteria.uniqueResult();
+
     }
 
     public void create(CollectionDS obj) throws MyHoardException {
@@ -78,8 +100,7 @@ public class CollectionDAOImpl implements CollectionDAO {
             throw new ResourceAlreadyExistException(String.format("Collection with name: %s already exist!", obj.getName()));
         }
 
-        CollectionDS objectFromDb = (CollectionDS) sessionFactory
-                .getCurrentSession().get(CollectionDS.class, obj.getId());
+        CollectionDS objectFromDb = get(obj.getId());
         Set<TagDS> tagsToSave = new HashSet<TagDS>();
 
         for (TagDS tagSrc : obj.getTags()) {
@@ -105,9 +126,18 @@ public class CollectionDAOImpl implements CollectionDAO {
     }
 
     public void remove(int id) {
+    	
+    	UserDS userDs = userDAO.getByEmail((securityService.getCurrentUser()
+				.getEmail()));
 
-        CollectionDS collection = (CollectionDS) sessionFactory
-                .getCurrentSession().get(CollectionDS.class, id);
+		Criteria criteria = sessionFactory.getCurrentSession().createCriteria(
+				CollectionDS.class);
+		criteria.add(Restrictions.eq("id", id));
+		criteria.add(Restrictions.eq("owner", userDs));
+		criteria.setMaxResults(1);
+
+
+        CollectionDS collection = (CollectionDS) criteria.uniqueResult();
         if (collection != null) {
             sessionFactory.getCurrentSession().delete(collection);
         }
@@ -148,6 +178,8 @@ public class CollectionDAOImpl implements CollectionDAO {
     public List<CollectionDS> getList(List<String> sortBy, String sortDirection)
             throws MyHoardException {
 
+    	UserDS userDs = userDAO.getByEmail((securityService.getCurrentUser().getEmail()));
+    	
         Criteria crit = sessionFactory.getCurrentSession().createCriteria(
                 CollectionDS.class);
 
@@ -161,6 +193,8 @@ public class CollectionDAOImpl implements CollectionDAO {
             }
 
         }
+        
+        crit.add(Restrictions.eq("owner", userDs));
 
         return crit.list();
     }
