@@ -60,7 +60,13 @@ public class MyHoardInterceptor implements HandlerInterceptor {
     }
 
     private boolean isAllowed(HttpServletRequest request) {
-        return request.getRequestURI().toUpperCase().equals("/USERS") && request.getMethod().toUpperCase().equals("POST");
+        logger.info(String.format("URI: %s METHOD: %s", request.getRequestURI().toUpperCase(), request.getMethod().toUpperCase()));
+
+        return (request.getRequestURI().toUpperCase().equals("/USERS")
+                || request.getRequestURI().toUpperCase().equals("/USERS/")
+                || request.getRequestURI().toUpperCase().equals("//USERS/")
+                || request.getRequestURI().toUpperCase().equals("//USERS"))
+                && request.getMethod().toUpperCase().equals("POST");
     }
 
 }
