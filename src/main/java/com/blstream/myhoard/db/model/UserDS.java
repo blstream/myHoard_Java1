@@ -1,11 +1,15 @@
 package com.blstream.myhoard.db.model;
 
+import java.util.Set;
+
 public class UserDS {
 
     private int id;
     private String username;
     private String email;
     private String password;
+    private Set<ItemDS> items;
+    private Set<CollectionDS> collections;
 
     public int getId() {
         return id;
@@ -37,6 +41,22 @@ public class UserDS {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public Set<ItemDS> getItems() {
+        return items;
+    }
+
+    public void setItems(Set<ItemDS> items) {
+        this.items = items;
+    }
+
+    public Set<CollectionDS> getCollections() {
+        return collections;
+    }
+
+    public void setCollections(Set<CollectionDS> collections) {
+        this.collections = collections;
     }
 
 }

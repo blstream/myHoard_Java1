@@ -18,5 +18,13 @@
                 <property name="password" type="string">
                         <column name="password" not-null="true" unique="false" />
                 </property>
+                <set name="items" cascade="all" fetch="select" lazy="true">
+                        <key column="owner" />
+                        <one-to-many class="com.blstream.myhoard.db.model.ItemDS" />
+                </set>
+                <set name="collections" cascade="all" fetch="select" lazy="true">
+                        <key column="owner" />
+                        <one-to-many class="com.blstream.myhoard.db.model.CollectionDS" />
+                </set>
         </class>
 </hibernate-mapping>

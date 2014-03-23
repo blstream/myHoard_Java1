@@ -27,6 +27,10 @@ public class MyHoardInterceptor implements HandlerInterceptor {
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
         logger.info("MyHoardInterceptor - preHandle");
 
+        if (isAllowed(request)) {
+            return true;
+        }
+
         final String AccessToken = request.getHeader("Authorization");
 
         if (AccessToken == null) {
@@ -54,6 +58,10 @@ public class MyHoardInterceptor implements HandlerInterceptor {
     public void afterCompletion(HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex) throws Exception {
 
         logger.info("MyHoardInterceptor - afterCompletion");
+    }
+
+    private boolean isAllowed(HttpServletRequest request) {
+        return request.getRequestURI().toUpperCase().equals("/USERS") && request.getMethod().toUpperCase().equals("POST");
     }
 
 }
