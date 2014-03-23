@@ -36,7 +36,7 @@ public class ItemController {
 
     @Autowired
     private ItemService itemService;
-    
+
     @ModelAttribute(USER)
     public UserDTO getUser(HttpServletRequest request) {
         return (UserDTO) request.getAttribute(USER);
