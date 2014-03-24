@@ -1,6 +1,5 @@
 package com.blstream.myhoard.controller;
 
-// TODO RT validation
 import com.blstream.myhoard.biz.model.TokenDTO;
 import com.blstream.myhoard.biz.model.UserCredentialsDTO;
 import com.blstream.myhoard.biz.model.UserDTO;
@@ -63,7 +62,7 @@ public class TokenController {
 
     private TokenDTO createToken(UserCredentialsDTO credentials) throws MyHoardException {
         TokenDTO tokenDTO = new TokenDTO();
-        UserDTO userDTO = userService.getUserByEmail(credentials.getUsername());
+        UserDTO userDTO = userService.getUserByEmail(credentials.getEmail());
 
         if (userDTO != null && !passwordEncoder.matches(credentials.getPassword(), userDTO.getPassword())) {
             logger.info(String.format("Incorrect password for user: %s", userDTO.getEmail()));
@@ -73,7 +72,7 @@ public class TokenController {
         tokenDTO.setAccessToken(UUID.randomUUID().toString());
         tokenDTO.setExpiresIn(Constants.TOKEN_KEEP_ALIVE_TIME);
         tokenDTO.setRefreshToken(UUID.randomUUID().toString());
-        tokenDTO.setEmail(credentials.getUsername());
+        tokenDTO.setEmail(credentials.getEmail());
 
         tokenService.create(tokenDTO);
 
@@ -83,8 +82,8 @@ public class TokenController {
     private TokenDTO refreshToken(UserCredentialsDTO credentials) throws MyHoardException {
         TokenDTO tokenDTO = tokenService.getByRefreshToken(credentials.getRefreshToken());
 
-        if (tokenDTO == null || !tokenDTO.getUser().getEmail().equals(credentials.getUsername())) {
-            logger.info(String.format("Incorrect refresh token for user: %s", credentials.getUsername()));
+        if (tokenDTO == null || !tokenDTO.getUser().getEmail().equals(credentials.getEmail())) {
+            logger.info(String.format("Incorrect refresh token for user: %s", credentials.getEmail()));
             throw new AuthorizationException(Constants.ERROR_CODE_AUTH_TOKEN_INVALID);
         }
 

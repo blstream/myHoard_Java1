@@ -7,7 +7,7 @@ import org.hibernate.validator.constraints.NotEmpty;
 public class UserCredentialsDTO {
 
     @NotEmpty
-    private String username;
+    private String email;
     @NotEmpty
     private String password;
     @NotEmpty
@@ -20,19 +20,19 @@ public class UserCredentialsDTO {
     public UserCredentialsDTO() {
     }
 
-    public UserCredentialsDTO(String username, String password, String grantType, String refreshToken) {
-        this.username = username;
+    public UserCredentialsDTO(String email, String password, String grantType, String refreshToken) {
+        this.email = email;
         this.password = password;
         this.grantType = grantType;
         this.refreshToken = refreshToken;
     }
 
-    public String getUsername() {
-        return username;
+    public String getEmail() {
+        return email;
     }
 
-    public void setUsername(String username) {
-        this.username = username;
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     public String getPassword() {
