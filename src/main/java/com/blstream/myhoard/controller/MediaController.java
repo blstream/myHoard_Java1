@@ -6,10 +6,13 @@ import com.blstream.myhoard.biz.util.MediaUtils;
 import com.blstream.myhoard.exception.ErrorCodeEnum;
 import com.blstream.myhoard.exception.MyHoardRestException;
 import com.blstream.myhoard.exception.NotFoundException;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
+
 import javax.servlet.http.HttpServletRequest;
+
 import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
@@ -21,6 +24,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.multipart.MultipartFile;
@@ -29,7 +33,8 @@ import org.springframework.web.multipart.MultipartFile;
 @RequestMapping("/media")
 public class MediaController {
 
-	private static final Logger logger = Logger.getLogger(MediaController.class.getCanonicalName());
+	private static final Logger logger = Logger.getLogger(MediaController.class
+			.getCanonicalName());
 
 	@Autowired
 	private MediaService mediaService;
@@ -83,9 +88,33 @@ public class MediaController {
 	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
 	@ResponseStatus(HttpStatus.OK)
 	@ResponseBody
-	public byte[] read(@PathVariable("id") String idStr) {
+	public byte[] read(@PathVariable("id") String idStr,
+			@RequestParam(value = "size", defaultValue = "0") int size) {
 
 		logger.info("read");
+
+		if (size != 0) {
+
+			if (size != 500 && size != 340 && size != 300 && size != 160) {
+				logger.error("Bad size: " + size);
+				throw new NotFoundException(String.format(
+						"Media with size = %s not exist", size));
+			}
+
+			logger.info("size [request param]: " + size);
+
+			int id = 0;
+			try {
+				id = Integer.parseInt(idStr);
+				byte[] image = mediaService.get(id).getFile();
+				return mediaUtils.getThumbnail(image, size);
+			} catch (Exception e) {
+				logger.error(e.getMessage(), e);
+				throw new NotFoundException(String.format(
+						"Media with id = %s not exist", id));
+			}
+
+		}
 
 		int id = 0;
 		try {
