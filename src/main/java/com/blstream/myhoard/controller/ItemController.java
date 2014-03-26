@@ -29,6 +29,9 @@ public class ItemController {
 
     private static final String ITEM_NOT_EXIST = "Item with id = %s not exist";
     private static final String ITEM_NOT_EXIST_INVALID_ID = "Item with id = %s not exist; Invalid Id";
+    private static final String INVALID_PARAMETERS = "Invalid parameters to searching";
+    private static final String INVALID_COLLECTION_ID = "Invalid parameter: collection = %s";
+    private static final String ACCESS_DENIED = "Access denied";
     private static final String GET_ITEM = "getItem";
     private static final String UPDATE_ITEM = "updateItem";
     private static final String DELETE_ITEM = "deleteItem";
@@ -51,24 +54,24 @@ public class ItemController {
             @RequestParam(value = "name", required = false) String name,
             @RequestParam(value = "collection", required = false) String collectionId,
             @RequestParam(value = "owner", required = false) String owner) throws MyHoardException {
-
-    		if(name == null && collectionId == null && owner == null) {
-    			return itemService.getListByUser(userDTO);
-    		}
-    		else if(name != null && collectionId != null && owner != null) {
-    	    	
+    	
+    	
+    	if(name == null && collectionId == null && owner == null) {
+    		return itemService.getListByUser(userDTO);
+    	}
+    	else if(name != null && collectionId != null && owner != null) {
     			try {
     	        	int collection = Integer.parseInt(collectionId);
     	            return itemService.getList(name,collection, owner);    		
     	    	}
     	    	catch(Exception e) {
     	    		logger.error(e.getMessage(), e);
-    	    		throw new NotFoundException(String.format(ITEM_NOT_EXIST_INVALID_ID, collectionId));
+    	    		throw new NotFoundException(String.format(INVALID_COLLECTION_ID, collectionId));
     	    	}
-    		}
-    		else {
-    			throw new NotFoundException(String.format(ITEM_NOT_EXIST_INVALID_ID, collectionId));
-    		}
+    	}
+    	else {
+    		throw new NotFoundException(INVALID_PARAMETERS);
+    	}
     }
     
     @RequestMapping(method = RequestMethod.POST)

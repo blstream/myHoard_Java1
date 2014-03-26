@@ -1,0 +1,410 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<con:soapui-project activeEnvironment="Default" name="MyHoard" resourceRoot="" soapui-version="4.6.3" abortOnError="false" runType="SEQUENTIAL" xmlns:con="http://eviware.com/soapui/config">
+  <con:settings><con:setting id="ProjectSettings@hermesConfig">${#System#user.home}\.hermes</con:setting></con:settings>
+  <con:interface xsi:type="con:RestService" wadlVersion="http://wadl.dev.java.net/2009/02" name="MyHoard" type="rest" basePath="" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <con:settings/>
+    
+    <con:definitionCache type="TEXT" rootPart=""/><con:endpoints>
+      <con:endpoint>http://78.133.154.39:1080</con:endpoint>
+      <con:endpoint>http://78.133.154.39:1180</con:endpoint>
+      
+    </con:endpoints>
+    <con:resource name="CollectionList" path="/collections">
+      <con:settings/>
+      <con:parameters><con:parameter><con:name>Authorization</con:name><con:value>${#Project#token}</con:value><con:style>HEADER</con:style><con:default>${#Project#token}</con:default></con:parameter></con:parameters>
+      <con:resource name="Collection" path="/{id}">
+        <con:settings/>
+        <con:parameters>
+          <con:parameter>
+            <con:name>id</con:name>
+            <con:value>id</con:value>
+            <con:style>TEMPLATE</con:style>
+            <con:type xmlns:xs="http://www.w3.org/2001/XMLSchema">xs:string</con:type>
+            <con:default>id</con:default>
+            <con:path xsi:nil="true"/>
+            <con:description xsi:nil="true"/>
+          </con:parameter>
+        </con:parameters>
+        <con:method name="Get" method="GET">
+          <con:settings/>
+          <con:parameters/>
+          <con:representation type="RESPONSE">
+            <con:mediaType>text/html</con:mediaType>
+            <con:status>200</con:status>
+            <con:params/>
+            <con:element>html</con:element>
+          </con:representation>
+          <con:representation type="RESPONSE">
+            <con:mediaType>application/json;charset=UTF-8</con:mediaType>
+            <con:status>200</con:status>
+            <con:params/>
+            <con:element xmlns:ns="http://78.133.154.39/MyHoard/collections/4">ns:Response</con:element>
+          </con:representation>
+          <con:representation type="FAULT">
+            <con:mediaType>application/json;charset=UTF-8</con:mediaType>
+            <con:status>400</con:status>
+            <con:params/>
+            <con:element xmlns:id="http://78.133.154.39/MyHoard/collections/id">id:Fault</con:element>
+          </con:representation>
+          <con:representation type="FAULT">
+            <con:mediaType>text/html;charset=utf-8</con:mediaType>
+            <con:status>404</con:status>
+            <con:params/>
+            <con:element>html</con:element>
+          </con:representation>
+          <con:request name="Request 1" mediaType="application/xml">
+            <con:settings>
+              <con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting>
+            </con:settings>
+            <con:endpoint>http://78.133.154.39:1080</con:endpoint>
+            <con:request/>
+            <con:credentials>
+              <con:authType>Global HTTP Settings</con:authType>
+            </con:credentials>
+            <con:jmsConfig JMSDeliveryMode="PERSISTENT"/>
+            <con:jmsPropertyConfig/>
+            <con:parameters><entry key="id" value="15" xmlns="http://eviware.com/soapui/config"/></con:parameters>
+          <con:parameterOrder><con:entry>id</con:entry><con:entry>Authorization</con:entry></con:parameterOrder></con:request>
+        </con:method>
+        <con:method name="Update" method="PUT">
+          <con:settings/>
+          <con:parameters/>
+          <con:representation type="FAULT">
+            <con:mediaType>text/html;charset=utf-8</con:mediaType>
+            <con:status>403 400</con:status>
+            <con:params/>
+            <con:element>html</con:element>
+          </con:representation>
+          <con:representation type="REQUEST">
+            <con:mediaType>application/xml</con:mediaType>
+            <con:params/>
+          </con:representation>
+          <con:representation type="REQUEST">
+            <con:mediaType>application/json</con:mediaType>
+            <con:params/>
+          </con:representation>
+          <con:representation type="FAULT">
+            <con:mediaType>application/json;charset=UTF-8</con:mediaType>
+            <con:status>400 409</con:status>
+            <con:params/>
+            <con:element xmlns:ns="http://78.133.154.39/collections/14">ns:Fault</con:element>
+          </con:representation>
+          <con:representation type="RESPONSE">
+            <con:mediaType>application/json;charset=UTF-8</con:mediaType>
+            <con:status>200</con:status>
+            <con:params/>
+            <con:element xmlns:ns="http://78.133.154.39/collections/14">ns:Response</con:element>
+          </con:representation>
+          <con:request name="update1" mediaType="application/json" postQueryString="false">
+            <con:settings>
+              <con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting>
+            </con:settings>
+            <con:endpoint>http://78.133.154.39:1080</con:endpoint>
+            <con:request>{
+"name": "nazwa_update"
+}</con:request>
+            <con:credentials>
+              <con:authType>Global HTTP Settings</con:authType>
+            </con:credentials>
+            <con:jmsConfig JMSDeliveryMode="PERSISTENT"/>
+            <con:jmsPropertyConfig/>
+            <con:parameters><entry key="id" value="93" xmlns="http://eviware.com/soapui/config"/></con:parameters>
+          <con:parameterOrder><con:entry>id</con:entry><con:entry>Authorization</con:entry></con:parameterOrder></con:request>
+          <con:request name="update2" mediaType="application/json" postQueryString="false">
+            <con:settings>
+              <con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting>
+            </con:settings>
+            <con:endpoint>http://78.133.154.39:1080</con:endpoint>
+            <con:request>{
+"name": "nazwa_update2",
+"description": "opis_update"
+}</con:request>
+            <con:credentials>
+              <con:authType>Global HTTP Settings</con:authType>
+            </con:credentials>
+            <con:jmsConfig JMSDeliveryMode="PERSISTENT"/>
+            <con:jmsPropertyConfig/>
+            <con:parameters><entry key="id" value="93" xmlns="http://eviware.com/soapui/config"/></con:parameters>
+          <con:parameterOrder><con:entry>id</con:entry><con:entry>Authorization</con:entry></con:parameterOrder></con:request>
+        <con:request name="update3" mediaType="application/json" postQueryString="false">
+            <con:settings>
+              <con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting>
+            </con:settings>
+            <con:endpoint>http://78.133.154.39:1080</con:endpoint>
+            <con:request>{
+"name": "nazwa_update5",
+"description": "opis_update",
+"tags": ["tag5", "tag10"]
+}</con:request>
+            <con:credentials>
+              <con:authType>Global HTTP Settings</con:authType>
+            </con:credentials>
+            <con:jmsConfig JMSDeliveryMode="PERSISTENT"/>
+            <con:jmsPropertyConfig/>
+            <con:parameters><entry key="id" value="93" xmlns="http://eviware.com/soapui/config"/></con:parameters>
+          <con:parameterOrder><con:entry>id</con:entry><con:entry>Authorization</con:entry></con:parameterOrder></con:request></con:method>
+      <con:method name="Delete" method="DELETE"><con:settings/><con:parameters><con:parameter><con:name>Authorization</con:name><con:value>${#Project#token}</con:value><con:style>HEADER</con:style><con:default>${#Project#token}</con:default><con:path xsi:nil="true"/><con:description xsi:nil="true"/></con:parameter></con:parameters><con:representation type="RESPONSE"><con:mediaType xsi:nil="true"/><con:status>204</con:status><con:params/><con:element>data</con:element></con:representation><con:request name="Request 1" mediaType="application/json"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:endpoint>http://78.133.154.39:1080</con:endpoint><con:request/><con:credentials><con:authType>Global HTTP Settings</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:parameters><entry key="id" value="94" xmlns="http://eviware.com/soapui/config"/></con:parameters><con:parameterOrder><con:entry>id</con:entry><con:entry>Authorization</con:entry></con:parameterOrder></con:request></con:method></con:resource>
+      <con:method name="GetCollections" method="GET">
+        <con:settings/>
+        <con:parameters/>
+        <con:representation type="FAULT">
+          <con:mediaType>text/html;charset=utf-8</con:mediaType>
+          <con:status>404</con:status>
+          <con:params/>
+          <con:element>html</con:element>
+        </con:representation>
+        <con:representation type="RESPONSE">
+          <con:mediaType>application/json;charset=UTF-8</con:mediaType>
+          <con:status>200</con:status>
+          <con:params/>
+          <con:element>Response</con:element>
+        </con:representation>
+        <con:representation type="FAULT">
+          <con:mediaType xsi:nil="true"/>
+          <con:status>404</con:status>
+          <con:params/>
+          <con:element>data</con:element>
+        </con:representation>
+        <con:representation type="RESPONSE">
+          <con:mediaType xsi:nil="true"/>
+          <con:status>0</con:status>
+          <con:params/>
+          <con:element>data</con:element>
+        </con:representation>
+        <con:representation type="RESPONSE">
+          <con:mediaType xsi:nil="true"/>
+          <con:status>0</con:status>
+          <con:params/>
+          <con:element>data</con:element>
+        </con:representation>
+        <con:representation type="FAULT">
+          <con:mediaType>application/json;charset=UTF-8</con:mediaType>
+          <con:status>401</con:status>
+          <con:params/>
+          <con:element xmlns:col="http://78.133.154.39/collections">col:Fault</con:element>
+        </con:representation>
+        <con:request name="Request 1" mediaType="application/xml">
+          <con:settings>
+            <con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;entry key="Authorization" value="${#Project#token}" xmlns="http://eviware.com/soapui/config"/></con:setting>
+          </con:settings>
+          <con:endpoint>http://78.133.154.39:1080</con:endpoint>
+          <con:request/>
+          <con:credentials>
+            <con:authType>Global HTTP Settings</con:authType>
+          </con:credentials>
+          <con:jmsConfig JMSDeliveryMode="PERSISTENT"/>
+          <con:jmsPropertyConfig/>
+          <con:parameters/>
+        <con:parameterOrder><con:entry/></con:parameterOrder></con:request>
+      </con:method>
+      <con:method name="CreateCollection" method="POST">
+        <con:settings/>
+        <con:parameters/>
+        <con:representation type="REQUEST">
+          <con:mediaType>application/xml</con:mediaType>
+          <con:params/>
+        </con:representation>
+        <con:representation type="FAULT">
+          <con:mediaType>text/html;charset=utf-8</con:mediaType>
+          <con:status>415 400</con:status>
+          <con:params/>
+          <con:element>html</con:element>
+        </con:representation>
+        <con:representation type="REQUEST">
+          <con:mediaType>application/json</con:mediaType>
+          <con:params/>
+        </con:representation>
+        <con:representation type="RESPONSE">
+          <con:mediaType>application/json;charset=UTF-8</con:mediaType>
+          <con:status>201</con:status>
+          <con:params/>
+          <con:element xmlns:col="http://78.133.154.39/MyHoard/collections">col:Response</con:element>
+        </con:representation>
+        <con:representation type="FAULT">
+          <con:mediaType xsi:nil="true"/>
+          <con:status>404</con:status>
+          <con:params/>
+          <con:element>data</con:element>
+        </con:representation>
+        <con:representation type="FAULT">
+          <con:mediaType>application/json;charset=UTF-8</con:mediaType>
+          <con:status>400 401</con:status>
+          <con:params/>
+          <con:element xmlns:col="http://78.133.154.39/collections">col:Fault</con:element>
+        </con:representation>
+        <con:representation type="REQUEST">
+          <con:mediaType>application/x-www-form-urlencoded</con:mediaType>
+          <con:params/>
+        </con:representation>
+        <con:request name="Name" mediaType="application/json" postQueryString="false">
+          <con:settings>
+            <con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting>
+          </con:settings>
+          <con:endpoint>http://78.133.154.39:1080</con:endpoint>
+          <con:request>{
+"name": "napoje"
+}</con:request>
+          <con:credentials>
+            <con:authType>Global HTTP Settings</con:authType>
+          </con:credentials>
+          <con:jmsConfig JMSDeliveryMode="PERSISTENT"/>
+          <con:jmsPropertyConfig/>
+          <con:parameters/>
+        <con:parameterOrder><con:entry>Authorization</con:entry></con:parameterOrder></con:request>
+        <con:request name="NameDescription" mediaType="application/json" postQueryString="false">
+          <con:settings>
+            <con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;entry key="Authorization" value="${#Project#token}" xmlns="http://eviware.com/soapui/config"/></con:setting>
+          </con:settings>
+          <con:encoding/>
+          <con:endpoint>http://78.133.154.39:1080</con:endpoint>
+          <con:request>{
+"name": "napoje56",
+"description": "kolekcja napojów"
+}</con:request>
+          <con:credentials>
+            <con:authType>Global HTTP Settings</con:authType>
+          </con:credentials>
+          <con:jmsConfig JMSDeliveryMode="PERSISTENT"/>
+          <con:jmsPropertyConfig/>
+          <con:parameters/>
+        <con:parameterOrder><con:entry>Authorization</con:entry></con:parameterOrder></con:request>
+        <con:request name="NameDescriptionTags" mediaType="application/json" postQueryString="false">
+          <con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings>
+          <con:endpoint>http://78.133.154.39:1080</con:endpoint>
+          <con:request>{
+"name": "napoje800",
+"description": "kolekcja napojów",
+"tags": ["piwo", "napoje"]
+}</con:request><con:credentials><con:authType>Global HTTP Settings</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:parameters/>
+        <con:parameterOrder><con:entry>Authorization</con:entry></con:parameterOrder></con:request>
+      </con:method>
+    <con:method name="GetSortedCollections" method="GET"><con:settings/><con:parameters><con:parameter><con:name>sort_by</con:name><con:value>field_name</con:value><con:style>QUERY</con:style><con:default>field_name</con:default></con:parameter><con:parameter><con:name>sort_direction</con:name><con:value>sort_direction</con:value><con:style>QUERY</con:style><con:default>sort_direction</con:default></con:parameter></con:parameters><con:representation type="RESPONSE"><con:mediaType>application/json;charset=UTF-8</con:mediaType><con:status>200</con:status><con:params/><con:element>Response</con:element></con:representation><con:request name="Request 1" mediaType="application/json"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:endpoint>http://78.133.154.39:1080</con:endpoint><con:request/><con:credentials><con:authType>Global HTTP Settings</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:parameters>
+  <con:entry key="sort_by" value="name"/>
+  <con:entry key="sort_direction" value="asc"/>
+</con:parameters><con:parameterOrder><con:entry>sort_by</con:entry><con:entry>sort_direction</con:entry><con:entry>Authorization</con:entry></con:parameterOrder></con:request></con:method></con:resource>
+    <con:resource name="Token" path="/oauth/token/">
+      <con:settings/>
+      <con:parameters/>
+      <con:method name="authorize" method="POST">
+        <con:settings/>
+        <con:parameters/>
+        <con:representation type="FAULT">
+          <con:mediaType>application/json;charset=UTF-8</con:mediaType>
+          <con:status>400</con:status>
+          <con:params/>
+        </con:representation>
+        <con:representation type="REQUEST">
+          <con:mediaType>application/x-www-form-urlencoded</con:mediaType>
+          <con:params/>
+        </con:representation>
+        <con:representation type="REQUEST">
+          <con:mediaType>application/json</con:mediaType>
+          <con:params/>
+        </con:representation>
+        <con:representation type="RESPONSE">
+          <con:mediaType>application/json;charset=UTF-8</con:mediaType>
+          <con:status>201</con:status>
+          <con:params/>
+          <con:element xmlns:tok="http://78.133.154.39/oauth/token/">tok:Response</con:element>
+        </con:representation>
+        <con:representation type="FAULT">
+          <con:mediaType>application/json</con:mediaType>
+          <con:status>401</con:status>
+          <con:params/>
+          <con:element xmlns:tok="http://78.133.154.39/oauth/token/">tok:Fault</con:element>
+        </con:representation>
+        <con:request name="Request 1" mediaType="application/json" postQueryString="false">
+          <con:settings>
+            <con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting>
+          </con:settings>
+          <con:endpoint>http://78.133.154.39:1080</con:endpoint>
+          <con:request>{
+"email": "dev@mail.com",
+"password": "haselko",
+"grant_type": "password"
+}</con:request>
+          <con:credentials>
+            <con:authType>Global HTTP Settings</con:authType>
+          </con:credentials>
+          <con:jmsConfig JMSDeliveryMode="PERSISTENT"/>
+          <con:jmsPropertyConfig/>
+          <con:parameters/>
+        <con:parameterOrder/></con:request>
+      </con:method>
+    <con:method name="RefreshToken" method="GET"><con:settings/><con:parameters><con:parameter><con:name>Authorization</con:name><con:value>${#Project#token}</con:value><con:style>HEADER</con:style><con:default>${#Project#token}</con:default></con:parameter></con:parameters><con:request name="Request 1" mediaType="application/json"><con:settings/><con:endpoint>http://78.133.154.39:1080</con:endpoint><con:request/><con:credentials><con:authType>Global HTTP Settings</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:parameters/><con:parameterOrder><con:entry>Authorization</con:entry></con:parameterOrder></con:request></con:method></con:resource>
+    <con:resource name="UserList" path="/users">
+      <con:settings/>
+      <con:parameters/>
+      <con:resource name="Users" path="{id}"><con:settings/><con:parameters><con:parameter><con:name>id</con:name><con:value>id</con:value><con:style>TEMPLATE</con:style><con:default>id</con:default></con:parameter></con:parameters><con:method name="Get" method="GET"><con:settings/><con:parameters/><con:request name="Request 1" mediaType="application/json"><con:settings/><con:endpoint>http://78.133.154.39:1080</con:endpoint><con:request/><con:credentials><con:authType>Global HTTP Settings</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:parameters/><con:parameterOrder><con:entry/></con:parameterOrder></con:request></con:method><con:method name="Update" method="PUT"><con:settings/><con:parameters/><con:request name="Request 1" mediaType="application/json" postQueryString="false"><con:settings/><con:endpoint>http://78.133.154.39:1080</con:endpoint><con:request/><con:credentials><con:authType>Global HTTP Settings</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:parameters/><con:parameterOrder><con:entry/></con:parameterOrder></con:request></con:method><con:method name="Delete" method="DELETE"><con:settings/><con:parameters/><con:request name="Request 1" mediaType="application/json"><con:settings/><con:endpoint>http://78.133.154.39:1080</con:endpoint><con:request/><con:credentials><con:authType>Global HTTP Settings</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:parameters/><con:parameterOrder><con:entry>id</con:entry></con:parameterOrder></con:request></con:method></con:resource><con:method name="CreateUser" method="POST">
+        <con:settings/>
+        <con:parameters/>
+        <con:representation type="RESPONSE">
+          <con:mediaType>application/json;charset=UTF-8</con:mediaType>
+          <con:status>201</con:status>
+          <con:params/>
+          <con:element xmlns:user="http://78.133.154.39/users">user:Response</con:element>
+        </con:representation>
+        <con:representation type="REQUEST">
+          <con:mediaType>application/json</con:mediaType>
+          <con:params/>
+        </con:representation>
+        <con:representation type="FAULT">
+          <con:mediaType>application/json;charset=UTF-8</con:mediaType>
+          <con:status>400</con:status>
+          <con:params/>
+          <con:element xmlns:user="http://78.133.154.39/users">user:Fault</con:element>
+        </con:representation>
+        <con:request name="Request 1" mediaType="application/json" postQueryString="false">
+          <con:settings>
+            <con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting>
+          </con:settings>
+          <con:endpoint>http://78.133.154.39:1080</con:endpoint>
+          <con:request>{
+"email": "dev@mail.com", 
+"password": "haselko"
+}</con:request>
+          <con:credentials>
+            <con:authType>Global HTTP Settings</con:authType>
+          </con:credentials>
+          <con:jmsConfig JMSDeliveryMode="PERSISTENT"/>
+          <con:jmsPropertyConfig/>
+          <con:parameters/>
+        <con:parameterOrder/></con:request>
+      </con:method>
+    </con:resource>
+  <con:resource name="ItemList" path="/items"><con:settings/><con:parameters><con:parameter><con:name>Authorization</con:name><con:value>${#Project#token}</con:value><con:style>HEADER</con:style><con:default>${#Project#token}</con:default></con:parameter></con:parameters><con:resource name="Item" path="{id}"><con:settings/><con:parameters><con:parameter><con:name>id</con:name><con:value>id</con:value><con:style>TEMPLATE</con:style><con:default>id</con:default></con:parameter></con:parameters><con:method name="Get" method="GET"><con:settings/><con:parameters/><con:representation type="RESPONSE"><con:mediaType>application/json;charset=UTF-8</con:mediaType><con:status>200</con:status><con:params/><con:element xmlns:ns="http://78.133.154.39/items/6">ns:Response</con:element></con:representation><con:representation type="FAULT"><con:mediaType>application/json;charset=UTF-8</con:mediaType><con:status>404 403</con:status><con:params/><con:element xmlns:ns="http://78.133.154.39/items/2">ns:Fault</con:element></con:representation><con:request name="Request 1" mediaType="application/json"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:endpoint>http://78.133.154.39:1080</con:endpoint><con:request/><con:credentials><con:authType>Global HTTP Settings</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:parameters><entry key="id" value="7" xmlns="http://eviware.com/soapui/config"/></con:parameters><con:parameterOrder><con:entry>id</con:entry><con:entry>Authorization</con:entry></con:parameterOrder></con:request></con:method><con:method name="Update" method="PUT"><con:settings/><con:parameters/><con:representation type="RESPONSE"><con:mediaType>application/json;charset=UTF-8</con:mediaType><con:status>200</con:status><con:params/><con:element xmlns:ns="http://78.133.154.39/items/7">ns:Response</con:element></con:representation><con:representation type="REQUEST"><con:mediaType>application/json</con:mediaType><con:params/></con:representation><con:request name="Request 1" mediaType="application/json" postQueryString="false"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:endpoint>http://78.133.154.39:1080</con:endpoint><con:request>{
+"name": "Atak Chmielu",
+"description": "Super dobre piwo : UPDATE",
+"location": 
+	{
+	"lat": 53.431285, 
+	"lng": 42.54551
+	},
+"quantity": 6,
+"media": [],
+"collection": "92"
+}</con:request><con:credentials><con:authType>Global HTTP Settings</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:parameters><entry key="id" value="7" xmlns="http://eviware.com/soapui/config"/></con:parameters><con:parameterOrder><con:entry>id</con:entry><con:entry>Authorization</con:entry></con:parameterOrder></con:request></con:method><con:method name="Delete" method="DELETE"><con:settings/><con:parameters/><con:representation type="RESPONSE"><con:mediaType xsi:nil="true"/><con:status>204</con:status><con:params/><con:element>data</con:element></con:representation><con:request name="Request 1" mediaType="application/json"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:endpoint>http://78.133.154.39:1080</con:endpoint><con:request/><con:credentials><con:authType>Global HTTP Settings</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:parameters><entry key="id" value="7" xmlns="http://eviware.com/soapui/config"/></con:parameters><con:parameterOrder><con:entry>id</con:entry><con:entry>Authorization</con:entry></con:parameterOrder></con:request></con:method></con:resource><con:method name="GetItems" method="GET"><con:settings/><con:parameters/><con:representation type="FAULT"><con:mediaType>application/json;charset=UTF-8</con:mediaType><con:status>401</con:status><con:params/><con:element xmlns:item="http://78.133.154.39/items">item:Fault</con:element></con:representation><con:representation type="RESPONSE"><con:mediaType>application/json;charset=UTF-8</con:mediaType><con:status>200</con:status><con:params/><con:element>Response</con:element></con:representation><con:request name="Request 1" mediaType="application/json"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:endpoint>http://78.133.154.39:1080</con:endpoint><con:request/><con:credentials><con:authType>Global HTTP Settings</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:parameters/><con:parameterOrder><con:entry/></con:parameterOrder></con:request></con:method><con:method name="CreateItem" method="POST"><con:settings/><con:parameters/><con:representation type="RESPONSE"><con:mediaType>application/json;charset=UTF-8</con:mediaType><con:status>201</con:status><con:params/><con:element xmlns:item="http://78.133.154.39/items">item:Response</con:element></con:representation><con:representation type="REQUEST"><con:mediaType>application/json</con:mediaType><con:params/></con:representation><con:request name="Request 1" mediaType="application/json" postQueryString="false"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:endpoint>http://78.133.154.39:1080</con:endpoint><con:request>{
+"name": "Atak Chmielu III",
+"description": "kolejne piwko",
+"location": 
+	{
+	"lat": 53.431285, 
+	"lng": 14.54551
+	},
+"quantity": 6,
+"media": [],
+"collection": "92"
+}</con:request><con:credentials><con:authType>Global HTTP Settings</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:parameters/></con:request></con:method><con:method name="SearchItems" method="GET"><con:settings/><con:parameters><con:parameter><con:name>name</con:name><con:value>name</con:value><con:style>QUERY</con:style><con:default>name</con:default><con:path xsi:nil="true"/><con:description xsi:nil="true"/></con:parameter><con:parameter><con:name>collection</con:name><con:value>collection_id</con:value><con:style>QUERY</con:style><con:default>collection_id</con:default><con:path xsi:nil="true"/><con:description xsi:nil="true"/></con:parameter><con:parameter><con:name>owner</con:name><con:value>owner</con:value><con:style>QUERY</con:style><con:default>owner</con:default><con:path xsi:nil="true"/><con:description xsi:nil="true"/></con:parameter></con:parameters><con:representation type="RESPONSE"><con:mediaType>application/json;charset=UTF-8</con:mediaType><con:status>200</con:status><con:params/><con:element>Response</con:element></con:representation><con:request name="Request 1" mediaType="application/json"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:endpoint>http://78.133.154.39:1080</con:endpoint><con:request/><con:credentials><con:authType>Global HTTP Settings</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:parameters>
+  <con:entry key="name" value="piwko"/>
+  <con:entry key="owner" value="38"/>
+  <con:entry key="collection" value="92"/>
+</con:parameters><con:parameterOrder><con:entry>name</con:entry><con:entry>collection</con:entry><con:entry>owner</con:entry><con:entry>Authorization</con:entry></con:parameterOrder></con:request></con:method></con:resource><con:resource name="media" path="/media"><con:settings/><con:parameters><con:parameter><con:name>Authorization</con:name><con:value>${#Project#token}</con:value><con:style>HEADER</con:style><con:default>${#Project#token}</con:default></con:parameter></con:parameters><con:resource name="" path="{id}"><con:settings/><con:parameters><con:parameter><con:name>id</con:name><con:value>id</con:value><con:style>TEMPLATE</con:style><con:default>id</con:default></con:parameter></con:parameters><con:method name="Get" method="GET"><con:settings/><con:parameters/><con:request name="Request 1" mediaType="application/json"><con:settings/><con:endpoint>http://78.133.154.39:1080</con:endpoint><con:request/><con:credentials><con:authType>Global HTTP Settings</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:parameters/><con:parameterOrder><con:entry>id</con:entry><con:entry>Authorization</con:entry></con:parameterOrder></con:request></con:method><con:method name="Update" method="PUT"><con:settings/><con:parameters/><con:request name="Request 1" mediaType="application/json" postQueryString="false"><con:settings/><con:endpoint>http://78.133.154.39:1080</con:endpoint><con:request/><con:credentials><con:authType>Global HTTP Settings</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:parameters/><con:parameterOrder><con:entry>id</con:entry><con:entry>Authorization</con:entry></con:parameterOrder></con:request></con:method><con:method name="Delete" method="DELETE"><con:settings/><con:parameters/><con:request name="Request 1" mediaType="application/json"><con:settings/><con:endpoint>http://78.133.154.39:1080</con:endpoint><con:request/><con:credentials><con:authType>Global HTTP Settings</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:parameters/><con:parameterOrder><con:entry>id</con:entry><con:entry>Authorization</con:entry></con:parameterOrder></con:request></con:method><con:method name="GetThumbnail" method="GET"><con:settings/><con:parameters><con:parameter><con:name>size</con:name><con:value>size</con:value><con:style>QUERY</con:style><con:default>size</con:default><con:path xsi:nil="true"/><con:description xsi:nil="true"/></con:parameter></con:parameters><con:request name="500" mediaType="application/json"><con:settings/><con:endpoint>http://78.133.154.39:1080</con:endpoint><con:request/><con:credentials><con:authType>Global HTTP Settings</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:parameters><entry key="size" value="500" xmlns="http://eviware.com/soapui/config"/></con:parameters><con:parameterOrder><con:entry>id</con:entry><con:entry>size</con:entry><con:entry>Authorization</con:entry></con:parameterOrder></con:request><con:request name="340" mediaType="application/json"><con:settings/><con:endpoint>http://78.133.154.39:1080</con:endpoint><con:request/><con:credentials><con:authType>Global HTTP Settings</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:parameters><entry key="size" value="340" xmlns="http://eviware.com/soapui/config"/></con:parameters><con:parameterOrder><con:entry>id</con:entry><con:entry>size</con:entry><con:entry>Authorization</con:entry></con:parameterOrder></con:request><con:request name="300" mediaType="application/json"><con:settings/><con:endpoint>http://78.133.154.39:1080</con:endpoint><con:request/><con:credentials><con:authType>Global HTTP Settings</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:parameters><entry key="size" value="300" xmlns="http://eviware.com/soapui/config"/></con:parameters><con:parameterOrder><con:entry>id</con:entry><con:entry>size</con:entry><con:entry>Authorization</con:entry></con:parameterOrder></con:request><con:request name="160" mediaType="application/json"><con:settings/><con:endpoint>http://78.133.154.39:1080</con:endpoint><con:request/><con:credentials><con:authType>Global HTTP Settings</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:parameters><entry key="id" value="160" xmlns="http://eviware.com/soapui/config"/></con:parameters><con:parameterOrder><con:entry>id</con:entry><con:entry>size</con:entry><con:entry>Authorization</con:entry></con:parameterOrder></con:request></con:method></con:resource><con:method name="CreateMedia" method="GET"><con:settings/><con:parameters/><con:request name="Request 1" mediaType="application/json"><con:settings/><con:endpoint>http://78.133.154.39:1080</con:endpoint><con:request/><con:credentials><con:authType>Global HTTP Settings</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:parameters/><con:parameterOrder><con:entry>Authorization</con:entry></con:parameterOrder></con:request></con:method></con:resource></con:interface>
+  <con:properties>
+    <con:property>
+      <con:name>token</con:name>
+      <con:value>3c81047a-bb81-4c43-be10-87ad57689347</con:value>
+    </con:property>
+  </con:properties>
+  <con:wssContainer/>
+  <con:sensitiveInformation/>
+</con:soapui-project>
