@@ -1,22 +1,9 @@
 package com.blstream.myhoard.controller;
 
-import com.blstream.myhoard.biz.model.MediaDTO;
-import com.blstream.myhoard.biz.service.MediaService;
-import com.blstream.myhoard.biz.util.MediaUtils;
-import com.blstream.myhoard.exception.ErrorCodeEnum;
-import com.blstream.myhoard.exception.MyHoardRestException;
-import com.blstream.myhoard.exception.NotFoundException;
-
 import java.io.IOException;
-import java.io.InputStream;
-import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
-import org.apache.commons.fileupload.FileItem;
-import org.apache.commons.fileupload.disk.DiskFileItemFactory;
-import org.apache.commons.fileupload.servlet.ServletFileUpload;
-import org.apache.commons.io.IOUtils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -28,6 +15,15 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.multipart.MultipartFile;
+
+import com.blstream.myhoard.biz.model.MediaDTO;
+import com.blstream.myhoard.biz.service.MediaService;
+import com.blstream.myhoard.biz.util.MediaUtils;
+import com.blstream.myhoard.biz.validator.MediaValidator;
+import com.blstream.myhoard.exception.ErrorCodeEnum;
+import com.blstream.myhoard.exception.MyHoardException;
+import com.blstream.myhoard.exception.MyHoardRestException;
+import com.blstream.myhoard.exception.NotFoundException;
 
 @Controller
 @RequestMapping("/media")
@@ -42,6 +38,9 @@ public class MediaController {
 	@Autowired
 	private MediaUtils mediaUtils;
 
+	@Autowired
+	private MediaValidator mediaValidator;
+
 	@RequestMapping(method = RequestMethod.POST)
 	@ResponseBody
 	@ResponseStatus(HttpStatus.CREATED)
@@ -50,39 +49,20 @@ public class MediaController {
 
 		logger.info("create");
 
-		MediaDTO media = new MediaDTO();
+		byte[] photo = mediaUtils.getFileFromMultipartFile(file); // file.getBytes();//mediaUtils.getFileFromRequest(request);
 
-		if (file.isEmpty()) {
-			throw new MyHoardRestException(ErrorCodeEnum.CREATE.getValue());
-		}
+		MediaDTO mediaDTO = new MediaDTO();
+		mediaDTO.setFile(photo);
 
-		long maxSize = 10485760;
-		if (file.getSize() > maxSize) {
-			logger.info("Przekroczono max size!");
-			throw new MyHoardRestException(1001);
-		}
-
-		if (!file.getContentType().contains("image")) {
-			logger.info("Tylko zdjecia!");
-			throw new MyHoardRestException(1002);
-		}
+		mediaValidator.validate(mediaDTO, "post");
 
 		try {
-			media.setFile(file.getBytes());
-		} catch (Exception e) {
-			logger.error(e.getMessage(), e);
-			throw new MyHoardRestException(ErrorCodeEnum.CREATE.getValue());
+			mediaDTO = mediaService.create(mediaDTO);
+		} catch (MyHoardException e) {
+			e.printStackTrace();
 		}
 
-		try {
-			media = mediaService.create(media);
-		} catch (Exception e) {
-			logger.error(e.getMessage(), e);
-			throw new MyHoardRestException(ErrorCodeEnum.CREATE.getValue());
-		}
-
-		return media;
-
+		return mediaDTO;
 	}
 
 	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
@@ -134,17 +114,7 @@ public class MediaController {
 
 		logger.info("update");
 
-		ServletFileUpload fileUpload = new ServletFileUpload(
-				new DiskFileItemFactory());
-		List<FileItem> fileItems = null;
-		byte[] fileUploadBytes = null;
-		try {
-			fileItems = fileUpload.parseRequest(request);
-			InputStream in = fileItems.get(0).getInputStream();
-			fileUploadBytes = IOUtils.toByteArray(in);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+		byte[] file = mediaUtils.getFileFromRequest(request);
 
 		int id = 0;
 		try {
@@ -154,10 +124,11 @@ public class MediaController {
 				throw new MyHoardRestException(ErrorCodeEnum.UPDATE.getValue());
 			}
 
-			mediaDTO.setFile(fileUploadBytes);
+			mediaDTO.setFile(file);
+			mediaValidator.validate(mediaDTO, "put");
 			mediaService.update(mediaDTO);
 			return mediaDTO;
-		} catch (Exception ex) {
+		} catch (MyHoardException ex) {
 			logger.error(ex.getMessage(), ex);
 			throw new MyHoardRestException(ErrorCodeEnum.UPDATE.getValue());
 		}

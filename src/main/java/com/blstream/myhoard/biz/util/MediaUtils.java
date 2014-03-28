@@ -2,12 +2,22 @@ package com.blstream.myhoard.biz.util;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.Date;
+import java.util.List;
+
+import javax.servlet.http.HttpServletRequest;
 
 import net.coobird.thumbnailator.Thumbnails;
 
+import org.apache.commons.fileupload.FileItem;
+import org.apache.commons.fileupload.disk.DiskFileItemFactory;
+import org.apache.commons.fileupload.servlet.ServletFileUpload;
+import org.apache.commons.io.IOUtils;
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Component;
+import org.springframework.web.multipart.MultipartFile;
 
 @Component
 public class MediaUtils {
@@ -21,8 +31,8 @@ public class MediaUtils {
 
 		try {
 			long start = new Date().getTime();
-			Thumbnails.of(new ByteArrayInputStream(image))
-					.outputFormat("jpg").size(size, size).toOutputStream(baos);
+			Thumbnails.of(new ByteArrayInputStream(image)).outputFormat("jpg")
+					.size(size, size).toOutputStream(baos);
 			long elapsed = new Date().getTime() - start;
 
 			logger.info("thumbnailator time: " + elapsed + "[ms], size: "
@@ -33,5 +43,36 @@ public class MediaUtils {
 		}
 
 		return baos.toByteArray();
+	}
+
+	public byte[] getFileFromRequest(HttpServletRequest request) {
+
+		ServletFileUpload fileUpload = new ServletFileUpload(
+				new DiskFileItemFactory());
+		List<FileItem> fileItems = null;
+		byte[] fileUploadBytes = null;
+		try {
+			fileItems = fileUpload.parseRequest(request);
+			InputStream in = fileItems.get(0).getInputStream();
+			fileUploadBytes = IOUtils.toByteArray(in);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		return fileUploadBytes;
+	}
+
+	public byte[] getFileFromMultipartFile(MultipartFile file)
+			throws IOException {
+
+		if (file == null) {
+			return null;
+		}
+
+		if (!file.getContentType().contains("image")) {
+			return null;
+		}
+		return file.getBytes();
+
 	}
 }
