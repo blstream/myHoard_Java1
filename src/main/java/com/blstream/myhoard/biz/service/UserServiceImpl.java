@@ -7,6 +7,7 @@ import com.blstream.myhoard.db.model.UserDS;
 import com.blstream.myhoard.exception.MyHoardException;
 import com.blstream.myhoard.exception.NotFoundException;
 import com.blstream.myhoard.exception.ResourceAlreadyExistException;
+import java.util.List;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -79,6 +80,12 @@ public class UserServiceImpl implements UserService {
     @Override
     public void remove(int i) throws MyHoardException {
         userDAO.remove(i);
+    }
+
+    // TODO RT
+    @Override
+    public List<UserDTO> getList() throws MyHoardException {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
 }

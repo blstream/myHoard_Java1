@@ -1,6 +1,8 @@
 package com.blstream.myhoard.db.dao;
 
 import com.blstream.myhoard.db.model.UserDS;
+import com.blstream.myhoard.exception.MyHoardException;
+import java.util.List;
 import org.hibernate.Criteria;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Restrictions;
@@ -22,6 +24,11 @@ public class UserDAOImpl implements UserDAO {
         criteria.setMaxResults(1);
 
         return (UserDS) criteria.uniqueResult();
+    }
+
+    @Override
+    public List<UserDS> getList() throws MyHoardException {
+        return sessionFactory.getCurrentSession().createCriteria(UserDS.class).list();
     }
 
     @Override
