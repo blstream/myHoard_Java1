@@ -1,13 +1,5 @@
 package com.blstream.myhoard.db.dao;
 
-import com.blstream.myhoard.authorization.service.SecurityService;
-import com.blstream.myhoard.db.model.CollectionDS;
-import com.blstream.myhoard.db.model.TagDS;
-import com.blstream.myhoard.db.model.UserDS;
-import com.blstream.myhoard.exception.MyHoardException;
-import com.blstream.myhoard.exception.ResourceAlreadyExistException;
-
-import java.awt.image.RescaleOp;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -21,6 +13,13 @@ import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
+
+import com.blstream.myhoard.authorization.service.SecurityService;
+import com.blstream.myhoard.db.model.CollectionDS;
+import com.blstream.myhoard.db.model.TagDS;
+import com.blstream.myhoard.db.model.UserDS;
+import com.blstream.myhoard.exception.MyHoardException;
+import com.blstream.myhoard.exception.ResourceAlreadyExistException;
 
 @Repository
 @Transactional
@@ -165,6 +164,7 @@ public class CollectionDAOImpl implements CollectionDAO {
         int numberOfCollections = sessionFactory.getCurrentSession()
                 .createCriteria(CollectionDS.class)
                 .add(Restrictions.eq("name", obj.getName()))
+                .add(Restrictions.not(Restrictions.eq("id", obj.getId())))
                 .add(Restrictions.eq("owner", obj.getOwner())).list().size();
         if (numberOfCollections > 0) {
             return false;
@@ -172,6 +172,7 @@ public class CollectionDAOImpl implements CollectionDAO {
             return true;
         }
     }
+    
 
     @SuppressWarnings("unchecked")
     @Override

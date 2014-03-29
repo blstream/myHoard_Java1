@@ -11,8 +11,11 @@ import com.blstream.myhoard.exception.MySuperExtraException;
 @Component
 public class MediaValidator {
 
+	private static final String MEDIA_NOT_FOUND = "Media not found!";
+	private static final String MEDIA_SIZE_NOT_ACCEPTABLE_MAX_SIZE_10MB = "Media size not acceptable. Max size 10MB!";
+
 	private Map<String, String> errorMessages;
-	private final String KEY = "media";
+	private final String KEY_FILE = "media";
 
 	public void validate(MediaDTO mediaDTO, String requestMethod) {
 
@@ -50,12 +53,13 @@ public class MediaValidator {
 		long maxSize = 10485760;
 
 		if (file == null) {
-			errorMessages.put(KEY, "Media not found!");
+			errorMessages.put(KEY_FILE, MEDIA_NOT_FOUND);
 			return;
 		}
 
 		if (file.length > maxSize) {
-			errorMessages.put(KEY, "Media size not acceptable. Max size 10MB!");
+			errorMessages
+					.put(KEY_FILE, MEDIA_SIZE_NOT_ACCEPTABLE_MAX_SIZE_10MB);
 		}
 
 	}
