@@ -47,8 +47,7 @@ public class CollectionController {
     @RequestMapping(method = RequestMethod.POST)
     @ResponseBody
     @ResponseStatus(HttpStatus.CREATED)
-    public CollectionDTO addCollection(@ModelAttribute(USER) UserDTO userDTO, @Valid @RequestBody CollectionDTO collection) throws MyHoardException {
-        collection.setOwner(userDTO);
+    public CollectionDTO addCollection(@Valid @RequestBody CollectionDTO collection) throws MyHoardException {
 
         return collectionService.create(collection);
     }

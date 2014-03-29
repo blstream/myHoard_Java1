@@ -1,5 +1,6 @@
 package com.blstream.myhoard.controller;
 
+import com.blstream.myhoard.authorization.service.SecurityService;
 import com.blstream.myhoard.biz.model.ItemDTO;
 import com.blstream.myhoard.biz.model.UserDTO;
 import com.blstream.myhoard.biz.service.ItemService;
@@ -40,6 +41,8 @@ public class ItemController {
 
     @Autowired
     private ItemService itemService;
+    @Autowired
+    SecurityService securityService;
 
     @ModelAttribute(USER)
     public UserDTO getUser(HttpServletRequest request) {
@@ -50,35 +53,32 @@ public class ItemController {
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
     public List<ItemDTO> getItems(
-    		@ModelAttribute(USER) UserDTO userDTO,
             @RequestParam(value = "name", required = false) String name,
             @RequestParam(value = "collection", required = false) String collectionId,
             @RequestParam(value = "owner", required = false) String owner) throws MyHoardException {
-    	
-    	
-    	if(name == null && collectionId == null && owner == null) {
-    		return itemService.getListByUser(userDTO);
-    	}
-    	else if(name != null && collectionId != null && owner != null) {
-    			try {
-    	        	int collection = Integer.parseInt(collectionId);
-    	            return itemService.getList(name,collection, owner);    		
-    	    	}
-    	    	catch(Exception e) {
-    	    		logger.error(e.getMessage(), e);
-    	    		throw new NotFoundException(String.format(INVALID_COLLECTION_ID, collectionId));
-    	    	}
-    	}
-    	else {
-    		throw new NotFoundException(INVALID_PARAMETERS);
-    	}
+
+        if (name == null && collectionId == null && owner == null) {
+            return itemService.getListByUser();
+        } else if (name != null && collectionId != null && owner != null) {
+            try {
+                int collection = Integer.parseInt(collectionId);
+                return itemService.getList(name, collection, owner);
+            } catch (NumberFormatException e) {
+                logger.error(e.getMessage(), e);
+                throw new NotFoundException(String.format(INVALID_COLLECTION_ID, collectionId));
+            } catch (MyHoardException e) {
+                logger.error(e.getMessage(), e);
+                throw new NotFoundException(String.format(ITEM_NOT_EXIST, collectionId));
+            }
+        } else {
+            throw new NotFoundException(INVALID_PARAMETERS);
+        }
     }
-    
+
     @RequestMapping(method = RequestMethod.POST)
     @ResponseStatus(HttpStatus.CREATED)
     @ResponseBody
-    public ItemDTO addItem(@ModelAttribute(USER) UserDTO userDTO, @Valid @RequestBody ItemDTO item) throws MyHoardException {
-        item.setOwner(userDTO);
+    public ItemDTO addItem(@Valid @RequestBody ItemDTO item) throws MyHoardException {
 
         return itemService.create(item);
     }
@@ -86,7 +86,7 @@ public class ItemController {
     @RequestMapping(value = "/{itemId}", method = RequestMethod.GET)
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
-    public ItemDTO getItem(@ModelAttribute(USER) UserDTO userDTO, @PathVariable("itemId") String id) {
+    public ItemDTO getItem(@PathVariable("itemId") String id) {
         ItemDTO itemDTO;
         try {
             itemDTO = itemService.get(Integer.parseInt(id));
@@ -98,7 +98,7 @@ public class ItemController {
             throw new NotFoundException(String.format(ITEM_NOT_EXIST, id));
         }
 
-        if (!userDTO.getId().equals(itemDTO.getOwner().getId())) {
+        if (!securityService.getCurrentUser().getId().equals(itemDTO.getOwner().getId())) {
             throw new ForbiddenException();
         }
 
@@ -108,8 +108,7 @@ public class ItemController {
     @RequestMapping(value = "/{itemId}", method = RequestMethod.PUT)
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
-    public ItemDTO updateItem(@ModelAttribute(USER) UserDTO userDTO, @PathVariable("itemId") String id,
-            @Valid @RequestBody ItemDTO itemDTO) throws MyHoardException {
+    public ItemDTO updateItem(@PathVariable("itemId") String id, @Valid @RequestBody ItemDTO itemDTO) throws MyHoardException {
         ItemDTO srcItemDTO;
         try {
             srcItemDTO = itemService.get(Integer.parseInt(id));
@@ -122,7 +121,7 @@ public class ItemController {
             throw new NotFoundException(String.format(ITEM_NOT_EXIST, id));
         }
 
-        if (!userDTO.getId().equals(srcItemDTO.getOwner().getId())) {
+        if (!securityService.getCurrentUser().getId().equals(srcItemDTO.getOwner().getId())) {
             throw new ForbiddenException();
         }
 
@@ -132,7 +131,7 @@ public class ItemController {
     @RequestMapping(value = "/{itemId}", method = RequestMethod.DELETE)
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @ResponseBody
-    public void deleteItem(@ModelAttribute(USER) UserDTO userDTO, @PathVariable("itemId") String id) throws MyHoardException {
+    public void deleteItem(@PathVariable("itemId") String id) throws MyHoardException {
         ItemDTO itemDTO;
         try {
             itemDTO = itemService.get(Integer.parseInt(id));
@@ -144,7 +143,7 @@ public class ItemController {
             throw new NotFoundException(String.format(ITEM_NOT_EXIST, id));
         }
 
-        if (!userDTO.getId().equals(itemDTO.getOwner().getId())) {
+        if (securityService.getCurrentUser().getId().equals(itemDTO.getOwner().getId())) {
             throw new ForbiddenException();
         }
 

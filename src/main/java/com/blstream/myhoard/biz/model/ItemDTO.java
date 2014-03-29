@@ -7,18 +7,16 @@ import java.util.Set;
 import org.codehaus.jackson.annotate.JsonProperty;
 import org.codehaus.jackson.map.annotate.JsonSerialize;
 import org.hibernate.validator.constraints.Length;
-import org.hibernate.validator.constraints.NotEmpty;
 
 public class ItemDTO {
 
     private String id;
-    @NotEmpty
     @Length(min = 2, max = 50)
     private String name;
     @Length(max = 250)
     private String description;
     private GeoPointDTO location;
-    private int quantity;
+    private Integer quantity;
     private Set<MediaDTO> media;
     @JsonProperty("created_date")
     @JsonSerialize(using = RestDateSerializer.class)
@@ -34,7 +32,7 @@ public class ItemDTO {
     }
 
     public ItemDTO(String id, String name, String description,
-            GeoPointDTO location, int quantity, Set<MediaDTO> media,
+            GeoPointDTO location, Integer quantity, Set<MediaDTO> media,
             Date createdDate, Date modifiedDate, UserDTO owner, String collection) {
         this.id = id;
         this.name = name;
@@ -80,11 +78,11 @@ public class ItemDTO {
         this.location = location;
     }
 
-    public int getQuantity() {
+    public Integer getQuantity() {
         return quantity;
     }
 
-    public void setQuantity(int quantity) {
+    public void setQuantity(Integer quantity) {
         this.quantity = quantity;
     }
 

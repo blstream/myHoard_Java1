@@ -48,6 +48,7 @@ public class MyHoardErrorHandler {
 	private static final Logger logger = Logger
 			.getLogger(MyHoardErrorHandler.class.getCanonicalName());
 
+    // TODO ???
 	@ExceptionHandler(MyHoardRestException.class)
 	@ResponseStatus(HttpStatus.BAD_REQUEST)
 	@ResponseBody
@@ -67,6 +68,7 @@ public class MyHoardErrorHandler {
 		}
 	}
 
+    // TODO ???
 	// tymczasowe
 	@ExceptionHandler(org.hibernate.PropertyValueException.class)
 	@ResponseStatus(HttpStatus.BAD_REQUEST)
@@ -77,6 +79,7 @@ public class MyHoardErrorHandler {
 		return new ErrorCode(111);
 	}
 
+    // TODO ???
 	@ExceptionHandler
 	@ResponseBody
 	@ResponseStatus(value = HttpStatus.BAD_REQUEST)
@@ -98,6 +101,7 @@ public class MyHoardErrorHandler {
 		}
 	}
 
+    // TODO errors map
 	@ExceptionHandler
 	@ResponseStatus(value = HttpStatus.NOT_FOUND)
 	@ResponseBody
@@ -110,6 +114,7 @@ public class MyHoardErrorHandler {
 		return new ErrorCode(404, ERROR_MESSAGE_NOT_FOUND);
 	}
 
+    // TODO errors map
 	@ExceptionHandler
 	@ResponseStatus(value = HttpStatus.CONFLICT)
 	@ResponseBody
@@ -140,29 +145,25 @@ public class MyHoardErrorHandler {
 		return new ErrorCode(400, String.format("%s", ERROR_MESSAGE_INCORRECT));
 	}
 
-	// TODO RT
-	@ExceptionHandler
-	@ResponseStatus(value = HttpStatus.UNAUTHORIZED)
-	@ResponseBody
-	public ErrorCode handleException(AuthorizationException e) {
-		logger.error("handleException AuthorizationException 401 ", e);
+    @ExceptionHandler
+    @ResponseStatus(value = HttpStatus.UNAUTHORIZED)
+    @ResponseBody
+    public ErrorCode handleException(AuthorizationException e) {
+        logger.error("handleException AuthorizationException 401 ", e);
 
-		int errorCode = e.getErrorCode();
+        int errorCode = e.getErrorCode();
 
-		switch (errorCode) {
-		case ERROR_CODE_AUTH_BAD_CREDENTIALS:
-			return new ErrorCode(errorCode, ERROR_MESSAGE_AUTH_BAD_CREDENTIALS);
-		case ERROR_CODE_AUTH_TOKEN_NOT_PROVIDED:
-			return new ErrorCode(errorCode,
-					ERROR_MESSAGE_AUTH_TOKEN_NOT_PROVIDED);
-		case ERROR_CODE_AUTH_TOKEN_INVALID:
-			return new ErrorCode(errorCode,
-					ERROR_MESSAGE_AUTH_TOKEN_INVALID_TOKEN);
-		default:
-			return new ErrorCode(ERROR_CODE_AUTH_UNKNOW_ERROR,
-					ERROR_MESSAGE_AUTH_UNKNOW_ERROR);
-		}
-	}
+        switch (errorCode) {
+            case ERROR_CODE_AUTH_BAD_CREDENTIALS:
+                return new ErrorCode(errorCode, ERROR_MESSAGE_AUTH_BAD_CREDENTIALS);
+            case ERROR_CODE_AUTH_TOKEN_NOT_PROVIDED:
+                return new ErrorCode(errorCode, ERROR_MESSAGE_AUTH_TOKEN_NOT_PROVIDED);
+            case ERROR_CODE_AUTH_TOKEN_INVALID:
+                return new ErrorCode(errorCode, ERROR_MESSAGE_AUTH_TOKEN_INVALID_TOKEN);
+            default:
+                return new ErrorCode(ERROR_CODE_AUTH_UNKNOW_ERROR, ERROR_MESSAGE_AUTH_UNKNOW_ERROR);
+        }
+    }
 
 	@ExceptionHandler
 	@ResponseStatus(value = HttpStatus.FORBIDDEN)
@@ -172,7 +173,8 @@ public class MyHoardErrorHandler {
 
 		return new ErrorCode(ERROR_CODE_FORBIDDEN, ERROR_MESSAGE_AUTH_FORBIDDEN);
 	}
-
+    
+    // TODO errors map
 	// DTO objects validation
 	@ExceptionHandler(MethodArgumentNotValidException.class)
 	@ResponseStatus(HttpStatus.BAD_REQUEST)
@@ -199,7 +201,6 @@ public class MyHoardErrorHandler {
 		logger.error("superException", ex);
 
 		return new ErrorCode(400, "Validation error", ex.getErrors());
-
 	}
 
 }

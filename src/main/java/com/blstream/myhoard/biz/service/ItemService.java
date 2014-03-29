@@ -7,6 +7,8 @@ import java.util.List;
 
 public interface ItemService extends ResourceService<ItemDTO> {
 
+    public List<ItemDTO> getListByUser() throws MyHoardException;
+
     public List<ItemDTO> getListByUser(UserDTO userDTO) throws MyHoardException;
 
     public List<ItemDTO> getList(String name, int collection, String owner) throws MyHoardException;

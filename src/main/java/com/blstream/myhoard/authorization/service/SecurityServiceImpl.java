@@ -14,4 +14,16 @@ public class SecurityServiceImpl implements SecurityService {
         return (UserDTO) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
     }
 
+    // TODO RT
+    @Override
+    public boolean currentUserIsOwner(Object object) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    // TODO RT
+    @Override
+    public boolean currentUserHasAccess(Object object) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
 }

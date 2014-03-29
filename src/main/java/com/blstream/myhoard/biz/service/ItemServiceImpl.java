@@ -1,5 +1,6 @@
 package com.blstream.myhoard.biz.service;
 
+import com.blstream.myhoard.authorization.service.SecurityService;
 import com.blstream.myhoard.biz.mapper.ItemMapper;
 import com.blstream.myhoard.biz.model.ItemDTO;
 import com.blstream.myhoard.biz.model.MediaDTO;
@@ -37,7 +38,9 @@ public class ItemServiceImpl implements ItemService {
     @Autowired
     private MediaDAO mediaDAO;
     @Autowired
-    private UserDAO userDao;
+    private UserDAO userDAO;
+    @Autowired
+    SecurityService securityService;
 
     @Override
     public ItemDTO create(ItemDTO itemDTO) throws MyHoardException {
@@ -46,7 +49,7 @@ public class ItemServiceImpl implements ItemService {
         itemDTO.setModifiedDate(new Timestamp(date.getTime()));
         CollectionDS collectionDS = getItemCollection(itemDTO);
         Set<MediaDS> mediaDSSet = getItemMedia(itemDTO);
-        UserDS userDS = userDao.get(Integer.parseInt(itemDTO.getOwner().getId()));
+        UserDS userDS = userDAO.get(Integer.parseInt(securityService.getCurrentUser().getId()));
 
         ItemDS itemDS = ItemMapper.map(itemDTO, collectionDS, mediaDSSet);
         itemDS.setOwner(userDS);
@@ -57,7 +60,14 @@ public class ItemServiceImpl implements ItemService {
     }
 
     @Override
-    public List<ItemDTO> getListByUser(UserDTO userDTO) {
+    public List<ItemDTO> getListByUser() {
+        List<ItemDS> itemDSList = itemDAO.getListByUser(Integer.parseInt(securityService.getCurrentUser().getId()));
+
+        return ItemMapper.map(itemDSList);
+    }
+
+    @Override
+    public List<ItemDTO> getListByUser(UserDTO userDTO) throws MyHoardException {
         List<ItemDS> itemDSList = itemDAO.getListByUser(Integer.parseInt(userDTO.getId()));
 
         return ItemMapper.map(itemDSList);
@@ -69,12 +79,12 @@ public class ItemServiceImpl implements ItemService {
 
         return ItemMapper.map(itemDSList);
     }
-    
-	@Override
-	public List<ItemDTO> getList(String name, int collection, String owner) {
-		
-		return ItemMapper.map(itemDAO.getList(name, collection, owner));
-	}
+
+    @Override
+    public List<ItemDTO> getList(String name, int collection, String owner) {
+
+        return ItemMapper.map(itemDAO.getList(name, collection, owner));
+    }
 
     @Override
     public ItemDTO get(int id) {
@@ -88,19 +98,39 @@ public class ItemServiceImpl implements ItemService {
 
     @Override
     public ItemDTO update(ItemDTO itemDTO) throws MyHoardException {
-        CollectionDS collectionDS = getItemCollection(itemDTO);
-        Set<MediaDS> mediaDSSet = getItemMedia(itemDTO);
+        Set<MediaDS> mediaDSSet = null;
+        CollectionDS collectionDS = null;
+        if (itemDTO.getCollection() != null) {
+            collectionDS = getItemCollection(itemDTO);
+        }
+        if (itemDTO.getMedia() != null) {
+            mediaDSSet = getItemMedia(itemDTO);
+        }
         ItemDS updateItemDS = ItemMapper.map(itemDTO, collectionDS, mediaDSSet);
 
         ItemDS itemDS = itemDAO.get(Integer.parseInt(itemDTO.getId()));
         itemDS.setModifiedDate(new Timestamp(new Date().getTime()));
-        itemDS.setName(updateItemDS.getName());
-        itemDS.setDescription(updateItemDS.getDescription());
-        itemDS.setLat(updateItemDS.getLat());
-        itemDS.setLng(updateItemDS.getLng());
-        itemDS.setQuantity(updateItemDS.getQuantity());
-        itemDS.setCollection(updateItemDS.getCollection());
-        itemDS.setMedia(updateItemDS.getMedia());
+        if (updateItemDS.getName() != null) {
+            itemDS.setName(updateItemDS.getName());
+        }
+        if (updateItemDS.getDescription() != null) {
+            itemDS.setDescription(updateItemDS.getDescription());
+        }
+        if (updateItemDS.getLng() != null) {
+            itemDS.setLat(updateItemDS.getLat());
+        }
+        if (updateItemDS.getLng() != null) {
+            itemDS.setLng(updateItemDS.getLng());
+        }
+        if (itemDTO.getQuantity() != null) {
+            itemDS.setQuantity(updateItemDS.getQuantity());
+        }
+        if (updateItemDS.getCollection() != null) {
+            itemDS.setCollection(updateItemDS.getCollection());
+        }
+        if (updateItemDS.getMedia() != null) {
+            itemDS.setMedia(updateItemDS.getMedia());
+        }
         itemDAO.update(itemDS);
 
         itemDTO = ItemMapper.map(itemDS);
@@ -128,17 +158,19 @@ public class ItemServiceImpl implements ItemService {
 
     private Set<MediaDS> getItemMedia(ItemDTO itemDTO) {
         Set<MediaDS> mediaDSSet = new HashSet<MediaDS>();
-        for (MediaDTO mediaDTO : itemDTO.getMedia()) {
-            MediaDS mediaDS = null;
-            try {
-                mediaDS = mediaDAO.get(Integer.parseInt(mediaDTO.getId()));
-            } catch (NumberFormatException e) {
-                logger.error("getItemMedia - Invalid Media Id", e);
+        if (itemDTO.getMedia() != null) {
+            for (MediaDTO mediaDTO : itemDTO.getMedia()) {
+                MediaDS mediaDS = null;
+                try {
+                    mediaDS = mediaDAO.get(Integer.parseInt(mediaDTO.getId()));
+                } catch (NumberFormatException e) {
+                    logger.error("getItemMedia - Invalid Media Id", e);
+                }
+                if (mediaDS == null) {
+                    throw new NotFoundException(String.format("Media with id = %s not exist", mediaDTO.getId()));
+                }
+                mediaDSSet.add(mediaDS);
             }
-            if (mediaDS == null) {
-                throw new NotFoundException(String.format("Media with id = %s not exist", mediaDTO.getId()));
-            }
-            mediaDSSet.add(mediaDS);
         }
         return mediaDSSet;
     }

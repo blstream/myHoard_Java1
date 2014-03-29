@@ -1,5 +1,6 @@
 package com.blstream.myhoard.biz.service;
 
+import com.blstream.myhoard.authorization.service.SecurityService;
 import com.blstream.myhoard.biz.mapper.CollectionMapper;
 import com.blstream.myhoard.biz.model.CollectionDTO;
 import com.blstream.myhoard.db.dao.CollectionDAO;
@@ -20,9 +21,10 @@ public class CollectionServiceImpl implements CollectionService {
 
     @Autowired
     private CollectionDAO collectionDAO;
-
     @Autowired
-    private UserDAO userDao;
+    private UserDAO userDAO;
+    @Autowired
+    SecurityService securityService;
 
     @Override
     public List<CollectionDTO> getList() {
@@ -51,7 +53,7 @@ public class CollectionServiceImpl implements CollectionService {
         collection.setModifiedDate(new Timestamp(date.getTime()));
 
         CollectionDS collectionDS = CollectionMapper.map(collection);
-        collectionDS.setOwner(userDao.get(Integer.parseInt(collection.getOwner().getId())));
+        collectionDS.setOwner(userDAO.get(Integer.parseInt(securityService.getCurrentUser().getId())));
 
         collectionDAO.create(collectionDS);
         CollectionDTO collectionDTO = CollectionMapper.map(collectionDS);
@@ -74,7 +76,7 @@ public class CollectionServiceImpl implements CollectionService {
         srcCollectionDS.setName(collectionDS.getName());
 
         if (collectionDS.getOwner() != null) {
-            srcCollectionDS.setOwner(userDao.get(Integer.parseInt(collection.getOwner().getId())));
+            srcCollectionDS.setOwner(userDAO.get(Integer.parseInt(collection.getOwner().getId())));
         }
         srcCollectionDS.setTags(collectionDS.getTags());
         collectionDAO.update(srcCollectionDS);

@@ -14,7 +14,7 @@ public class MySuperExtraException extends RuntimeException {
 
 	private static final long serialVersionUID = 1L;
 
-	Map<String, String> errors;
+	private Map<String, String> errors;
 
 	public MySuperExtraException() {
 		super();

@@ -10,19 +10,26 @@ import java.util.List;
 import java.util.Set;
 
 public class ItemMapper {
+    
+    
 
     public static ItemDS map(ItemDTO itemDTO, CollectionDS collection, Set<MediaDS> media) {
         ItemDS itemDS = new ItemDS();
         itemDS.setName(itemDTO.getName());
         itemDS.setDescription(itemDTO.getDescription());
-        itemDS.setLat(itemDTO.getLocation().getLat());
-        itemDS.setLng(itemDTO.getLocation().getLng());
-        itemDS.setQuantity(itemDTO.getQuantity());
+        if (itemDTO.getLocation() != null) {
+            itemDS.setLat(itemDTO.getLocation().getLat());
+            itemDS.setLng(itemDTO.getLocation().getLng());
+        }
+        if (itemDTO.getQuantity() != null) {
+            itemDS.setQuantity(itemDTO.getQuantity());
+        }
         itemDS.setCreatedDate(itemDTO.getCreatedDate());
         itemDS.setModifiedDate(itemDTO.getModifiedDate());
-        itemDS.setOwner(collection.getOwner());
         itemDS.setCollection(collection);
-        itemDS.setMedia(media);
+        if (media != null) {
+            itemDS.setMedia(media);
+        }
 
         return itemDS;
     }
