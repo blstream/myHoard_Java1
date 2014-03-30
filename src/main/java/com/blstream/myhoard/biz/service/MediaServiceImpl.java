@@ -72,9 +72,17 @@ public class MediaServiceImpl implements MediaService {
 			throw new MyHoardException();
 		}
 
-		sourceMediaDS.setFile(mediaDS.getFile());
-		sourceMediaDS.setItemDS(mediaDS.getItemDS());
-		sourceMediaDS.setThumbnail(mediaDTO.getThumbnail());
+		if(mediaDS.getFile() != null) {
+			sourceMediaDS.setFile(mediaDS.getFile());
+		}
+		
+		if(mediaDS.getItemDS() != null ) {
+			sourceMediaDS.setItemDS(mediaDS.getItemDS());
+		}
+		
+		if(mediaDS.getThumbnail() != null) {
+			sourceMediaDS.setThumbnail(mediaDTO.getThumbnail());
+		}
 
 		mediaDAO.update(sourceMediaDS);
 

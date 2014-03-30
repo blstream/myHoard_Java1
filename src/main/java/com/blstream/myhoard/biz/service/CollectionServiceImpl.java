@@ -70,15 +70,25 @@ public class CollectionServiceImpl implements CollectionService {
             throw new MyHoardException();
         }
 
-        srcCollectionDS.setDescription(collectionDS.getDescription());
+        if(collectionDS.getDescription() != null) {
+        	srcCollectionDS.setDescription(collectionDS.getDescription());
+        }
+        
         srcCollectionDS.setItemsNumber(collectionDS.getItemsNumber());
+        
         srcCollectionDS.setModifiedDate(new Date());
-        srcCollectionDS.setName(collectionDS.getName());
+        
+		if (collectionDS.getName() != null) {
+			srcCollectionDS.setName(collectionDS.getName());
+		}
 
         if (collectionDS.getOwner() != null) {
             srcCollectionDS.setOwner(userDAO.get(Integer.parseInt(collection.getOwner().getId())));
         }
-        srcCollectionDS.setTags(collectionDS.getTags());
+        
+        if(collectionDS.getTags() != null) {
+        	srcCollectionDS.setTags(collectionDS.getTags());
+        }
         collectionDAO.update(srcCollectionDS);
 
         return CollectionMapper.map(srcCollectionDS);

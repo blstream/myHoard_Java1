@@ -116,7 +116,7 @@ public class ItemServiceImpl implements ItemService {
         if (updateItemDS.getDescription() != null) {
             itemDS.setDescription(updateItemDS.getDescription());
         }
-        if (updateItemDS.getLng() != null) {
+        if (updateItemDS.getLat() != null) {
             itemDS.setLat(updateItemDS.getLat());
         }
         if (updateItemDS.getLng() != null) {
