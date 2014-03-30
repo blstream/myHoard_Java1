@@ -60,18 +60,24 @@ public class ItemController {
         if (name == null && collectionId == null && owner == null) {
             return itemService.getListByUser();
         } else if (name != null && collectionId != null && owner != null) {
-            try {
-                int collection = Integer.parseInt(collectionId);
-                return itemService.getList(name, collection, owner);
-            } catch (NumberFormatException e) {
-                logger.error(e.getMessage(), e);
-                throw new NotFoundException(String.format(INVALID_COLLECTION_ID, collectionId));
-            } catch (MyHoardException e) {
-                logger.error(e.getMessage(), e);
-                throw new NotFoundException(String.format(ITEM_NOT_EXIST, collectionId));
-            }
+        	if(owner.equals(securityService.getCurrentUser().getEmail())) {
+        		try {
+        			int collection = Integer.parseInt(collectionId);
+        			return itemService.getList(name, collection, owner);
+        		} catch (NumberFormatException e) {
+        			logger.error(e.getMessage(), e);
+        			throw new NotFoundException(String.format(INVALID_COLLECTION_ID, collectionId));
+        		} catch (MyHoardException e) {
+        			logger.error(e.getMessage(), e);
+        			throw new NotFoundException(String.format(ITEM_NOT_EXIST, collectionId));
+        		}
+        	}
+        	else {
+	    		logger.error("owner: " + owner.toString() + " userDTO.getEmail(): " + securityService.getCurrentUser().getEmail());
+	    		throw new NotFoundException(String.format(ACCESS_DENIED, collectionId));        		
+        	}
         } else {
-            throw new NotFoundException(INVALID_PARAMETERS);
+        	throw new NotFoundException(INVALID_PARAMETERS);
         }
     }
 

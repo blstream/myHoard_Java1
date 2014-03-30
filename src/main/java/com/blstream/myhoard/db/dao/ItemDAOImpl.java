@@ -54,13 +54,15 @@ public class ItemDAOImpl implements ItemDAO {
 	@Override
 	public List<ItemDS> getList(String name, int collection, String owner) {
 		
-		
-		return sessionFactory.getCurrentSession().createCriteria(ItemDS.class)
+		return sessionFactory.getCurrentSession().createCriteria(ItemDS.class, "item")
+				.createAlias("item.collection", "collection")
+				.createAlias("collection.owner", "owner")
 				.add(Restrictions.disjunction()
-						.add(Restrictions.ilike("name", name))
-						.add(Restrictions.ilike("description", "%" + name + "%"))
+						.add(Restrictions.ilike("item.name", name))
+						.add(Restrictions.ilike("item.description", "%" + name + "%"))
 					)
 				.add(Restrictions.eq("collection.id", collection))
+				.add(Restrictions.eq("owner.email", owner))
 				.list();
 	}
 
