@@ -4,7 +4,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.springframework.stereotype.Component;
-import org.springframework.validation.annotation.Validated;
 
 import com.blstream.myhoard.biz.model.CollectionDTO;
 import com.blstream.myhoard.exception.MySuperExtraException;
@@ -12,6 +11,8 @@ import com.blstream.myhoard.exception.MySuperExtraException;
 @Component
 public class CollectionValidator {
 
+	private static final String DESCRIPTION_MAX_SIZE_128 = "Description max size = 128";
+	private static final String NAME_MAX_SIZE_96 = "Name max size = 96";
 	private static final String NAME_MINIMUM_SIZE_2 = "Name minimum size = 2";
 
 	private Map<String, String> errorMessages;
@@ -48,6 +49,7 @@ public class CollectionValidator {
 	private void validateUpdate(CollectionDTO collectionDTO) {
 
 		validNameUpdate(collectionDTO.getName());
+		validDescription(collectionDTO.getDescription());
 
 		checkError();
 
@@ -72,6 +74,10 @@ public class CollectionValidator {
 			errorMessages.put(KEY_NAME, NAME_MINIMUM_SIZE_2);
 		}
 
+		if (name.length() > 96) {
+			errorMessages.put(KEY_NAME, NAME_MAX_SIZE_96);
+		}
+
 	}
 
 	private void validNameUpdate(String name) {
@@ -89,6 +95,16 @@ public class CollectionValidator {
 	}
 
 	private void validDescription(String description) {
+		
+		if (description == null) {
+			return;
+		}
+
+		description = description.trim();
+
+		if (description.length() > 128) {
+			errorMessages.put(KEY_DESCRIPTION, DESCRIPTION_MAX_SIZE_128);
+		}
 
 	}
 
