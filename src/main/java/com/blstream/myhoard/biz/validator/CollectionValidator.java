@@ -39,8 +39,8 @@ public class CollectionValidator {
 
 	private void validateCreate(CollectionDTO collectionDTO) {
 
-		validNameCreate(collectionDTO.getName());
-		validDescription(collectionDTO.getDescription());
+		validNameCreate(collectionDTO);
+		validDescription(collectionDTO);
 
 		checkError();
 
@@ -48,8 +48,8 @@ public class CollectionValidator {
 
 	private void validateUpdate(CollectionDTO collectionDTO) {
 
-		validNameUpdate(collectionDTO.getName());
-		validDescription(collectionDTO.getDescription());
+		validNameUpdate(collectionDTO);
+		validDescription(collectionDTO);
 
 		checkError();
 
@@ -61,48 +61,48 @@ public class CollectionValidator {
 		}
 	}
 
-	private void validNameCreate(String name) {
+	private void validNameCreate(CollectionDTO collectionDTO) {
 
-		if (name == null) {
+		if (collectionDTO.getName() == null) {
 			errorMessages.put(KEY_NAME, NAME_MINIMUM_SIZE_2);
 			return;
 		}
 
-		name = name.trim();
+		collectionDTO.setName(collectionDTO.getName().trim());
 
-		if (name.length() < 2) {
+		if (collectionDTO.getName().length() < 2) {
 			errorMessages.put(KEY_NAME, NAME_MINIMUM_SIZE_2);
 		}
 
-		if (name.length() > 96) {
+		if (collectionDTO.getName().length() > 96) {
 			errorMessages.put(KEY_NAME, NAME_MAX_SIZE_96);
 		}
 
 	}
 
-	private void validNameUpdate(String name) {
+	private void validNameUpdate(CollectionDTO collectionDTO) {
 
-		if (name == null) {
+		if (collectionDTO.getName() == null) {
 			return;
 		}
 
-		name = name.trim();
+		collectionDTO.setName(collectionDTO.getName().trim());
 
-		if (name.length() < 2) {
+		if (collectionDTO.getName().length() < 2) {
 			errorMessages.put(KEY_NAME, NAME_MINIMUM_SIZE_2);
 		}
 
 	}
 
-	private void validDescription(String description) {
-		
-		if (description == null) {
+	private void validDescription(CollectionDTO collectionDTO) {
+
+		if (collectionDTO.getDescription() == null) {
 			return;
 		}
 
-		description = description.trim();
+		collectionDTO.setDescription(collectionDTO.getDescription().trim());
 
-		if (description.length() > 128) {
+		if (collectionDTO.getDescription().length() > 128) {
 			errorMessages.put(KEY_DESCRIPTION, DESCRIPTION_MAX_SIZE_128);
 		}
 
