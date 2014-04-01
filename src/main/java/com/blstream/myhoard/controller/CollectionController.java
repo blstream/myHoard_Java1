@@ -170,4 +170,15 @@ public class CollectionController {
 					"Collection with id = %s not exist", idStr));
 		}
 	}
+	
+	
+	@RequestMapping(value = "/{collectionId}/items", method = RequestMethod.GET)
+	@ResponseStatus(HttpStatus.OK)
+	@ResponseBody
+	public List<CollectionDTO> getCollectionsItems(
+			@PathVariable("collectionId") String idStr) {
+		
+		return null;
+	}
+	
 }
