@@ -3,6 +3,9 @@ package com.blstream.myhoard.constants;
 public class Constants {
 
     public final static int TOKEN_KEEP_ALIVE_TIME = 3600 * 24;//300; // TODO move to application.properties
+    
+    public final static String GRNAT_TYPE_PASSWORD = "password";
+    public final static String GRNAT_TYPE_REFRESH_TOKEN = "refresh_token";
 
     public final static int ERROR_CODE_AUTH_BAD_CREDENTIALS = 101;
     public final static int ERROR_CODE_AUTH_TOKEN_NOT_PROVIDED = 102;
@@ -14,5 +17,5 @@ public class Constants {
     public final static int ERROR_CODE_AUTH_UNKNOW_ERROR = 400;
 
     public final static String USER = "user";
-
+    
 }

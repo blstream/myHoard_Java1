@@ -2,15 +2,11 @@ package com.blstream.myhoard.biz.model;
 
 import org.codehaus.jackson.annotate.JsonProperty;
 import org.codehaus.jackson.map.annotate.JsonSerialize;
-import org.hibernate.validator.constraints.NotEmpty;
 
 public class UserCredentialsDTO {
 
-    @NotEmpty
     private String email;
-    @NotEmpty
     private String password;
-    @NotEmpty
     @JsonProperty("grant_type")
     private String grantType;
     @JsonProperty("refresh_token")

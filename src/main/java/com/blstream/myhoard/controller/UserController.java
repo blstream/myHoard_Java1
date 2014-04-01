@@ -1,17 +1,18 @@
 package com.blstream.myhoard.controller;
 
+import com.blstream.myhoard.authorization.service.SecurityService;
 import com.blstream.myhoard.biz.model.UserDTO;
 import com.blstream.myhoard.biz.service.UserService;
-import static com.blstream.myhoard.constants.Constants.USER;
+import static com.blstream.myhoard.biz.validator.AbstractValidator.REQUEST_METHOD_POST;
+import static com.blstream.myhoard.biz.validator.AbstractValidator.REQUEST_METHOD_PUT;
+import com.blstream.myhoard.biz.validator.UserValidator;
 import com.blstream.myhoard.exception.ForbiddenException;
 import com.blstream.myhoard.exception.MyHoardException;
-import javax.servlet.http.HttpServletRequest;
-import javax.validation.Valid;
+import java.util.List;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -19,7 +20,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
-// TODO RT user crud
 @Controller
 @RequestMapping("/users")
 public class UserController {
@@ -28,30 +28,26 @@ public class UserController {
 
     @Autowired
     private UserService userService;
-
-    @ModelAttribute(USER)
-    public UserDTO getUser(HttpServletRequest request) {
-        return (UserDTO) request.getAttribute(USER);
-    }
+    @Autowired
+    SecurityService securityService;
+    @Autowired
+    private UserValidator userValidator;
 
     @RequestMapping(method = RequestMethod.POST)
     @ResponseStatus(HttpStatus.CREATED)
     @ResponseBody
-    public UserDTO addUser(@Valid @RequestBody UserDTO user) throws MyHoardException {
+    public UserDTO addUser(@RequestBody UserDTO userDTO) throws MyHoardException {
+        userValidator.validate(userDTO, REQUEST_METHOD_POST);
 
-        return userService.create(user);
+        return userService.create(userDTO);
     }
 
     @RequestMapping(value = "/{userId}", method = RequestMethod.PUT)
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
-    public UserDTO updateUser(@ModelAttribute(USER) UserDTO currentUser,
-            @PathVariable("userId") String id, @Valid @RequestBody UserDTO userDTO) throws MyHoardException {
-
-        if (!currentUser.getId().equals(id) || !currentUser.getEmail().toLowerCase().equals(userDTO.getEmail().toLowerCase())) {
-            throw new ForbiddenException();
-        }
+    public UserDTO updateUser(@PathVariable("userId") String id, @RequestBody UserDTO userDTO) throws MyHoardException {
         userDTO.setId(id);
+        userValidator.validate(userDTO, REQUEST_METHOD_PUT);
 
         return userService.update(userDTO);
     }
@@ -59,12 +55,20 @@ public class UserController {
     @RequestMapping(value = "/{userId}", method = RequestMethod.DELETE)
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @ResponseBody
-    public void deleteItem(@ModelAttribute(USER) UserDTO userDTO, @PathVariable("userId") String id) throws MyHoardException {
-        if (!userDTO.getId().equals(id)) {
+    public void deleteUser(@PathVariable("userId") String id) throws MyHoardException {
+        if (!securityService.getCurrentUser().getId().equals(id)) {
             throw new ForbiddenException();
         }
 
         userService.remove(Integer.parseInt(id));
+    }
+
+    @RequestMapping(method = RequestMethod.GET)
+    @ResponseStatus(HttpStatus.OK)
+    @ResponseBody
+    public List<UserDTO> getUserList() throws MyHoardException {
+
+        return userService.getList();
     }
 
 }

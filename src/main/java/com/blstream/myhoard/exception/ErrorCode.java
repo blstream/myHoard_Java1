@@ -3,6 +3,7 @@ package com.blstream.myhoard.exception;
 import java.util.Map;
 
 import org.codehaus.jackson.annotate.JsonProperty;
+import org.codehaus.jackson.map.annotate.JsonSerialize;
 
 public class ErrorCode {
 
@@ -12,6 +13,7 @@ public class ErrorCode {
 	@JsonProperty("error_message")
 	private String errorMessage;
 
+    @JsonSerialize(include = JsonSerialize.Inclusion.NON_NULL)
 	private Map<String, String> errors;
 
 	public ErrorCode() {

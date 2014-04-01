@@ -6,7 +6,6 @@ import com.blstream.myhoard.db.dao.UserDAO;
 import com.blstream.myhoard.db.model.UserDS;
 import com.blstream.myhoard.exception.MyHoardException;
 import com.blstream.myhoard.exception.NotFoundException;
-import com.blstream.myhoard.exception.ResourceAlreadyExistException;
 import java.util.List;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,7 +19,6 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     private PasswordEncoder passwordEncoder;
-
     @Autowired
     private UserDAO userDAO;
 
@@ -28,8 +26,9 @@ public class UserServiceImpl implements UserService {
     public UserDTO getUserByEmail(String email) throws MyHoardException {
         UserDS userDS = userDAO.getByEmail(email);
         if (userDS == null) {
-            throw new NotFoundException("User not found");
+            return null;
         }
+        
         return UserMapper.map(userDS);
     }
 
@@ -40,14 +39,12 @@ public class UserServiceImpl implements UserService {
             throw new NotFoundException(String.format("User with id = %s not exist", id));
         }
         UserDTO userDTO = UserMapper.map(userDS);
+        
         return userDTO;
     }
 
     @Override
     public UserDTO create(UserDTO userDTO) throws MyHoardException {
-        if (userDAO.getByEmail(userDTO.getEmail()) != null) {
-            throw new ResourceAlreadyExistException(String.format("User with email: %s already exist", userDTO.getEmail()));
-        }
         // hashing user password
         String hashedPassword = passwordEncoder.encode(userDTO.getPassword());
         userDTO.setPassword(hashedPassword);
@@ -70,10 +67,13 @@ public class UserServiceImpl implements UserService {
         // hashing user password
         String hashedPassword = passwordEncoder.encode(userDTO.getPassword());
         userDS.setPassword(hashedPassword);
+        userDS.setEmail(userDTO.getEmail());
+        userDS.setUsername(userDTO.getUsername());
 
         userDAO.update(userDS);
         userDTO = UserMapper.map(userDS);
         userDTO.setPassword(null);
+        
         return userDTO;
     }
 
@@ -82,10 +82,10 @@ public class UserServiceImpl implements UserService {
         userDAO.remove(i);
     }
 
-    // TODO RT
     @Override
     public List<UserDTO> getList() throws MyHoardException {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        
+        return UserMapper.map(userDAO.getList());
     }
 
 }

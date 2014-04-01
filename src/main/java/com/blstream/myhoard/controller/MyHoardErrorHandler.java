@@ -15,6 +15,7 @@ import com.blstream.myhoard.exception.MyHoardRestException;
 import com.blstream.myhoard.exception.MySuperExtraException;
 import com.blstream.myhoard.exception.NotFoundException;
 import com.blstream.myhoard.exception.ResourceAlreadyExistException;
+import com.blstream.myhoard.exception.ValidatorException;
 
 import java.util.List;
 
@@ -44,6 +45,7 @@ public class MyHoardErrorHandler {
 	private final static String ERROR_MESSAGE_AUTH_TOKEN_INVALID_TOKEN = "Invalid token";
 	private final static String ERROR_MESSAGE_AUTH_FORBIDDEN = "Forbidded";
 	private final static String ERROR_MESSAGE_AUTH_UNKNOW_ERROR = "Unknown error";
+    private final static String ERROR_MESSAGE_VALIDATION_ERROR = "Validation error";
 
 	private static final Logger logger = Logger
 			.getLogger(MyHoardErrorHandler.class.getCanonicalName());
@@ -200,7 +202,15 @@ public class MyHoardErrorHandler {
 	public ErrorCode validatorException(MySuperExtraException ex) {
 		logger.error("superException", ex);
 
-		return new ErrorCode(400, "Validation error", ex.getErrors());
+		return new ErrorCode(400, ERROR_MESSAGE_VALIDATION_ERROR, ex.getErrors());
 	}
+    
+	@ExceptionHandler(ValidatorException.class)
+	@ResponseStatus(HttpStatus.BAD_REQUEST)
+	@ResponseBody
+	public ErrorCode validatorException(ValidatorException e) {
+		logger.error("ValidatorException", e);
 
+		return new ErrorCode(Constants.ERROR_CODE_BAD_REQUEST, ERROR_MESSAGE_VALIDATION_ERROR, e.getErrors());
+	}
 }
