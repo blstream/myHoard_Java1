@@ -18,7 +18,6 @@ public class UserCredentialsValidator extends AbstractValidator {
     private final String KEY_REFRESH_TOKEN = "refresh_token";
     private final String KEY_EMAIL = "email";
     private final String KEY_PASS = "password";
-    private final String MESSAGE_NOT_EMPTY = "may not be empty";
 
     private static final Logger logger = Logger.getLogger(UserCredentialsValidator.class.getCanonicalName());
 

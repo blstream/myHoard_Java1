@@ -1,21 +1,19 @@
 package com.blstream.myhoard.controller;
 
 import com.blstream.myhoard.authorization.service.SecurityService;
+import com.blstream.myhoard.biz.enums.RequestMethodEnum;
 import com.blstream.myhoard.biz.model.ItemDTO;
-import com.blstream.myhoard.biz.model.UserDTO;
 import com.blstream.myhoard.biz.service.ItemService;
-import static com.blstream.myhoard.constants.Constants.USER;
+import com.blstream.myhoard.biz.validator.ItemValidator;
 import com.blstream.myhoard.exception.ForbiddenException;
 import com.blstream.myhoard.exception.MyHoardException;
 import com.blstream.myhoard.exception.NotFoundException;
 import java.util.List;
-import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -42,12 +40,9 @@ public class ItemController {
     @Autowired
     private ItemService itemService;
     @Autowired
-    SecurityService securityService;
-
-    @ModelAttribute(USER)
-    public UserDTO getUser(HttpServletRequest request) {
-        return (UserDTO) request.getAttribute(USER);
-    }
+    private SecurityService securityService;
+    @Autowired
+    private ItemValidator itemValidator;
 
     @RequestMapping(method = RequestMethod.GET)
     @ResponseStatus(HttpStatus.OK)
@@ -84,9 +79,10 @@ public class ItemController {
     @RequestMapping(method = RequestMethod.POST)
     @ResponseStatus(HttpStatus.CREATED)
     @ResponseBody
-    public ItemDTO addItem(@Valid @RequestBody ItemDTO item) throws MyHoardException {
-
-        return itemService.create(item);
+    public ItemDTO addItem(@RequestBody ItemDTO itemDTO) throws MyHoardException {
+        itemValidator.validate(itemDTO, RequestMethodEnum.POST);
+        
+        return itemService.create(itemDTO);
     }
 
     @RequestMapping(value = "/{itemId}", method = RequestMethod.GET)
@@ -115,6 +111,7 @@ public class ItemController {
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
     public ItemDTO updateItem(@PathVariable("itemId") String id, @Valid @RequestBody ItemDTO itemDTO) throws MyHoardException {
+        itemValidator.validate(itemDTO, RequestMethodEnum.PUT);
         ItemDTO srcItemDTO;
         try {
             srcItemDTO = itemService.get(Integer.parseInt(id));
@@ -149,7 +146,7 @@ public class ItemController {
             throw new NotFoundException(String.format(ITEM_NOT_EXIST, id));
         }
 
-        if (securityService.getCurrentUser().getId().equals(itemDTO.getOwner().getId())) {
+        if (!securityService.getCurrentUser().getId().equals(itemDTO.getOwner().getId())) {
             throw new ForbiddenException();
         }
 

@@ -1,10 +1,9 @@
 package com.blstream.myhoard.controller;
 
 import com.blstream.myhoard.authorization.service.SecurityService;
+import com.blstream.myhoard.biz.enums.RequestMethodEnum;
 import com.blstream.myhoard.biz.model.UserDTO;
 import com.blstream.myhoard.biz.service.UserService;
-import static com.blstream.myhoard.biz.validator.AbstractValidator.REQUEST_METHOD_POST;
-import static com.blstream.myhoard.biz.validator.AbstractValidator.REQUEST_METHOD_PUT;
 import com.blstream.myhoard.biz.validator.UserValidator;
 import com.blstream.myhoard.exception.ForbiddenException;
 import com.blstream.myhoard.exception.MyHoardException;
@@ -37,7 +36,7 @@ public class UserController {
     @ResponseStatus(HttpStatus.CREATED)
     @ResponseBody
     public UserDTO addUser(@RequestBody UserDTO userDTO) throws MyHoardException {
-        userValidator.validate(userDTO, REQUEST_METHOD_POST);
+        userValidator.validate(userDTO, RequestMethodEnum.POST);
 
         return userService.create(userDTO);
     }
@@ -47,7 +46,7 @@ public class UserController {
     @ResponseBody
     public UserDTO updateUser(@PathVariable("userId") String id, @RequestBody UserDTO userDTO) throws MyHoardException {
         userDTO.setId(id);
-        userValidator.validate(userDTO, REQUEST_METHOD_PUT);
+        userValidator.validate(userDTO, RequestMethodEnum.PUT);
 
         return userService.update(userDTO);
     }

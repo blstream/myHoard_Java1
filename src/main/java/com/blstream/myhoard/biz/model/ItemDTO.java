@@ -6,14 +6,11 @@ import java.util.Date;
 import java.util.Set;
 import org.codehaus.jackson.annotate.JsonProperty;
 import org.codehaus.jackson.map.annotate.JsonSerialize;
-import org.hibernate.validator.constraints.Length;
 
 public class ItemDTO {
 
     private String id;
-    @Length(min = 2, max = 50)
     private String name;
-    @Length(max = 250)
     private String description;
     private GeoPointDTO location;
     private Integer quantity;

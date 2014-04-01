@@ -2,7 +2,6 @@ package com.blstream.myhoard.biz.model;
 
 import com.blstream.myhoard.biz.serializer.RestDateSerializer;
 import com.blstream.myhoard.biz.serializer.UserSerializer;
-
 import java.util.Date;
 import java.util.List;
 
@@ -31,7 +30,7 @@ public class CollectionDTO {
     private Date modifiedDate;
     @JsonSerialize(using = UserSerializer.class)
     private UserDTO owner;
-    
+
     @JsonIgnore
     private List<ItemDTO> items;
 

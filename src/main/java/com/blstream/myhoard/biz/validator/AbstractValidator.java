@@ -3,11 +3,10 @@ package com.blstream.myhoard.biz.validator;
 import java.util.HashMap;
 import java.util.Map;
 
-public class AbstractValidator {
+public abstract class AbstractValidator {
 
-    public final static String REQUEST_METHOD_POST = "post";
-    public final static String REQUEST_METHOD_PUT = "put";
-    public final static String EMAIL_PATTERN = "^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";
+    protected final String MESSAGE_NOT_EMPTY = "may not be empty";
+    protected final String MESSAGE_LENGTH_MIN_MAX = "length must be between %s and %s";
 
     protected Map<String, String> errorMessages = new HashMap<>();
 

@@ -1,6 +1,7 @@
 package com.blstream.myhoard.biz.validator;
 
 import com.blstream.myhoard.authorization.service.SecurityService;
+import com.blstream.myhoard.biz.enums.RequestMethodEnum;
 import com.blstream.myhoard.biz.model.UserDTO;
 import com.blstream.myhoard.biz.service.UserService;
 import com.blstream.myhoard.exception.ForbiddenException;
@@ -23,8 +24,7 @@ public class UserValidator extends AbstractValidator {
 
     private final String MESSAGE_EMAIL_EXIST = "user with email: %s already exist";
     private final String MESSAGE_EMAIL_INVALID = "invalid email-address: %s";
-    private final String MESSAGE_NOT_EMPTY = "may not be empty";
-    private final String MESSAGE_LENGTH_MIN_MAX = "length must be between %s and %s";
+    private final static String EMAIL_PATTERN = "^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";
 
     @Autowired
     private UserService userService;
@@ -33,14 +33,14 @@ public class UserValidator extends AbstractValidator {
 
     private static final Logger logger = Logger.getLogger(UserValidator.class.getCanonicalName());
 
-    public void validate(UserDTO userDTO, String requestMethod) throws MyHoardException {
+    public void validate(UserDTO userDTO, RequestMethodEnum requestMethod) throws MyHoardException {
         errorMessages = new HashMap<>();
 
         switch (requestMethod) {
-            case REQUEST_METHOD_POST:
+            case POST:
                 validateCreate(userDTO);
                 break;
-            case REQUEST_METHOD_PUT:
+            case PUT:
                 validateUpdate(userDTO);
                 break;
             default:
