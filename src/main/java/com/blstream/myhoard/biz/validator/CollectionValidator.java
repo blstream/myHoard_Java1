@@ -14,8 +14,8 @@ import com.blstream.myhoard.exception.ValidatorException;
 @Component
 public class CollectionValidator {
 
-	private static final String DESCRIPTION_MAX_SIZE_128 = "Description max size = 128";
-	private static final String NAME_MAX_SIZE_96 = "Name max size = 96";
+	private static final String DESCRIPTION_MAX_SIZE_900 = "Description max size = 900";
+	private static final String NAME_MAX_SIZE_64 = "Name max size = 64";
 	private static final String NAME_MINIMUM_SIZE_2 = "Name minimum size = 2";
 
 	private final String KEY_NAME = "name";
@@ -80,8 +80,8 @@ public class CollectionValidator {
 			errorMessages.put(KEY_NAME, NAME_MINIMUM_SIZE_2);
 		}
 
-		if (collectionDTO.getName().length() > 96) {
-			errorMessages.put(KEY_NAME, NAME_MAX_SIZE_96);
+		if (collectionDTO.getName().length() > 64) {
+			errorMessages.put(KEY_NAME, NAME_MAX_SIZE_64);
 		}
 
 		isNameUnique(collectionDTO.getName());
@@ -99,6 +99,10 @@ public class CollectionValidator {
 		if (collectionDTO.getName().length() < 2) {
 			errorMessages.put(KEY_NAME, NAME_MINIMUM_SIZE_2);
 		}
+		
+		if (collectionDTO.getName().length() > 64) {
+			errorMessages.put(KEY_NAME, NAME_MAX_SIZE_64);
+		}
 
 		isNameUnique(collectionDTO.getName());
 
@@ -112,8 +116,8 @@ public class CollectionValidator {
 
 		collectionDTO.setDescription(collectionDTO.getDescription().trim());
 
-		if (collectionDTO.getDescription().length() > 128) {
-			errorMessages.put(KEY_DESCRIPTION, DESCRIPTION_MAX_SIZE_128);
+		if (collectionDTO.getDescription().length() > 900) {
+			errorMessages.put(KEY_DESCRIPTION, DESCRIPTION_MAX_SIZE_900);
 		}
 
 	}
