@@ -23,4 +23,6 @@ public interface CollectionDAO extends ResourceDAO<CollectionDS> {
 
     public List<CollectionDS> getList(List<String> sortBy, String sortDirection)
             throws MyHoardException;
+    
+    public boolean isNameUniqeu(String name);
 }

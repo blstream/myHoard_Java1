@@ -5,6 +5,7 @@ import java.util.Map;
 
 import org.springframework.stereotype.Component;
 
+import com.blstream.myhoard.biz.enums.RequestMethodEnum;
 import com.blstream.myhoard.biz.model.MediaDTO;
 import com.blstream.myhoard.exception.MySuperExtraException;
 
@@ -17,15 +18,15 @@ public class MediaValidator {
 	private Map<String, String> errorMessages;
 	private final String KEY_FILE = "media";
 
-	public void validate(MediaDTO mediaDTO, String requestMethod) {
+	public void validate(MediaDTO mediaDTO, RequestMethodEnum requestMethod) {
 
 		errorMessages = new HashMap<>();
 
 		switch (requestMethod) {
-		case "post":
+		case POST:
 			validateCreate(mediaDTO);
 			break;
-		case "put":
+		case PUT:
 			validateUpdate(mediaDTO);
 			break;
 		default:

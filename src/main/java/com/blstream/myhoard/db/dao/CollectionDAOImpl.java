@@ -200,4 +200,12 @@ public class CollectionDAOImpl implements CollectionDAO {
         return crit.list();
     }
 
+	@Override
+	public boolean isNameUniqeu(String name) {
+		int size = sessionFactory.getCurrentSession()
+				.createCriteria(CollectionDS.class)
+				.add(Restrictions.eq("name", name)).list().size();
+		return size==0;
+	}
+
 }

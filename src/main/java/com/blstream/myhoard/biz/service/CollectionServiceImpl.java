@@ -7,9 +7,11 @@ import com.blstream.myhoard.db.dao.CollectionDAO;
 import com.blstream.myhoard.db.dao.UserDAO;
 import com.blstream.myhoard.db.model.CollectionDS;
 import com.blstream.myhoard.exception.MyHoardException;
+
 import java.sql.Timestamp;
 import java.util.Date;
 import java.util.List;
+
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -112,5 +114,10 @@ public class CollectionServiceImpl implements CollectionService {
 
         return collectionDTOs;
     }
+
+	@Override
+	public boolean isNameUnique(String name) {
+		return collectionDAO.isNameUniqeu(name);
+	}
 
 }

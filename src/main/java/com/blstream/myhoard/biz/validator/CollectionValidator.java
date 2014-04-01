@@ -3,9 +3,12 @@ package com.blstream.myhoard.biz.validator;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import com.blstream.myhoard.biz.enums.RequestMethodEnum;
 import com.blstream.myhoard.biz.model.CollectionDTO;
+import com.blstream.myhoard.biz.service.CollectionService;
 import com.blstream.myhoard.exception.MySuperExtraException;
 
 @Component
@@ -15,20 +18,23 @@ public class CollectionValidator {
 	private static final String NAME_MAX_SIZE_96 = "Name max size = 96";
 	private static final String NAME_MINIMUM_SIZE_2 = "Name minimum size = 2";
 
-	private Map<String, String> errorMessages;
-
 	private final String KEY_NAME = "name";
 	private final String KEY_DESCRIPTION = "description";
 
-	public void validate(CollectionDTO collectionDTO, String requestMethod) {
+	@Autowired
+	private CollectionService collectionService;
+
+	private Map<String, String> errorMessages;
+
+	public void validate(CollectionDTO collectionDTO, RequestMethodEnum requestMethod) {
 
 		errorMessages = new HashMap<>();
 
 		switch (requestMethod) {
-		case "post":
+		case POST:
 			validateCreate(collectionDTO);
 			break;
-		case "put":
+		case PUT:
 			validateUpdate(collectionDTO);
 			break;
 		default:
@@ -78,6 +84,8 @@ public class CollectionValidator {
 			errorMessages.put(KEY_NAME, NAME_MAX_SIZE_96);
 		}
 
+		isNameUnique(collectionDTO.getName());
+
 	}
 
 	private void validNameUpdate(CollectionDTO collectionDTO) {
@@ -91,6 +99,8 @@ public class CollectionValidator {
 		if (collectionDTO.getName().length() < 2) {
 			errorMessages.put(KEY_NAME, NAME_MINIMUM_SIZE_2);
 		}
+
+		isNameUnique(collectionDTO.getName());
 
 	}
 
@@ -106,6 +116,13 @@ public class CollectionValidator {
 			errorMessages.put(KEY_DESCRIPTION, DESCRIPTION_MAX_SIZE_128);
 		}
 
+	}
+
+	private void isNameUnique(String name) {
+		if (!collectionService.isNameUnique(name.trim())) {
+			errorMessages.put(KEY_NAME, String.format(
+					"Collection with name: %s already exist!", name.trim()));
+		}
 	}
 
 }

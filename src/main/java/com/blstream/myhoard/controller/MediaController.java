@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.blstream.myhoard.biz.enums.RequestMethodEnum;
 import com.blstream.myhoard.biz.model.MediaDTO;
 import com.blstream.myhoard.biz.service.MediaService;
 import com.blstream.myhoard.biz.util.MediaUtils;
@@ -54,7 +55,7 @@ public class MediaController {
 		MediaDTO mediaDTO = new MediaDTO();
 		mediaDTO.setFile(photo);
 
-		mediaValidator.validate(mediaDTO, "post");
+		mediaValidator.validate(mediaDTO, RequestMethodEnum.POST);
 
 		try {
 			mediaDTO = mediaService.create(mediaDTO);
@@ -125,7 +126,7 @@ public class MediaController {
 			}
 
 			mediaDTO.setFile(file);
-			mediaValidator.validate(mediaDTO, "put");
+			mediaValidator.validate(mediaDTO, RequestMethodEnum.PUT);
 			mediaService.update(mediaDTO);
 			return mediaDTO;
 		} catch (MyHoardException ex) {

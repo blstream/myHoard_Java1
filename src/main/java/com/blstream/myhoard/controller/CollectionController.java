@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
+import com.blstream.myhoard.biz.enums.RequestMethodEnum;
 import com.blstream.myhoard.biz.model.CollectionDTO;
 import com.blstream.myhoard.biz.service.CollectionService;
 import com.blstream.myhoard.biz.validator.CollectionValidator;
@@ -46,7 +47,7 @@ public class CollectionController {
 	public CollectionDTO addCollection(@RequestBody CollectionDTO collection)
 			throws MyHoardException {
 
-		collectionValidator.validate(collection, "post");
+		collectionValidator.validate(collection, RequestMethodEnum.POST);
 
 		return collectionService.create(collection);
 	}
@@ -153,7 +154,9 @@ public class CollectionController {
 			@PathVariable("collectionId") String idStr,
 			@RequestBody CollectionDTO collection) {
 
-		requestValidator.validId(idStr);
+		requestValidator.validId(idStr);		
+		collectionValidator.validate(collection, RequestMethodEnum.PUT);
+		
 		try {
 			collection.setId(idStr);
 			return collectionService.update(collection);
