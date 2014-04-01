@@ -1,25 +1,12 @@
 package com.blstream.myhoard.controller;
 
-import com.blstream.myhoard.constants.Constants;
-
 import static com.blstream.myhoard.constants.Constants.ERROR_CODE_AUTH_BAD_CREDENTIALS;
 import static com.blstream.myhoard.constants.Constants.ERROR_CODE_AUTH_TOKEN_INVALID;
 import static com.blstream.myhoard.constants.Constants.ERROR_CODE_AUTH_TOKEN_NOT_PROVIDED;
 import static com.blstream.myhoard.constants.Constants.ERROR_CODE_AUTH_UNKNOW_ERROR;
 import static com.blstream.myhoard.constants.Constants.ERROR_CODE_FORBIDDEN;
 
-import com.blstream.myhoard.exception.AuthorizationException;
-import com.blstream.myhoard.exception.ErrorCode;
-import com.blstream.myhoard.exception.ForbiddenException;
-import com.blstream.myhoard.exception.MyHoardRestException;
-import com.blstream.myhoard.exception.MySuperExtraException;
-import com.blstream.myhoard.exception.NotFoundException;
-import com.blstream.myhoard.exception.ResourceAlreadyExistException;
-import com.blstream.myhoard.exception.ValidatorException;
-
 import java.util.List;
-
-import javax.servlet.http.HttpServletRequest;
 
 import org.apache.log4j.Logger;
 import org.springframework.http.HttpStatus;
@@ -32,6 +19,15 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
+
+import com.blstream.myhoard.constants.Constants;
+import com.blstream.myhoard.exception.AuthorizationException;
+import com.blstream.myhoard.exception.ErrorCode;
+import com.blstream.myhoard.exception.ForbiddenException;
+import com.blstream.myhoard.exception.MyHoardRestException;
+import com.blstream.myhoard.exception.NotFoundException;
+import com.blstream.myhoard.exception.ResourceAlreadyExistException;
+import com.blstream.myhoard.exception.ValidatorException;
 
 @ControllerAdvice
 public class MyHoardErrorHandler {
@@ -57,51 +53,9 @@ public class MyHoardErrorHandler {
 	public ErrorCode handleCollectionException(MyHoardRestException ex) {
 		logger.error("handleCollectionException", ex);
 
-		switch (ex.getCode()) {
-		case 1000:
-			return new ErrorCode(400, "Very bad request parameters!");
-		case 1001:
-			return new ErrorCode(400,
-					"Http Media Size Not Acceptable. Max size 10MB!");
-		case 1002:
-			return new ErrorCode(400, "Http Media Type Not Acceptable");
-		default:
-			return new ErrorCode(ex.getCode(), "Very bad request!");
-		}
-	}
+		return new ErrorCode(ex.getCode(), "Very bad request!");
 
-    // TODO ???
-	// tymczasowe
-	@ExceptionHandler(org.hibernate.PropertyValueException.class)
-	@ResponseStatus(HttpStatus.BAD_REQUEST)
-	@ResponseBody
-	public ErrorCode handleCollectionExceptionA(
-			org.hibernate.PropertyValueException ex) {
-		logger.error("handleCollectionExceptionA", ex);
-		return new ErrorCode(111);
-	}
-
-    // TODO ???
-	@ExceptionHandler
-	@ResponseBody
-	@ResponseStatus(value = HttpStatus.BAD_REQUEST)
-	public ErrorCode handleException(Exception exception,
-			HttpServletRequest request) {
-		String method = request.getMethod();
-		logger.error("handleException", exception);
-
-		switch (method) {
-		case "POST":
-			logger.info("ErrorCode 400");
-			return new ErrorCode(400);
-		case "PUT":
-			logger.info("ErrorCode 111");
-			return new ErrorCode(111);
-		default:
-			logger.info("ErrorCode default");
-			return new ErrorCode(0);
-		}
-	}
+	}  
 
     // TODO errors map
 	@ExceptionHandler
@@ -196,15 +150,6 @@ public class MyHoardErrorHandler {
 		return new ErrorCode(Constants.ERROR_CODE_BAD_REQUEST, sb.toString());
 	}
 
-	@ExceptionHandler(MySuperExtraException.class)
-	@ResponseStatus(HttpStatus.BAD_REQUEST)
-	@ResponseBody
-	public ErrorCode validatorException(MySuperExtraException ex) {
-		logger.error("superException", ex);
-
-		return new ErrorCode(400, ERROR_MESSAGE_VALIDATION_ERROR, ex.getErrors());
-	}
-    
 	@ExceptionHandler(ValidatorException.class)
 	@ResponseStatus(HttpStatus.BAD_REQUEST)
 	@ResponseBody

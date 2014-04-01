@@ -7,7 +7,7 @@ import org.springframework.stereotype.Component;
 
 import com.blstream.myhoard.biz.enums.RequestMethodEnum;
 import com.blstream.myhoard.biz.model.MediaDTO;
-import com.blstream.myhoard.exception.MySuperExtraException;
+import com.blstream.myhoard.exception.ValidatorException;
 
 @Component
 public class MediaValidator {
@@ -67,7 +67,7 @@ public class MediaValidator {
 
 	private void checkError() {
 		if (errorMessages.size() > 0) {
-			throw new MySuperExtraException(errorMessages);
+			throw new ValidatorException(errorMessages);
 		}
 
 	}

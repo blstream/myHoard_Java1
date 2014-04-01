@@ -21,7 +21,6 @@ import com.blstream.myhoard.biz.model.MediaDTO;
 import com.blstream.myhoard.biz.service.MediaService;
 import com.blstream.myhoard.biz.util.MediaUtils;
 import com.blstream.myhoard.biz.validator.MediaValidator;
-import com.blstream.myhoard.exception.ErrorCodeEnum;
 import com.blstream.myhoard.exception.MyHoardException;
 import com.blstream.myhoard.exception.MyHoardRestException;
 import com.blstream.myhoard.exception.NotFoundException;
@@ -45,12 +44,12 @@ public class MediaController {
 	@RequestMapping(method = RequestMethod.POST)
 	@ResponseBody
 	@ResponseStatus(HttpStatus.CREATED)
-	public MediaDTO create(MultipartFile file, HttpServletRequest request)
+	public MediaDTO create(MultipartFile image, HttpServletRequest request)
 			throws IOException {
 
 		logger.info("create");
 
-		byte[] photo = mediaUtils.getFileFromMultipartFile(file); // file.getBytes();//mediaUtils.getFileFromRequest(request);
+		byte[] photo = mediaUtils.getFileFromMultipartFile(image); // file.getBytes();//mediaUtils.getFileFromRequest(request);
 
 		MediaDTO mediaDTO = new MediaDTO();
 		mediaDTO.setFile(photo);
@@ -122,7 +121,7 @@ public class MediaController {
 			id = Integer.parseInt(idStr);
 			MediaDTO mediaDTO = mediaService.get(id);
 			if (mediaDTO == null) {
-				throw new MyHoardRestException(ErrorCodeEnum.UPDATE.getValue());
+				throw new MyHoardRestException();
 			}
 
 			mediaDTO.setFile(file);
@@ -131,7 +130,7 @@ public class MediaController {
 			return mediaDTO;
 		} catch (MyHoardException ex) {
 			logger.error(ex.getMessage(), ex);
-			throw new MyHoardRestException(ErrorCodeEnum.UPDATE.getValue());
+			throw new MyHoardRestException();
 		}
 	}
 
@@ -148,7 +147,7 @@ public class MediaController {
 			mediaService.remove(id);
 		} catch (Exception ex) {
 			logger.error(ex.getMessage(), ex);
-			throw new MyHoardRestException(ErrorCodeEnum.DELETE.getValue());
+			throw new MyHoardRestException();
 		}
 	}
 

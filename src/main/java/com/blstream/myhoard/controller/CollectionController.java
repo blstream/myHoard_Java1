@@ -21,7 +21,6 @@ import com.blstream.myhoard.biz.model.ItemDTO;
 import com.blstream.myhoard.biz.service.CollectionService;
 import com.blstream.myhoard.biz.validator.CollectionValidator;
 import com.blstream.myhoard.biz.validator.RequestValidator;
-import com.blstream.myhoard.exception.ErrorCodeEnum;
 import com.blstream.myhoard.exception.MyHoardException;
 import com.blstream.myhoard.exception.MyHoardRestException;
 import com.blstream.myhoard.exception.NotFoundException;
@@ -79,7 +78,7 @@ public class CollectionController {
 
 		if (sortBy != null || sortDirection != null) {
 			if (sortBy == null || sortDirection == null) {
-				throw new MyHoardRestException(400);
+				throw new MyHoardRestException();
 			} else {
 
 				String[] availableFields = { "name", "description",
@@ -95,14 +94,14 @@ public class CollectionController {
 						}
 					}
 					if (!everythingOk) {
-						throw new MyHoardRestException(1000);
+						throw new MyHoardRestException();
 					}
 					everythingOk = false;
 				}
 
 				if (!sortDirection.equals(availableDirection[0])
 						&& !sortDirection.equals(availableDirection[1])) {
-					throw new MyHoardRestException(1000);
+					throw new MyHoardRestException();
 				}
 
 				for (int i = 0; i < sortBy.size(); i++) {
@@ -128,7 +127,7 @@ public class CollectionController {
 			return collectionService.getList();
 		} catch (Exception e) {
 			logger.error(e.getMessage(), e);
-			throw new MyHoardRestException(ErrorCodeEnum.READ.getValue());
+			throw new MyHoardRestException();
 		}
 	}
 
@@ -186,7 +185,6 @@ public class CollectionController {
 			return collectionService.get(Integer.parseInt(idStr)).getItems();
 		} catch (MyHoardException e) {
 			logger.error(e);
-			e.printStackTrace();
 		}
 		
 		return new ArrayList<ItemDTO>();
