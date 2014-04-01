@@ -1,5 +1,6 @@
 package com.blstream.myhoard.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.log4j.Logger;
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 
 import com.blstream.myhoard.biz.enums.RequestMethodEnum;
 import com.blstream.myhoard.biz.model.CollectionDTO;
+import com.blstream.myhoard.biz.model.ItemDTO;
 import com.blstream.myhoard.biz.service.CollectionService;
 import com.blstream.myhoard.biz.validator.CollectionValidator;
 import com.blstream.myhoard.biz.validator.RequestValidator;
@@ -175,10 +177,20 @@ public class CollectionController {
 	@RequestMapping(value = "/{collectionId}/items", method = RequestMethod.GET)
 	@ResponseStatus(HttpStatus.OK)
 	@ResponseBody
-	public List<CollectionDTO> getCollectionsItems(
+	public List<ItemDTO> getCollectionsItems(
 			@PathVariable("collectionId") String idStr) {
 		
-		return null;
+		requestValidator.validId(idStr);
+		
+		try {
+			return collectionService.get(Integer.parseInt(idStr)).getItems();
+		} catch (MyHoardException e) {
+			logger.error(e);
+			e.printStackTrace();
+		}
+		
+		return new ArrayList<ItemDTO>();
+		
 	}
 	
 }

@@ -2,11 +2,14 @@ package com.blstream.myhoard.biz.mapper;
 
 import com.blstream.myhoard.biz.model.CollectionDTO;
 import com.blstream.myhoard.db.model.CollectionDS;
+import com.blstream.myhoard.db.model.ItemDS;
 import com.blstream.myhoard.db.model.TagDS;
+
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+
 import org.apache.log4j.Logger;
 
 public class CollectionMapper {
@@ -62,6 +65,11 @@ public class CollectionMapper {
         }
 
         collectionDTO.setTags(tagi);
+        
+        Set<ItemDS> itemSet = collectionDS.getItems();
+        List<ItemDS> itemList = new ArrayList<ItemDS>();
+        itemList.addAll(itemSet);
+        collectionDTO.setItems(ItemMapper.map(itemList));
 
         return collectionDTO;
     }
