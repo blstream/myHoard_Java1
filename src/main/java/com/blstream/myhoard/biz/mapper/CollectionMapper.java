@@ -68,7 +68,9 @@ public class CollectionMapper {
         
         Set<ItemDS> itemSet = collectionDS.getItems();
         List<ItemDS> itemList = new ArrayList<ItemDS>();
-        itemList.addAll(itemSet);
+		if (itemSet != null) {
+			itemList.addAll(itemSet);
+		}
         collectionDTO.setItems(ItemMapper.map(itemList));
 
         return collectionDTO;
