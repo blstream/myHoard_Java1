@@ -203,8 +203,12 @@ public class CollectionDAOImpl implements CollectionDAO {
 
 	@Override
 	public boolean isNameUniqeu(CollectionDTO collectionDTO) {
+		
+		UserDS userDs = userDAO.getByEmail((securityService.getCurrentUser().getEmail()));
+		
 		int size = sessionFactory.getCurrentSession()
 				.createCriteria(CollectionDS.class)
+				.add(Restrictions.eq("owner", userDs))
 				.add(Restrictions.not(Restrictions.eq("id", Integer.parseInt(collectionDTO.getId()))))
 				.add(Restrictions.eq("name", collectionDTO.getName())).list().size();
 		return size==0;
