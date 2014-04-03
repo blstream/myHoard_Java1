@@ -1,7 +1,9 @@
 package com.blstream.myhoard.db.dao;
 
+import com.blstream.myhoard.biz.model.CollectionDTO;
 import com.blstream.myhoard.db.model.CollectionDS;
 import com.blstream.myhoard.exception.MyHoardException;
+
 import java.util.List;
 
 public interface CollectionDAO extends ResourceDAO<CollectionDS> {
@@ -24,5 +26,5 @@ public interface CollectionDAO extends ResourceDAO<CollectionDS> {
     public List<CollectionDS> getList(List<String> sortBy, String sortDirection)
             throws MyHoardException;
     
-    public boolean isNameUniqeu(String name);
+    public boolean isNameUniqeu(CollectionDTO collectionDTO);
 }

@@ -24,5 +24,5 @@ public interface CollectionService extends ResourceService<CollectionDTO> {
     List<CollectionDTO> getList(List<String> sortBy, String sortDirection)
             throws MyHoardException;
     
-    boolean isNameUnique(String name);
+    boolean isNameUnique(CollectionDTO collectionDTO);
 }

@@ -84,7 +84,7 @@ public class CollectionValidator {
 			errorMessages.put(KEY_NAME, NAME_MAX_SIZE_64);
 		}
 
-		isNameUnique(collectionDTO.getName());
+		isNameUnique(collectionDTO);
 
 	}
 
@@ -104,7 +104,7 @@ public class CollectionValidator {
 			errorMessages.put(KEY_NAME, NAME_MAX_SIZE_64);
 		}
 
-		isNameUnique(collectionDTO.getName());
+		isNameUnique(collectionDTO);
 
 	}
 
@@ -122,10 +122,10 @@ public class CollectionValidator {
 
 	}
 
-	private void isNameUnique(String name) {
-		if (!collectionService.isNameUnique(name.trim())) {
+	private void isNameUnique(CollectionDTO collectionDTO) {
+		if (!collectionService.isNameUnique(collectionDTO)) {
 			errorMessages.put(KEY_NAME, String.format(
-					"Collection with name: %s already exist!", name.trim()));
+					"Collection with name: %s already exist!", collectionDTO.getName().trim()));
 		}
 	}
 

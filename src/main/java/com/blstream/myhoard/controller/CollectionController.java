@@ -48,6 +48,7 @@ public class CollectionController {
 	public CollectionDTO addCollection(@RequestBody CollectionDTO collection)
 			throws MyHoardException {
 
+		collection.setId("-1");
 		collectionValidator.validate(collection, RequestMethodEnum.POST);
 
 		return collectionService.create(collection);
@@ -155,11 +156,11 @@ public class CollectionController {
 			@PathVariable("collectionId") String idStr,
 			@RequestBody CollectionDTO collection) {
 
-		requestValidator.validId(idStr);		
+		requestValidator.validId(idStr);	
+		collection.setId(idStr);
 		collectionValidator.validate(collection, RequestMethodEnum.PUT);
 		
 		try {
-			collection.setId(idStr);
 			return collectionService.update(collection);
 		} catch (ResourceAlreadyExistException ex) {
 			logger.error(ex.getMessage(), ex);

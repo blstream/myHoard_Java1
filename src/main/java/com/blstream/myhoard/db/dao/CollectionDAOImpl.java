@@ -15,6 +15,7 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.blstream.myhoard.authorization.service.SecurityService;
+import com.blstream.myhoard.biz.model.CollectionDTO;
 import com.blstream.myhoard.db.model.CollectionDS;
 import com.blstream.myhoard.db.model.TagDS;
 import com.blstream.myhoard.db.model.UserDS;
@@ -201,10 +202,11 @@ public class CollectionDAOImpl implements CollectionDAO {
     }
 
 	@Override
-	public boolean isNameUniqeu(String name) {
+	public boolean isNameUniqeu(CollectionDTO collectionDTO) {
 		int size = sessionFactory.getCurrentSession()
 				.createCriteria(CollectionDS.class)
-				.add(Restrictions.eq("name", name)).list().size();
+				.add(Restrictions.not(Restrictions.eq("id", Integer.parseInt(collectionDTO.getId()))))
+				.add(Restrictions.eq("name", collectionDTO.getName())).list().size();
 		return size==0;
 	}
 
