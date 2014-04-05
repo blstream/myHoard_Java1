@@ -27,6 +27,11 @@
 			fetch="select">
 			<column name="item_id" not-null="true" />
 		</many-to-one>
+		
+		<many-to-one name="owner" class="com.blstream.myhoard.db.model.UserDS"
+			fetch="select">
+			<column name="owner" not-null="true" />
+		</many-to-one>		
 
 	</class>
 </hibernate-mapping>

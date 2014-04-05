@@ -1,14 +1,19 @@
 package com.blstream.myhoard.biz.service;
 
+import com.blstream.myhoard.authorization.service.SecurityService;
 import com.blstream.myhoard.biz.mapper.MediaMapper;
 import com.blstream.myhoard.biz.model.MediaDTO;
 import com.blstream.myhoard.db.dao.MediaDAO;
+import com.blstream.myhoard.db.dao.UserDAO;
 import com.blstream.myhoard.db.model.MediaDS;
+import com.blstream.myhoard.db.model.UserDS;
 import com.blstream.myhoard.exception.MyHoardException;
 import com.blstream.myhoard.exception.NotFoundException;
+
 import java.sql.Timestamp;
 import java.util.Date;
 import java.util.List;
+
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -20,7 +25,13 @@ public class MediaServiceImpl implements MediaService {
 			.getLogger(MediaServiceImpl.class.getCanonicalName());
 
 	@Autowired
+	SecurityService securityService;
+	
+	@Autowired
 	private MediaDAO mediaDAO;
+	
+    @Autowired
+    private UserDAO userDAO;
 
 	@Override
 	public List<MediaDTO> getList() throws MyHoardException {
@@ -53,7 +64,9 @@ public class MediaServiceImpl implements MediaService {
 		Date date = new java.util.Date();
 		mediaDTO.setCreatedDate(new Timestamp(date.getTime()));
 		MediaDS mediaDS = MediaMapper.map(mediaDTO);
-
+		UserDS user = userDAO.get(Integer.parseInt(securityService.getCurrentUser().getId()));
+		
+		mediaDS.setOwner(user);
 		mediaDAO.create(mediaDS);
 
 		MediaDTO media = MediaMapper.map(mediaDS);
@@ -70,6 +83,10 @@ public class MediaServiceImpl implements MediaService {
 		if (sourceMediaDS == null) {
 			logger.error("mediaDSBaza == null");
 			throw new MyHoardException();
+		}
+		
+		if(sourceMediaDS.getOwner().getId() != Integer.parseInt(securityService.getCurrentUser().getId())) {
+			throw new NotFoundException(String.format("Access denied for media id = ", sourceMediaDS.getId()));
 		}
 
 		if(mediaDS.getFile() != null) {

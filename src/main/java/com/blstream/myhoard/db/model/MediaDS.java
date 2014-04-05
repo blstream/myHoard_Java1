@@ -9,6 +9,7 @@ public class MediaDS {
 	private byte[] file;
 	private byte[] thumbnail;
 	private ItemDS itemDS;
+	private UserDS owner;
 	private Date createdDate;
 
 	public MediaDS() {
@@ -70,6 +71,14 @@ public class MediaDS {
 		return "MediaDS [id=" + id + ", file=" + Arrays.toString(file)
 				+ ", thumbnail=" + Arrays.toString(thumbnail) + ", itemDS="
 				+ itemDS + ", createdDate=" + createdDate + "]";
+	}
+
+	public UserDS getOwner() {
+		return owner;
+	}
+
+	public void setOwner(UserDS owner) {
+		this.owner = owner;
 	}
 
 }
