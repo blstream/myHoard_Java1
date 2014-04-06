@@ -4,6 +4,7 @@ import org.codehaus.jackson.map.annotate.JsonSerialize;
 
 public class UserDTO {
 
+    @JsonSerialize(include = JsonSerialize.Inclusion.NON_NULL)
     private String id;
     private String username;
     private String email;

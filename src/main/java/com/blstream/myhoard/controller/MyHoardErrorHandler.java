@@ -40,7 +40,7 @@ public class MyHoardErrorHandler {
     private final static String ERROR_MESSAGE_AUTH_BAD_CREDENTIALS = "Bad credentials";
     private final static String ERROR_MESSAGE_AUTH_TOKEN_NOT_PROVIDED = "Token not provided";
     private final static String ERROR_MESSAGE_AUTH_TOKEN_INVALID_TOKEN = "Invalid token";
-    private final static String ERROR_MESSAGE_AUTH_FORBIDDEN = "Forbidded";
+    private final static String ERROR_MESSAGE_AUTH_FORBIDDEN = "Forbidden";
     private final static String ERROR_MESSAGE_AUTH_UNKNOW_ERROR = "Unknown error";
     private final static String ERROR_MESSAGE_VALIDATION_ERROR = "Validation error";
 
