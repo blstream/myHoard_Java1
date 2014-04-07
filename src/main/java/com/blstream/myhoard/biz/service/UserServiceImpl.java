@@ -48,6 +48,10 @@ public class UserServiceImpl implements UserService {
         // hashing user password
         String hashedPassword = passwordEncoder.encode(userDTO.getPassword());
         userDTO.setPassword(hashedPassword);
+        
+        if(userDTO.getUsername() == null){
+            userDTO.setUsername(userDTO.getEmail());
+        }
 
         userDAO.create(UserMapper.map(userDTO));
 

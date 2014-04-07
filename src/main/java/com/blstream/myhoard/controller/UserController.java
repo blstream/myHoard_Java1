@@ -7,6 +7,7 @@ import com.blstream.myhoard.biz.service.UserService;
 import com.blstream.myhoard.biz.validator.UserValidator;
 import com.blstream.myhoard.exception.ForbiddenException;
 import com.blstream.myhoard.exception.MyHoardException;
+import com.blstream.myhoard.exception.NotFoundException;
 import java.util.List;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +23,10 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 @Controller
 @RequestMapping("/users")
 public class UserController {
+
+    private static final String USER_NOT_EXIST = "User with id = %s not exist";
+    private static final String USER_NOT_EXIST_INVALID_ID = "User with id = %s not exist; Invalid Id";
+    private static final String GET_USER = "getUser";
 
     private static final Logger logger = Logger.getLogger(UserController.class.getCanonicalName());
 
@@ -68,6 +73,42 @@ public class UserController {
     public List<UserDTO> getUserList() throws MyHoardException {
 
         return userService.getList();
+    }
+
+    @RequestMapping(value = "/{userId}", method = RequestMethod.GET)
+    @ResponseStatus(HttpStatus.OK)
+    @ResponseBody
+    public UserDTO getUser(@PathVariable("userId") String id) throws MyHoardException {
+        UserDTO userDTO;
+        try {
+            userDTO = userService.get(Integer.parseInt(id));
+        } catch (NumberFormatException e) {
+            logger.error(GET_USER, e);
+            throw new NotFoundException(String.format(USER_NOT_EXIST_INVALID_ID, id));
+        } catch (MyHoardException mhe) {
+            logger.error(GET_USER, mhe);
+            throw new NotFoundException(String.format(USER_NOT_EXIST, id));
+        }
+        userDTO.setPassword(null);
+        return userDTO;
+    }
+
+    @RequestMapping(method = RequestMethod.PUT)
+    @ResponseStatus(HttpStatus.OK)
+    @ResponseBody
+    public UserDTO updateCurrentUser(@RequestBody UserDTO userDTO) throws MyHoardException {
+        userDTO.setId(securityService.getCurrentUser().getId());
+        userValidator.validate(userDTO, RequestMethodEnum.PUT);
+
+        return userService.update(userDTO);
+    }
+
+    @RequestMapping(method = RequestMethod.DELETE)
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    @ResponseBody
+    public void deleteCurrentUser() throws MyHoardException {
+
+        userService.remove(Integer.parseInt(securityService.getCurrentUser().getId()));
     }
 
 }
