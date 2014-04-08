@@ -1,6 +1,7 @@
 package com.blstream.myhoard.controller;
 
 import java.io.IOException;
+import java.util.Date;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -48,6 +49,7 @@ public class MediaController {
 			throws IOException {
 
 		logger.info("create");
+		long start = new Date().getTime();
 
 		byte[] photo = mediaUtils.getFileFromMultipartFile(image); // file.getBytes();//mediaUtils.getFileFromRequest(request);
 
@@ -57,10 +59,14 @@ public class MediaController {
 		mediaValidator.validate(mediaDTO, RequestMethodEnum.POST);
 
 		try {
+			mediaDTO.setId("-1");
 			mediaDTO = mediaService.create(mediaDTO);
 		} catch (MyHoardException e) {
 			e.printStackTrace();
 		}
+		
+		long elapsed = new Date().getTime() - start;
+		logger.info("create: elapsed [ms]: " + elapsed);
 
 		return mediaDTO;
 	}

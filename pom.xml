@@ -9,7 +9,7 @@
 	<url>http://maven.apache.org</url>
 
 	<properties>
-        <commitNumber></commitNumber>
+		<commitNumber></commitNumber>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<spring.version>3.2.2.RELEASE</spring.version>
 		<hibernate.version>4.2.3.Final</hibernate.version>
@@ -56,12 +56,12 @@
 			<artifactId>spring-webmvc</artifactId>
 			<version>${spring.version}</version>
 		</dependency>
-                
-                <dependency>
-                        <groupId>org.springframework.security</groupId>
-                        <artifactId>spring-security-core</artifactId>
-                        <version>3.2.1.RELEASE</version>
-                </dependency>
+
+		<dependency>
+			<groupId>org.springframework.security</groupId>
+			<artifactId>spring-security-core</artifactId>
+			<version>3.2.1.RELEASE</version>
+		</dependency>
 
 		<!-- JACKSON -->
 		<dependency>
@@ -190,6 +190,13 @@
 			<artifactId>thumbnailator</artifactId>
 			<version>0.4.7</version>
 		</dependency>
+
+		<dependency>
+			<groupId>org.apache.tika</groupId>
+			<artifactId>tika-parsers</artifactId>
+			<version>1.5</version>
+		</dependency>
+
 
 	</dependencies>
 

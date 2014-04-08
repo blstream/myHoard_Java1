@@ -16,8 +16,14 @@ import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
 import org.apache.commons.io.IOUtils;
 import org.apache.log4j.Logger;
+import org.apache.tika.exception.TikaException;
+import org.apache.tika.metadata.Metadata;
+import org.apache.tika.parser.AutoDetectParser;
+import org.apache.tika.parser.ParseContext;
+import org.apache.tika.sax.BodyContentHandler;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
+import org.xml.sax.SAXException;
 
 @Component
 public class MediaUtils {
@@ -74,5 +80,24 @@ public class MediaUtils {
 		}
 		return file.getBytes();
 
+	}
+
+	public String getMetadane(byte[] bytes) {
+		ByteArrayInputStream bai = new ByteArrayInputStream(bytes);
+		org.xml.sax.ContentHandler contenthandler = new BodyContentHandler();
+		org.apache.tika.metadata.Metadata metadata = new Metadata();
+		org.apache.tika.parser.Parser parser = new AutoDetectParser();
+		try {
+			parser.parse(bai, contenthandler, metadata, new ParseContext());
+
+		} catch (IOException e) {
+			e.printStackTrace();
+		} catch (SAXException e) {
+			e.printStackTrace();
+		} catch (TikaException e) {
+			e.printStackTrace();
+		}
+		logger.info("Mime: " + metadata.get(Metadata.CONTENT_TYPE));
+		return metadata.get(Metadata.CONTENT_TYPE);
 	}
 }
