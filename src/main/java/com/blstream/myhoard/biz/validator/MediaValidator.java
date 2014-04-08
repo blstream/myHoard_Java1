@@ -79,18 +79,6 @@ public class MediaValidator {
 			return;
 		}
 
-		long start = new Date().getTime();
-		try {
-			ImageIO.read(new ByteArrayInputStream(file));
-		} catch (IOException e) {
-			logger.error(e.getMessage(), e);
-			errorMessages.put(KEY_FILE, MEDIA_NOT_FOUND);
-			return;
-		}
-		long elapsed = new Date().getTime() - start;
-
-		logger.info("ImageIO.read: [ms]: " + elapsed);
-
 		// if (file.length > maxSize) {
 		// errorMessages
 		// .put(KEY_FILE, MEDIA_SIZE_NOT_ACCEPTABLE_MAX_SIZE_10MB);
