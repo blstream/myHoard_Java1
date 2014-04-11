@@ -51,33 +51,15 @@ public class UserValidator extends AbstractValidator {
     }
 
     private void validateCreate(UserDTO userDTO) throws MyHoardException {
-        validateUserData(userDTO);
-
-        if (userService.getUserByEmail(userDTO.getEmail()) != null) {
-            errorMessages.put(KEY_USER, String.format(MESSAGE_EMAIL_EXIST, userDTO.getEmail()));
-        }
-    }
-
-    private void validateUpdate(UserDTO userDTO) throws MyHoardException {
-        UserDTO currentUser = securityService.getCurrentUser();
-        if (!currentUser.getId().equals(userDTO.getId())) {
-            throw new ForbiddenException();
-        }
-
-        validateUserData(userDTO);
-
-        UserDTO tmpUserDTO = userService.getUserByEmail(userDTO.getEmail());
-        if (tmpUserDTO != null && !currentUser.getId().equals(tmpUserDTO.getId())) {
-            errorMessages.put(KEY_USER, String.format(MESSAGE_EMAIL_EXIST, userDTO.getEmail()));
-        }
-    }
-
-    private void validateUserData(UserDTO userDTO) {
         // email
-        Pattern pattern = Pattern.compile(EMAIL_PATTERN);
-        Matcher matcher = pattern.matcher(userDTO.getEmail());
-        if (!matcher.matches()) {
-            errorMessages.put(KEY_EMAIL, String.format(MESSAGE_EMAIL_INVALID, userDTO.getEmail()));
+        if (userDTO.getEmail() != null) {
+            Pattern pattern = Pattern.compile(EMAIL_PATTERN);
+            Matcher matcher = pattern.matcher(userDTO.getEmail());
+            if (!matcher.matches()) {
+                errorMessages.put(KEY_EMAIL, String.format(MESSAGE_EMAIL_INVALID, userDTO.getEmail()));
+            }
+        } else {
+            errorMessages.put(KEY_EMAIL, MESSAGE_NOT_EMPTY);
         }
 
         // username
@@ -90,6 +72,41 @@ public class UserValidator extends AbstractValidator {
             errorMessages.put(KEY_PASS, MESSAGE_NOT_EMPTY);
         } else if (userDTO.getPassword().length() < 4 || userDTO.getPassword().length() > 250) {
             errorMessages.put(KEY_PASS, String.format(MESSAGE_LENGTH_MIN_MAX, 4, 250));
+        }
+
+        if (userService.getUserByEmail(userDTO.getEmail()) != null) {
+            errorMessages.put(KEY_USER, String.format(MESSAGE_EMAIL_EXIST, userDTO.getEmail()));
+        }
+    }
+
+    private void validateUpdate(UserDTO userDTO) throws MyHoardException {
+        UserDTO currentUser = securityService.getCurrentUser();
+        if (!currentUser.getId().equals(userDTO.getId())) {
+            throw new ForbiddenException();
+        }
+
+        // email
+        if (userDTO.getEmail() != null) {
+            Pattern pattern = Pattern.compile(EMAIL_PATTERN);
+            Matcher matcher = pattern.matcher(userDTO.getEmail());
+            if (!matcher.matches()) {
+                errorMessages.put(KEY_EMAIL, String.format(MESSAGE_EMAIL_INVALID, userDTO.getEmail()));
+            }
+        }
+
+        // username
+        if (userDTO.getUsername() != null && (userDTO.getUsername().length() < 2 || userDTO.getUsername().length() > 250)) {
+            errorMessages.put(KEY_USERNAME, String.format(MESSAGE_LENGTH_MIN_MAX, 2, 250));
+        }
+
+        // password
+        if (userDTO.getPassword() != null && (userDTO.getPassword().length() < 4 || userDTO.getPassword().length() > 250)) {
+            errorMessages.put(KEY_PASS, String.format(MESSAGE_LENGTH_MIN_MAX, 4, 250));
+        }
+
+        UserDTO tmpUserDTO = userService.getUserByEmail(userDTO.getEmail());
+        if (tmpUserDTO != null && !currentUser.getId().equals(tmpUserDTO.getId())) {
+            errorMessages.put(KEY_USER, String.format(MESSAGE_EMAIL_EXIST, userDTO.getEmail()));
         }
     }
 

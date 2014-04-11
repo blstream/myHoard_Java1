@@ -68,11 +68,17 @@ public class UserServiceImpl implements UserService {
             logger.info("update", e);
             throw new NotFoundException("User not found, invalid id");
         }
-        // hashing user password
-        String hashedPassword = passwordEncoder.encode(userDTO.getPassword());
-        userDS.setPassword(hashedPassword);
-        userDS.setEmail(userDTO.getEmail());
-        userDS.setUsername(userDTO.getUsername());
+        if (userDTO.getEmail() != null) {
+            // hashing user password
+            String hashedPassword = passwordEncoder.encode(userDTO.getEmail());
+            userDS.setPassword(hashedPassword);
+        }
+        if (userDTO.getEmail() != null) {
+            userDS.setEmail(userDTO.getEmail());
+        }
+        if (userDTO.getUsername() != null) {
+            userDS.setUsername(userDTO.getUsername());
+        }
 
         userDAO.update(userDS);
         userDTO = UserMapper.map(userDS);
