@@ -50,13 +50,21 @@ public class CollectionServiceImpl implements CollectionService {
 
     @Override
     public CollectionDTO create(CollectionDTO collection) throws MyHoardException {
-        Date date = new java.util.Date();
-        collection.setCreatedDate(new Timestamp(date.getTime()));
-        collection.setModifiedDate(new Timestamp(date.getTime()));
-
+    	
+    	logger.error(collection);
+    	Date date = new java.util.Date();
+    	collection.setCreatedDate(new Timestamp(date.getTime()));
+    	collection.setModifiedDate(new Timestamp(date.getTime()));
+    	
+        if(collection.getCreatedDateClient() == null && collection.getModifiedDateClient() == null)
+        {
+        	collection.setCreatedDateClient(collection.getCreatedDate());
+        	collection.setModifiedDateClient(collection.getModifiedDate());
+        }
         CollectionDS collectionDS = CollectionMapper.map(collection);
         collectionDS.setOwner(userDAO.get(Integer.parseInt(securityService.getCurrentUser().getId())));
 
+        logger.error(collectionDS);
         collectionDAO.create(collectionDS);
         CollectionDTO collectionDTO = CollectionMapper.map(collectionDS);
 
@@ -79,6 +87,12 @@ public class CollectionServiceImpl implements CollectionService {
         srcCollectionDS.setItemsNumber(collectionDS.getItemsNumber());
         
         srcCollectionDS.setModifiedDate(new Date());
+        
+        if(collectionDS.getModifiedDateClient() != null) {
+        	srcCollectionDS.setModifiedDateClient(collectionDS.getModifiedDateClient());
+        }
+        else
+        	srcCollectionDS.setModifiedDateClient(srcCollectionDS.getModifiedDate());
         
 		if (collectionDS.getName() != null) {
 			srcCollectionDS.setName(collectionDS.getName());

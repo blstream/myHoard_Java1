@@ -20,6 +20,7 @@ public class CollectionMapper {
         CollectionDS collectionDS = new CollectionDS();
 
         collectionDS.setCreatedDate(collectionDTO.getCreatedDate());
+        collectionDS.setCreatedDateClient(collectionDTO.getCreatedDateClient());
         collectionDS.setDescription(collectionDTO.getDescription());
         try {
             collectionDS.setId(Integer.parseInt(collectionDTO.getId()));
@@ -28,6 +29,7 @@ public class CollectionMapper {
         }
         collectionDS.setItemsNumber(collectionDTO.getItemsNumber());
         collectionDS.setModifiedDate(collectionDTO.getModifiedDate());
+        collectionDS.setModifiedDateClient(collectionDTO.getModifiedDateClient());
         collectionDS.setName(collectionDTO.getName());
         //collectionDS.setOwner(UserMapper.map(collectionDTO.getOwner()));
 
@@ -49,11 +51,11 @@ public class CollectionMapper {
     public static CollectionDTO map(CollectionDS collectionDS) {
         CollectionDTO collectionDTO = new CollectionDTO();
 
-        collectionDTO.setCreatedDate(collectionDS.getCreatedDate());
+        collectionDTO.setCreatedDateClient(collectionDS.getCreatedDateClient());
         collectionDTO.setDescription(collectionDS.getDescription());
         collectionDTO.setId(String.valueOf(collectionDS.getId()));
         collectionDTO.setItemsNumber(collectionDS.getItems() != null ? collectionDS.getItems().size() : 0);
-        collectionDTO.setModifiedDate(collectionDS.getModifiedDate());
+        collectionDTO.setModifiedDateClient(collectionDS.getModifiedDateClient());
         collectionDTO.setName(collectionDS.getName());
         collectionDTO.setOwner(UserMapper.map(collectionDS.getOwner()));
 

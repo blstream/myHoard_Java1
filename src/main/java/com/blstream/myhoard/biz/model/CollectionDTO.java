@@ -24,10 +24,16 @@ public class CollectionDTO {
     private int itemsNumber;
     @JsonProperty("created_date")
     @JsonSerialize(using = RestDateSerializer.class)
-    private Date createdDate;
+    private Date createdDateClient;
     @JsonProperty("modified_date")
     @JsonSerialize(using = RestDateSerializer.class)
-    private Date modifiedDate;
+    private Date modifiedDateClient;
+    @JsonIgnore
+    //@JsonSerialize(using = RestDateSerializer.class)
+    private Date createdDate;
+    @JsonIgnore
+    //@JsonSerialize(using = RestDateSerializer.class)
+    private Date modifiedDate;    
     @JsonSerialize(using = UserSerializer.class)
     private UserDTO owner;
 
@@ -40,7 +46,8 @@ public class CollectionDTO {
 
     public CollectionDTO(String id, String name, String description,
             List<String> tags, int itemsNumber, Date createdDate,
-            Date modifiedDate, UserDTO owner) {
+            Date modifiedDate, Date createDateClient,
+            Date modifiedDateClient, UserDTO owner) {
         super();
         this.id = id;
         this.name = name;
@@ -49,6 +56,8 @@ public class CollectionDTO {
         this.itemsNumber = itemsNumber;
         this.createdDate = createdDate;
         this.modifiedDate = modifiedDate;
+        this.createdDateClient = createDateClient;
+        this.modifiedDateClient= modifiedDateClient;
         this.owner = owner;
     }
 
@@ -108,6 +117,22 @@ public class CollectionDTO {
         this.modifiedDate = modifiedDate;
     }
 
+    public Date getCreatedDateClient() {
+        return createdDateClient;
+    }
+
+    public void setCreatedDateClient(Date createdDateClient) {
+        this.createdDateClient = createdDateClient;
+    }
+    
+    public Date getModifiedDateClient() {
+        return modifiedDateClient;
+    }
+
+    public void setModifiedDateClient(Date modifiedDateClient) {
+        this.modifiedDateClient = modifiedDateClient;
+    }
+    
     public UserDTO getOwner() {
         return owner;
     }
@@ -131,12 +156,16 @@ public class CollectionDTO {
 		result = prime * result
 				+ ((createdDate == null) ? 0 : createdDate.hashCode());
 		result = prime * result
+				+ ((createdDateClient == null) ? 0 : createdDateClient.hashCode());		
+		result = prime * result
 				+ ((description == null) ? 0 : description.hashCode());
 		result = prime * result + ((id == null) ? 0 : id.hashCode());
 		result = prime * result + ((items == null) ? 0 : items.hashCode());
 		result = prime * result + itemsNumber;
 		result = prime * result
 				+ ((modifiedDate == null) ? 0 : modifiedDate.hashCode());
+		result = prime * result
+				+ ((modifiedDateClient == null) ? 0 : modifiedDateClient.hashCode());		
 		result = prime * result + ((name == null) ? 0 : name.hashCode());
 		result = prime * result + ((owner == null) ? 0 : owner.hashCode());
 		result = prime * result + ((tags == null) ? 0 : tags.hashCode());
@@ -157,6 +186,11 @@ public class CollectionDTO {
 				return false;
 		} else if (!createdDate.equals(other.createdDate))
 			return false;
+		if (createdDateClient == null) {
+			if (other.createdDateClient != null)
+				return false;
+		} else if (!createdDateClient.equals(other.createdDateClient))
+			return false;		
 		if (description == null) {
 			if (other.description != null)
 				return false;
@@ -179,6 +213,11 @@ public class CollectionDTO {
 				return false;
 		} else if (!modifiedDate.equals(other.modifiedDate))
 			return false;
+		if (modifiedDateClient == null) {
+			if (other.modifiedDateClient != null)
+				return false;
+		} else if (!modifiedDateClient.equals(other.modifiedDateClient))
+			return false;		
 		if (name == null) {
 			if (other.name != null)
 				return false;
@@ -202,7 +241,8 @@ public class CollectionDTO {
 		return "CollectionDTO [id=" + id + ", name=" + name + ", description="
 				+ description + ", tags=" + tags + ", itemsNumber="
 				+ itemsNumber + ", createdDate=" + createdDate
-				+ ", modifiedDate=" + modifiedDate + ", owner=" + owner
+				+ ", modifiedDate=" + modifiedDate + ", createDateClient=" + createdDateClient
+				+ ", modifiedDateClient=" + modifiedDateClient + ", owner=" + owner
 				+ ", items=" + items + "]";
 	}
 
