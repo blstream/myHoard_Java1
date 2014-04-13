@@ -61,7 +61,7 @@ public class ItemDAOImpl implements ItemDAO {
 				.createAlias("item.collection", "collection")
 				.createAlias("collection.owner", "owner")
 				.add(Restrictions.disjunction()
-						.add(Restrictions.ilike("item.name", name))
+						.add(Restrictions.ilike("item.name", "%" + name + "%"))
 						.add(Restrictions.ilike("item.description", "%" + name + "%"))
 					)
 				.add(Restrictions.eq("collection.id", collection))
