@@ -25,5 +25,5 @@ public interface ItemDAO extends ResourceDAO<ItemDS> {
     @Override
     public void remove(int id);
 
-	public List<ItemDS> getList(int parseInt, List<String> sortBy, String sortDirection);
+	public List<ItemDS> getList(int id, List<String> sortBy, String sortDirection);
 }

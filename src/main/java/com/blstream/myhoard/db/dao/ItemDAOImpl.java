@@ -20,9 +20,6 @@ public class ItemDAOImpl implements ItemDAO {
     @Autowired
     private SessionFactory sessionFactory;
     
-    @Autowired
-    private CollectionDAO collectionDAO;
-
     @SuppressWarnings("unchecked")
 	@Override
     public List<ItemDS> getListByUser(int id) {
