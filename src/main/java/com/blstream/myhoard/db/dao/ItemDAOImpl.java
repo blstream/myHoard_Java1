@@ -1,10 +1,13 @@
 package com.blstream.myhoard.db.dao;
 
+import com.blstream.myhoard.db.model.CollectionDS;
 import com.blstream.myhoard.db.model.ItemDS;
 
 import java.util.List;
 
+import org.hibernate.Criteria;
 import org.hibernate.SessionFactory;
+import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -16,6 +19,9 @@ public class ItemDAOImpl implements ItemDAO {
 
     @Autowired
     private SessionFactory sessionFactory;
+    
+    @Autowired
+    private CollectionDAO collectionDAO;
 
     @SuppressWarnings("unchecked")
 	@Override
@@ -64,6 +70,30 @@ public class ItemDAOImpl implements ItemDAO {
 				.add(Restrictions.eq("collection.id", collection))
 				.add(Restrictions.eq("owner.email", owner))
 				.list();
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<ItemDS> getList(int id, List<String> sortBy,
+			String sortDirection) {
+
+		Criteria crit = sessionFactory.getCurrentSession().createCriteria(
+				ItemDS.class, "item");
+
+		if (sortDirection.equals("asc")) {
+			for (String sortByElem : sortBy) {
+				crit.addOrder(Order.asc(sortByElem));
+			}
+		} else {
+			for (String sortByElem : sortBy) {
+				crit.addOrder(Order.desc(sortByElem));
+			}
+		}
+
+		crit.createAlias("item.collection", "collection");
+		crit.add(Restrictions.eq("collection.id", id));
+		
+		return crit.list();
 	}
 
 }

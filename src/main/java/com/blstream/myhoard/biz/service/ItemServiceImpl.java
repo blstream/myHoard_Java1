@@ -175,4 +175,14 @@ public class ItemServiceImpl implements ItemService {
         return mediaDSSet;
     }
 
+	@Override
+	public List<ItemDTO> getList(int id, List<String> sortBy,
+			String sortDirection) {
+		
+		List<ItemDS> itemDSList = itemDAO.getList(id, sortBy, sortDirection);
+		List<ItemDTO> itemDTOList = ItemMapper.map(itemDSList);
+
+		return itemDTOList;
+	}
+
 }

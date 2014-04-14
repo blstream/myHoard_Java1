@@ -19,6 +19,7 @@ import com.blstream.myhoard.biz.enums.RequestMethodEnum;
 import com.blstream.myhoard.biz.model.CollectionDTO;
 import com.blstream.myhoard.biz.model.ItemDTO;
 import com.blstream.myhoard.biz.service.CollectionService;
+import com.blstream.myhoard.biz.service.ItemService;
 import com.blstream.myhoard.biz.validator.CollectionValidator;
 import com.blstream.myhoard.biz.validator.RequestValidator;
 import com.blstream.myhoard.exception.MyHoardException;
@@ -35,6 +36,9 @@ public class CollectionController {
 
 	@Autowired
 	private CollectionService collectionService;
+
+	@Autowired
+	private ItemService itemService;
 
 	@Autowired
 	private CollectionValidator collectionValidator;
@@ -114,10 +118,7 @@ public class CollectionController {
 				}
 
 				try {
-					return collectionService.getList(sortBy, sortDirection); // TODO
-																				// Matuesz
-																				// -
-																				// owner
+					return collectionService.getList(sortBy, sortDirection);
 				} catch (MyHoardException e) {
 					logger.error("getList error", e);
 				}
@@ -156,10 +157,10 @@ public class CollectionController {
 			@PathVariable("collectionId") String idStr,
 			@RequestBody CollectionDTO collection) {
 
-		requestValidator.validId(idStr);	
+		requestValidator.validId(idStr);
 		collection.setId(idStr);
 		collectionValidator.validate(collection, RequestMethodEnum.PUT);
-		
+
 		try {
 			return collectionService.update(collection);
 		} catch (ResourceAlreadyExistException ex) {
@@ -172,24 +173,66 @@ public class CollectionController {
 					"Collection with id = %s not exist", idStr));
 		}
 	}
-	
-	
+
 	@RequestMapping(value = "/{collectionId}/items", method = RequestMethod.GET)
 	@ResponseStatus(HttpStatus.OK)
 	@ResponseBody
 	public List<ItemDTO> getCollectionsItems(
-			@PathVariable("collectionId") String idStr) {
-		
+			@PathVariable("collectionId") String idStr,
+			@RequestParam(value = "sort_by", required = false) List<String> sortBy,
+			@RequestParam(value = "sort_direction", required = false) String sortDirection) {
+
 		requestValidator.validId(idStr);
-		
+
+		if (sortBy != null || sortDirection != null) {
+			if (sortBy == null || sortDirection == null) {
+				throw new MyHoardRestException();
+			} else {
+
+				String[] availableFields = { "name", "description",
+						"created_date", "modified_date", "owner" };
+				String[] availableDirection = { "asc", "desc" };
+
+				for (String sortByElem : sortBy) {
+					boolean everythingOk = false;
+					for (String available : availableFields) {
+						if (sortByElem.equals(available)) {
+							everythingOk = true;
+							break;
+						}
+					}
+					if (!everythingOk) {
+						throw new MyHoardRestException();
+					}
+					everythingOk = false;
+				}
+
+				if (!sortDirection.equals(availableDirection[0])
+						&& !sortDirection.equals(availableDirection[1])) {
+					throw new MyHoardRestException();
+				}
+
+				for (int i = 0; i < sortBy.size(); i++) {
+					if (sortBy.get(i).equals("modified_date")) {
+						sortBy.set(i, "modifiedDate");
+					} else if (sortBy.get(i).equals("created_date")) {
+						sortBy.set(i, "createdDate");
+					}
+				}
+
+				return itemService.getList(Integer.parseInt(idStr), sortBy,
+						sortDirection);
+			}
+		}
+
 		try {
 			return collectionService.get(Integer.parseInt(idStr)).getItems();
 		} catch (MyHoardException e) {
 			logger.error(e);
 		}
-		
+
 		return new ArrayList<ItemDTO>();
-		
+
 	}
-	
+
 }

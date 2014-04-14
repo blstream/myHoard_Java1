@@ -1,6 +1,7 @@
 package com.blstream.myhoard.db.dao;
 
 import com.blstream.myhoard.db.model.ItemDS;
+
 import java.util.List;
 
 public interface ItemDAO extends ResourceDAO<ItemDS> {
@@ -23,4 +24,6 @@ public interface ItemDAO extends ResourceDAO<ItemDS> {
 
     @Override
     public void remove(int id);
+
+	public List<ItemDS> getList(int parseInt, List<String> sortBy, String sortDirection);
 }
