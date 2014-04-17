@@ -26,6 +26,8 @@ public class ItemMapper {
         }
         itemDS.setCreatedDate(itemDTO.getCreatedDate());
         itemDS.setModifiedDate(itemDTO.getModifiedDate());
+        itemDS.setCreatedDateClient(itemDTO.getCreatedDateClient());
+        itemDS.setModifiedDateClient(itemDTO.getModifiedDateClient());
         itemDS.setCollection(collection);
         if (media != null) {
             itemDS.setMedia(media);
@@ -41,8 +43,8 @@ public class ItemMapper {
         itemDTO.setDescription(itemDS.getDescription());
         itemDTO.setLocation(new GeoPointDTO(itemDS.getLat(), itemDS.getLng()));
         itemDTO.setQuantity(itemDS.getQuantity());
-        itemDTO.setCreatedDate(itemDS.getCreatedDate());
-        itemDTO.setModifiedDate(itemDS.getModifiedDate());
+        itemDTO.setCreatedDateClient(itemDS.getCreatedDateClient());
+        itemDTO.setModifiedDateClient(itemDS.getModifiedDateClient());
         itemDTO.setCollection(String.valueOf(itemDS.getCollection().getId()));
         itemDTO.setOwner(UserMapper.map(itemDS.getOwner()));
         itemDTO.setMedia(MediaMapper.mapToSetDTO(itemDS.getMedia()));

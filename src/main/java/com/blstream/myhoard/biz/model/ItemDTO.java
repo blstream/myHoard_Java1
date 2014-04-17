@@ -2,8 +2,11 @@ package com.blstream.myhoard.biz.model;
 
 import com.blstream.myhoard.biz.serializer.RestDateSerializer;
 import com.blstream.myhoard.biz.serializer.UserSerializer;
+
 import java.util.Date;
 import java.util.Set;
+
+import org.codehaus.jackson.annotate.JsonIgnore;
 import org.codehaus.jackson.annotate.JsonProperty;
 import org.codehaus.jackson.map.annotate.JsonSerialize;
 
@@ -17,10 +20,14 @@ public class ItemDTO {
     private Set<MediaDTO> media;
     @JsonProperty("created_date")
     @JsonSerialize(using = RestDateSerializer.class)
-    private Date createdDate;
+    private Date createdDateClient;
     @JsonProperty("modified_date")
     @JsonSerialize(using = RestDateSerializer.class)
-    private Date modifiedDate;
+    private Date modifiedDateClient;
+    @JsonIgnore
+    private Date createdDate;
+    @JsonIgnore
+    private Date modifiedDate;      
     @JsonSerialize(using = UserSerializer.class)
     private UserDTO owner;
     private String collection;
@@ -107,6 +114,21 @@ public class ItemDTO {
         this.modifiedDate = modifiedDate;
     }
 
+    public Date getCreatedDateClient() {
+        return createdDateClient;
+    }
+
+    public void setCreatedDateClient(Date createdDateClient) {
+        this.createdDateClient = createdDateClient;
+    }
+
+    public Date getModifiedDateClient() {
+        return modifiedDateClient;
+    }
+
+    public void setModifiedDateClient(Date modifiedDateClient) {
+        this.modifiedDateClient = modifiedDateClient;
+    }
     public UserDTO getOwner() {
         return owner;
     }

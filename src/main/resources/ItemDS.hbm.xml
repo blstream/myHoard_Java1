@@ -31,6 +31,12 @@
 		<property name="modifiedDate" type="timestamp">
 			<column name="modified_date" not-null="true" unique="false" />
 		</property>
+		<property name="createdDateClient" type="timestamp">
+			<column name="created_date_client" not-null="true" unique="false" />
+		</property>
+		<property name="modifiedDateClient" type="timestamp">
+			<column name="modified_date_client" not-null="true" unique="false" />
+		</property>
                 <many-to-one name="owner" column="owner" lazy="false"
 			class="com.blstream.myhoard.db.model.UserDS" not-null="false"/>
 		<many-to-one name="collection" column="collection"

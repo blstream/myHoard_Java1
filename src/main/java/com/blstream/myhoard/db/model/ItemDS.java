@@ -13,6 +13,8 @@ public class ItemDS {
     private int quantity;
     private Date createdDate;
     private Date modifiedDate;
+    private Date createdDateClient;
+    private Date modifiedDateClient;    
     private UserDS owner;
     private CollectionDS collection;
     private Set<MediaDS> media;
@@ -81,7 +83,23 @@ public class ItemDS {
         this.modifiedDate = modifiedDate;
     }
 
-    public UserDS getOwner() {
+    public Date getCreatedDateClient() {
+		return createdDateClient;
+	}
+
+	public void setCreatedDateClient(Date createdDateClient) {
+		this.createdDateClient = createdDateClient;
+	}
+
+	public Date getModifiedDateClient() {
+		return modifiedDateClient;
+	}
+
+	public void setModifiedDateClient(Date modifiedDateClient) {
+		this.modifiedDateClient = modifiedDateClient;
+	}
+
+	public UserDS getOwner() {
         return owner;
     }
 
@@ -114,6 +132,8 @@ public class ItemDS {
         result = prime * result
                 + ((createdDate == null) ? 0 : createdDate.hashCode());
         result = prime * result
+                + ((createdDateClient == null) ? 0 : createdDateClient.hashCode());
+        result = prime * result
                 + ((description == null) ? 0 : description.hashCode());
         result = prime * result + id;
         result = prime * result + ((lat == null) ? 0 : lat.hashCode());
@@ -121,6 +141,8 @@ public class ItemDS {
         result = prime * result + ((media == null) ? 0 : media.hashCode());
         result = prime * result
                 + ((modifiedDate == null) ? 0 : modifiedDate.hashCode());
+        result = prime * result
+                + ((modifiedDateClient == null) ? 0 : modifiedDateClient.hashCode());    
         result = prime * result + ((name == null) ? 0 : name.hashCode());
         result = prime * result + ((owner == null) ? 0 : owner.hashCode());
         result = prime * result + quantity;
@@ -153,6 +175,13 @@ public class ItemDS {
         } else if (!createdDate.equals(other.createdDate)) {
             return false;
         }
+        if (createdDateClient == null) {
+            if (other.createdDateClient != null) {
+                return false;
+            }
+        } else if (!createdDateClient.equals(other.createdDateClient)) {
+            return false;
+        }        
         if (description == null) {
             if (other.description != null) {
                 return false;
@@ -191,6 +220,13 @@ public class ItemDS {
         } else if (!modifiedDate.equals(other.modifiedDate)) {
             return false;
         }
+        if (modifiedDateClient == null) {
+            if (other.modifiedDateClient != null) {
+                return false;
+            }
+        } else if (!modifiedDateClient.equals(other.modifiedDateClient)) {
+            return false;
+        }        
         if (name == null) {
             if (other.name != null) {
                 return false;

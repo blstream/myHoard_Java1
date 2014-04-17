@@ -47,12 +47,20 @@ public class ItemServiceImpl implements ItemService {
         Date date = new Date();
         itemDTO.setCreatedDate(new Timestamp(date.getTime()));
         itemDTO.setModifiedDate(new Timestamp(date.getTime()));
+        
+        if(itemDTO.getCreatedDateClient() == null && itemDTO.getModifiedDateClient() == null)
+        {
+        	itemDTO.setCreatedDateClient(itemDTO.getCreatedDate());
+        	itemDTO.setModifiedDateClient(itemDTO.getModifiedDate());
+        }
+        
         CollectionDS collectionDS = getItemCollection(itemDTO);
         Set<MediaDS> mediaDSSet = getItemMedia(itemDTO);
         UserDS userDS = userDAO.get(Integer.parseInt(securityService.getCurrentUser().getId()));
 
         ItemDS itemDS = ItemMapper.map(itemDTO, collectionDS, mediaDSSet);
         itemDS.setOwner(userDS);
+        logger.error(itemDS);
         itemDAO.create(itemDS);
 
         itemDTO = ItemMapper.map(itemDS);
@@ -109,7 +117,16 @@ public class ItemServiceImpl implements ItemService {
         ItemDS updateItemDS = ItemMapper.map(itemDTO, collectionDS, mediaDSSet);
 
         ItemDS itemDS = itemDAO.get(Integer.parseInt(itemDTO.getId()));
-        itemDS.setModifiedDate(new Timestamp(new Date().getTime()));
+        //itemDS.setModifiedDate(new Timestamp(new Date().getTime()));
+        
+        itemDS.setModifiedDate(new Date());
+        
+        if(updateItemDS.getModifiedDateClient() != null) {
+        	itemDS.setModifiedDateClient(updateItemDS.getModifiedDateClient());
+        }
+        else
+        	itemDS.setModifiedDateClient(itemDS.getModifiedDate());
+        
         if (updateItemDS.getName() != null) {
             itemDS.setName(updateItemDS.getName());
         }
