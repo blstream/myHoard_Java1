@@ -1,5 +1,6 @@
 package com.blstream.myhoard.biz.util;
 
+import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -7,6 +8,7 @@ import java.io.InputStream;
 import java.util.Date;
 import java.util.List;
 
+import javax.imageio.ImageIO;
 import javax.servlet.http.HttpServletRequest;
 
 import net.coobird.thumbnailator.Thumbnails;
@@ -99,5 +101,49 @@ public class MediaUtils {
 		}
 		logger.info("Mime: " + metadata.get(Metadata.CONTENT_TYPE));
 		return metadata.get(Metadata.CONTENT_TYPE);
+	}
+
+	public byte[] getImageCrop(byte[] src, int size) {
+
+		logger.info("getImageCrop");
+
+		long start = System.currentTimeMillis();
+
+		InputStream in = new ByteArrayInputStream(src);
+		BufferedImage image = null;
+		try {
+			image = ImageIO.read(in);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
+		int w = image.getWidth();
+		int h = image.getHeight();
+
+		if (w < size || h < size || size == 0) {
+			return src;
+		}
+
+		int startX = (w - size) / 2;
+		int startY = (h - size) / 2;
+
+		BufferedImage out = image.getSubimage(startX, startY, size, size);
+
+		ByteArrayOutputStream baos = new ByteArrayOutputStream();
+		byte[] imageInByte = null;
+		try {
+			ImageIO.write(out, "png", baos);
+			baos.flush();
+			imageInByte = baos.toByteArray();
+			baos.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
+		long elapsed = System.currentTimeMillis() - start;
+
+		logger.info("method: getImageCrop - execution time " + elapsed + " [ms]");
+
+		return imageInByte;
 	}
 }

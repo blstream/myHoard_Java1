@@ -64,7 +64,7 @@ public class MediaController {
 		} catch (MyHoardException e) {
 			e.printStackTrace();
 		}
-		
+
 		long elapsed = new Date().getTime() - start;
 		logger.info("create: elapsed [ms]: " + elapsed);
 
@@ -190,7 +190,7 @@ public class MediaController {
 		try {
 			id = Integer.parseInt(idStr);
 			byte[] image = mediaService.get(id).getFile();
-			return mediaUtils.getThumbnail(image, size);
+			return mediaUtils.getImageCrop(image, size);
 		} catch (Exception e) {
 			logger.error(e.getMessage(), e);
 			throw new NotFoundException(String.format(
@@ -198,11 +198,34 @@ public class MediaController {
 		}
 	}
 
-	@RequestMapping(value = "/a")
+	@RequestMapping(value = "/image/{id}", method = RequestMethod.GET, produces = {
+			"image/png", "image/jpg" })
 	@ResponseBody
-	public byte[] getFile() {
+	public byte[] getFile(@PathVariable("id") String idStr,
+			@RequestParam(value = "size", defaultValue = "0") int size) {
 
-		return null;
+		logger.info("getFile");
+		
+		int id = Integer.parseInt(idStr);
+
+		long start = System.currentTimeMillis();
+
+		MediaDTO media = null;
+		try {
+			media = mediaService.get(id);
+		} catch (MyHoardException e) {
+			e.printStackTrace();
+		}
+
+		long elapsed = System.currentTimeMillis() - start;
+
+		logger.info("Czas pobrania zdjecia z bazy: " + elapsed + " [ms]");
+
+		byte[] photo = media.getFile();
+
+		byte[] imageCrop = mediaUtils.getImageCrop(photo, size);
+
+		return imageCrop;
 
 	}
 
