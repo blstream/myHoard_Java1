@@ -2,7 +2,9 @@ package com.blstream.myhoard.biz.service;
 
 import com.blstream.myhoard.authorization.service.SecurityService;
 import com.blstream.myhoard.biz.mapper.CollectionMapper;
+import com.blstream.myhoard.biz.mapper.ItemMapper;
 import com.blstream.myhoard.biz.model.CollectionDTO;
+import com.blstream.myhoard.biz.model.ItemDTO;
 import com.blstream.myhoard.db.dao.CollectionDAO;
 import com.blstream.myhoard.db.dao.UserDAO;
 import com.blstream.myhoard.db.model.CollectionDS;
@@ -132,6 +134,13 @@ public class CollectionServiceImpl implements CollectionService {
 	@Override
 	public boolean isNameUnique(CollectionDTO collectionDTO) {
 		return collectionDAO.isNameUniqeu(collectionDTO);
+	}
+
+	@Override
+	public List<CollectionDTO> getList(String name, String owner)
+			throws MyHoardException {
+		
+		return CollectionMapper.map(collectionDAO.getList(name, owner));
 	}
 
 }

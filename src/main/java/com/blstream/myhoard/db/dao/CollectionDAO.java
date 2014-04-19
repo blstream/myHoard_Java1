@@ -27,4 +27,6 @@ public interface CollectionDAO extends ResourceDAO<CollectionDS> {
             throws MyHoardException;
     
     public boolean isNameUniqeu(CollectionDTO collectionDTO);
+    
+    public List<CollectionDS> getList(String name, String owner);
 }

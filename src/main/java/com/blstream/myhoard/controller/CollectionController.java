@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
+import com.blstream.myhoard.authorization.service.SecurityService;
 import com.blstream.myhoard.biz.enums.RequestMethodEnum;
 import com.blstream.myhoard.biz.model.CollectionDTO;
 import com.blstream.myhoard.biz.model.ItemDTO;
@@ -46,6 +47,9 @@ public class CollectionController {
 	@Autowired
 	private RequestValidator requestValidator;
 
+	@Autowired
+	private SecurityService securityService;
+	
 	@RequestMapping(method = RequestMethod.POST)
 	@ResponseBody
 	@ResponseStatus(HttpStatus.CREATED)
@@ -79,9 +83,11 @@ public class CollectionController {
 	@ResponseBody
 	public List<CollectionDTO> getCollections(
 			@RequestParam(value = "sort_by", required = false) List<String> sortBy,
-			@RequestParam(value = "sort_direction", required = false) String sortDirection) {
+			@RequestParam(value = "sort_direction", required = false) String sortDirection,
+            @RequestParam(value = "name", required = false) String name,
+            @RequestParam(value = "owner", required = false) String owner) throws MyHoardException {
 
-		if (sortBy != null || sortDirection != null) {
+		if (sortBy != null || sortDirection != null && (name == null && owner == null)) {
 			if (sortBy == null || sortDirection == null) {
 				throw new MyHoardRestException();
 			} else {
@@ -124,12 +130,21 @@ public class CollectionController {
 				}
 			}
 		}
+		else if (name != null && owner != null && sortBy == null && sortDirection == null) {
 
+        	if(owner.equals(securityService.getCurrentUser().getEmail())) {	
+        			return collectionService.getList(name, owner);
+        	}
+        	else {
+        		throw new NotFoundException(String.format("Access denied"));
+        	}
+		}
+			
 		try {
 			return collectionService.getList();
 		} catch (Exception e) {
 			logger.error(e.getMessage(), e);
-			throw new MyHoardRestException();
+			throw new MyHoardRestException();	
 		}
 	}
 

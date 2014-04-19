@@ -17,6 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.blstream.myhoard.authorization.service.SecurityService;
 import com.blstream.myhoard.biz.model.CollectionDTO;
 import com.blstream.myhoard.db.model.CollectionDS;
+import com.blstream.myhoard.db.model.ItemDS;
 import com.blstream.myhoard.db.model.TagDS;
 import com.blstream.myhoard.db.model.UserDS;
 import com.blstream.myhoard.exception.MyHoardException;
@@ -174,6 +175,19 @@ public class CollectionDAOImpl implements CollectionDAO {
         }
     }
     
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<CollectionDS> getList(String name, String owner) {
+		
+		return sessionFactory.getCurrentSession().createCriteria(CollectionDS.class, "collection")
+				.createAlias("collection.owner", "owner")
+				.add(Restrictions.disjunction()
+						.add(Restrictions.ilike("collection.name", "%" + name + "%"))
+						.add(Restrictions.ilike("collection.description", "%" + name + "%"))
+					)
+				.add(Restrictions.eq("owner.email", owner))
+				.list();
+	}
 
     @SuppressWarnings("unchecked")
     @Override
