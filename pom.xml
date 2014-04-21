@@ -4,7 +4,7 @@
 	<groupId>com.blstream.myhoard</groupId>
 	<artifactId>MyHoardJava1</artifactId>
 	<packaging>war</packaging>
-	<version>5.0.0</version>
+	<version>5.0.1</version>
 	<name>MyHoard Maven Webapp</name>
 	<url>http://maven.apache.org</url>
 
@@ -14,6 +14,7 @@
 		<spring.version>3.2.2.RELEASE</spring.version>
 		<hibernate.version>4.2.3.Final</hibernate.version>
 		<jackson.version>1.9.13</jackson.version>
+                <aspectj.version>1.6.11</aspectj.version>
 	</properties>
 
 	<dependencies>
@@ -62,6 +63,26 @@
 			<artifactId>spring-security-core</artifactId>
 			<version>3.2.1.RELEASE</version>
 		</dependency>
+                
+                <!-- SPRING AOP -->
+                <dependency>
+                        <groupId>org.springframework</groupId>
+                        <artifactId>spring-aop</artifactId>
+                        <version>${spring.version}</version>
+                </dependency>
+                
+                <!-- ASPECTJ -->
+                <dependency>
+                        <groupId>org.aspectj</groupId>
+                        <artifactId>aspectjrt</artifactId>
+                        <version>${aspectj.version}</version>
+                </dependency>
+ 
+                <dependency>
+                        <groupId>org.aspectj</groupId>
+                        <artifactId>aspectjweaver</artifactId>
+                        <version>${aspectj.version}</version>
+                </dependency>
 
 		<!-- JACKSON -->
 		<dependency>
