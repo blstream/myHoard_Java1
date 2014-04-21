@@ -24,7 +24,7 @@ public class CountingCalledMethodsAspect {
     }
 
     @Around("myHoard()")
-    public Object logStats(ProceedingJoinPoint joinPoint) {
+    public Object logStats(ProceedingJoinPoint joinPoint) throws Throwable {
 
         final String methodName = joinPoint.getSignature().toShortString();
 
@@ -38,12 +38,8 @@ public class CountingCalledMethodsAspect {
         logger.debug(String.format("Methods called between: %s --- %s", startDate.toString(), new Date().toString()));
         logger.debug(calledMethodsMap.toString());
 
-        try {
-            Object result = joinPoint.proceed();
-            return result;
-        } catch (Throwable e) {
-            throw new RuntimeException(e);
-        }
+        Object result = joinPoint.proceed();
+        return result;
     }
 
     public static HashMap<String, Integer> getCalledMethodsMap() {

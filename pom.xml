@@ -4,7 +4,7 @@
 	<groupId>com.blstream.myhoard</groupId>
 	<artifactId>MyHoardJava1</artifactId>
 	<packaging>war</packaging>
-	<version>5.0.1</version>
+	<version>5.0.2</version>
 	<name>MyHoard Maven Webapp</name>
 	<url>http://maven.apache.org</url>
 
