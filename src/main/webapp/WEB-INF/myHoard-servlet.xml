@@ -70,7 +70,7 @@
         <aop:aspectj-autoproxy />
         
         <!-- AOP BEAN -->
-        <bean id="countingCalledMethodsAspect" class="com.blstream.myhoard.aop.CountingCalledMethodsAspect" />
+        <bean id="countingCalledMethodsAspect" class="com.blstream.myhoard.aop.CalledMethodsAspect" />
         <bean id="loggerArgs" class="com.blstream.myhoard.aop.ArgsMethodAspect" />
         
 </beans>
