@@ -6,8 +6,10 @@ import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
 import org.aspectj.lang.annotation.Pointcut;
 import org.aspectj.lang.reflect.MethodSignature;
+import org.springframework.core.annotation.Order;
 
 @Aspect
+@Order(value = 1)
 public class ArgsMethodAspect {
 
 	private Logger logger = Logger.getLogger(ArgsMethodAspect.class
