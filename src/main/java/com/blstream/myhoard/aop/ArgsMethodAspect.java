@@ -27,8 +27,8 @@ public class ArgsMethodAspect {
 		String[] parameterNames = signature.getParameterNames();
 		if (parameterNames != null) {
 			logger.debug("Method args name: ");
-			for (String string : parameterNames) {
-				logger.debug(string);
+			for (String name : parameterNames) {
+				logger.debug(name);
 			}
 		}
 		logger.debug("Method args value: ");
