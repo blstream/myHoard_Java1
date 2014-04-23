@@ -17,9 +17,11 @@ public class CollectionValidator {
 	private static final String DESCRIPTION_MAX_SIZE_900 = "Description max size = 900";
 	private static final String NAME_MAX_SIZE_64 = "Name max size = 64";
 	private static final String NAME_MINIMUM_SIZE_2 = "Name minimum size = 2";
-
+	private static final String NAME_LENGTH = "Length of name must be between 2 and 20 characters";
+	
 	private final String KEY_NAME = "name";
 	private final String KEY_DESCRIPTION = "description";
+	private final String KEY_PATTERN = "description";
 
 	@Autowired
 	private CollectionService collectionService;
@@ -36,13 +38,20 @@ public class CollectionValidator {
 			break;
 		case PUT:
 			validateUpdate(collectionDTO);
-			break;
+			break;		
 		default:
 			break;
 		}
 
 	}
-
+	
+	public void validatePattern(String name) {
+		errorMessages = new HashMap<>();
+		if(name != null && ( name.length() < 2 || name.length() > 20)) {
+			errorMessages.put(KEY_PATTERN, NAME_LENGTH);
+		}
+		checkError();
+	}
 	private void validateCreate(CollectionDTO collectionDTO) {
 
 		validNameCreate(collectionDTO);

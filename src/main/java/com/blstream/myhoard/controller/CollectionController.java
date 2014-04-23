@@ -131,8 +131,10 @@ public class CollectionController {
 			}
 		}
 		else if (name != null && owner != null && sortBy == null && sortDirection == null) {
-
-        	if(owner.equals(securityService.getCurrentUser().getEmail())) {	
+			
+			collectionValidator.validatePattern(name);
+			
+			if(owner.equals(securityService.getCurrentUser().getEmail())) {	
         			return collectionService.getList(name, owner);
         	}
         	else {

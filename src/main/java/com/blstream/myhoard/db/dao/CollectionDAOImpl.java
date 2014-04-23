@@ -181,10 +181,7 @@ public class CollectionDAOImpl implements CollectionDAO {
 		
 		return sessionFactory.getCurrentSession().createCriteria(CollectionDS.class, "collection")
 				.createAlias("collection.owner", "owner")
-				.add(Restrictions.disjunction()
-						.add(Restrictions.ilike("collection.name", "%" + name + "%"))
-						.add(Restrictions.ilike("collection.description", "%" + name + "%"))
-					)
+				.add(Restrictions.ilike("collection.name", "%" + name + "%"))
 				.add(Restrictions.eq("owner.email", owner))
 				.list();
 	}
