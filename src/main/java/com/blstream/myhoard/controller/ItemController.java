@@ -57,6 +57,7 @@ public class ItemController {
         } else if (name != null && collectionId != null && owner != null) {
         	if(owner.equals(securityService.getCurrentUser().getEmail())) {
         		try {
+        			itemValidator.validatePattern(name);
         			int collection = Integer.parseInt(collectionId);
         			return itemService.getList(name, collection, owner);
         		} catch (NumberFormatException e) {

@@ -4,14 +4,19 @@ import com.blstream.myhoard.biz.enums.RequestMethodEnum;
 import com.blstream.myhoard.biz.model.ItemDTO;
 import com.blstream.myhoard.exception.MyHoardException;
 import com.blstream.myhoard.exception.ValidatorException;
+
 import java.util.HashMap;
+
 import org.springframework.stereotype.Component;
 
 @Component
 public class ItemValidator extends AbstractValidator {
 
     private final String KEY_NAME = "name";
+    private final String KEY_PATTERN = "pattern";
 
+    private static final String NAME_LENGTH = "Length of name must be between 2 and 20 characters";
+    
     public void validate(ItemDTO itemDTO, RequestMethodEnum requestMethod) throws MyHoardException {
         errorMessages = new HashMap<>();
 
@@ -39,6 +44,14 @@ public class ItemValidator extends AbstractValidator {
         }
     }
 
+	public void validatePattern(String name) {
+		errorMessages = new HashMap<>();
+		if(name != null && ( name.length() < 2 || name.length() > 20)) {
+			errorMessages.put(KEY_PATTERN, NAME_LENGTH);
+		}
+		checkError();
+	}
+	
     private void checkError() {
         if (!errorMessages.isEmpty()) {
             throw new ValidatorException(errorMessages);

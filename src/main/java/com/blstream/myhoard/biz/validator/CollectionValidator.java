@@ -52,6 +52,7 @@ public class CollectionValidator {
 		}
 		checkError();
 	}
+	
 	private void validateCreate(CollectionDTO collectionDTO) {
 
 		validNameCreate(collectionDTO);
