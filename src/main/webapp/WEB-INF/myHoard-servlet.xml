@@ -72,5 +72,5 @@
         <!-- AOP BEAN -->
         <bean id="countingCalledMethodsAspect" class="com.blstream.myhoard.aop.CalledMethodsAspect" />
         <bean id="loggerArgs" class="com.blstream.myhoard.aop.ArgsMethodAspect" />
-        
+        <bean id="timeMeasurement" class="com.blstream.myhoard.aop.TimeMeasurementAspect" />
 </beans>
