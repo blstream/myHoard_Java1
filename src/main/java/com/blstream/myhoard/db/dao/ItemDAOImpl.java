@@ -1,6 +1,5 @@
 package com.blstream.myhoard.db.dao;
 
-import com.blstream.myhoard.db.model.CollectionDS;
 import com.blstream.myhoard.db.model.ItemDS;
 
 import java.util.List;

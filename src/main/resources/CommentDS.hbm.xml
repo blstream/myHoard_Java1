@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+        <class name="com.blstream.myhoard.db.model.CommentDS" table="Comment">
+                <id name="id" type="int">
+                        <column name="id" />
+                        <generator class="identity" />
+                </id>
+                <property name="content" type="string">
+                        <column name="content" length="160" not-null="false" unique="false" />
+                </property>
+                <property name="createdDate" type="timestamp">
+                        <column name="created_date" not-null="true" unique="false" />
+                </property>
+                <property name="modifiedDate" type="timestamp">
+                        <column name="modified_date" not-null="false" unique="false" />
+                </property>
+                <property name="createdDateClient" type="timestamp">
+                        <column name="created_date_client" not-null="false" unique="false" />
+                </property>
+                <property name="modifiedDateClient" type="timestamp">
+                        <column name="modified_date_client" not-null="false" unique="false" />
+                </property>
+                <many-to-one name="owner" column="owner" lazy="false"
+                             class="com.blstream.myhoard.db.model.UserDS" not-null="false"/>
+                <many-to-one name="collection" column="collection"
+                             class="com.blstream.myhoard.db.model.CollectionDS" not-null="true" />
+        </class>
+</hibernate-mapping>

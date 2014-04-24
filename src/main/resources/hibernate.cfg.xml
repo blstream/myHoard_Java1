@@ -13,6 +13,7 @@
 		<mapping resource="MediaDS.hbm.xml"></mapping>
 		<mapping resource="TagDS.hbm.xml"></mapping>
                 <mapping resource="UserDS.hbm.xml"></mapping>
-                <mapping resource="TokenDS.hbm.xml"></mapping>	
+                <mapping resource="TokenDS.hbm.xml"></mapping>
+                <mapping resource="CommentDS.hbm.xml"></mapping>
 	</session-factory>
 </hibernate-configuration>

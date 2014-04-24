@@ -245,7 +245,4 @@ public class CollectionDTO {
 				+ ", modifiedDateClient=" + modifiedDateClient + ", owner=" + owner
 				+ ", items=" + items + "]";
 	}
-
-    
-
 }

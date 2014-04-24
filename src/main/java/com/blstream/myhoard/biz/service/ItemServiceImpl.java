@@ -40,7 +40,7 @@ public class ItemServiceImpl implements ItemService {
     @Autowired
     private UserDAO userDAO;
     @Autowired
-    SecurityService securityService;
+    private SecurityService securityService;
 
     @Override
     public ItemDTO create(ItemDTO itemDTO) throws MyHoardException {
@@ -48,10 +48,9 @@ public class ItemServiceImpl implements ItemService {
         itemDTO.setCreatedDate(new Timestamp(date.getTime()));
         itemDTO.setModifiedDate(new Timestamp(date.getTime()));
         
-        if(itemDTO.getCreatedDateClient() == null && itemDTO.getModifiedDateClient() == null)
-        {
-        	itemDTO.setCreatedDateClient(itemDTO.getCreatedDate());
-        	itemDTO.setModifiedDateClient(itemDTO.getModifiedDate());
+        if (itemDTO.getCreatedDateClient() == null && itemDTO.getModifiedDateClient() == null) {
+            itemDTO.setCreatedDateClient(itemDTO.getCreatedDate());
+            itemDTO.setModifiedDateClient(itemDTO.getModifiedDate());
         }
         
         CollectionDS collectionDS = getItemCollection(itemDTO);
@@ -60,7 +59,7 @@ public class ItemServiceImpl implements ItemService {
 
         ItemDS itemDS = ItemMapper.map(itemDTO, collectionDS, mediaDSSet);
         itemDS.setOwner(userDS);
-        logger.error(itemDS);
+        
         itemDAO.create(itemDS);
 
         itemDTO = ItemMapper.map(itemDS);
@@ -117,15 +116,14 @@ public class ItemServiceImpl implements ItemService {
         ItemDS updateItemDS = ItemMapper.map(itemDTO, collectionDS, mediaDSSet);
 
         ItemDS itemDS = itemDAO.get(Integer.parseInt(itemDTO.getId()));
-        //itemDS.setModifiedDate(new Timestamp(new Date().getTime()));
         
         itemDS.setModifiedDate(new Date());
         
         if(updateItemDS.getModifiedDateClient() != null) {
         	itemDS.setModifiedDateClient(updateItemDS.getModifiedDateClient());
-        }
-        else
+        } else {
         	itemDS.setModifiedDateClient(itemDS.getModifiedDate());
+        }
         
         if (updateItemDS.getName() != null) {
             itemDS.setName(updateItemDS.getName());
@@ -193,8 +191,7 @@ public class ItemServiceImpl implements ItemService {
     }
 
 	@Override
-	public List<ItemDTO> getList(int id, List<String> sortBy,
-			String sortDirection) {
+	public List<ItemDTO> getList(int id, List<String> sortBy, String sortDirection) {
 		
 		List<ItemDS> itemDSList = itemDAO.getList(id, sortBy, sortDirection);
 		List<ItemDTO> itemDTOList = ItemMapper.map(itemDSList);

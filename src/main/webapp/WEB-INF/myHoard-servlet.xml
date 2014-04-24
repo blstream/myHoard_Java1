@@ -59,6 +59,7 @@
                         <mvc:mapping path="/collections/**"/>
                         <mvc:mapping path="/media/**"/>
                         <mvc:mapping path="/users/**"/>
+                        <mvc:mapping path="/comments/**"/>
                         <bean class="com.blstream.myhoard.authorization.MyHoardInterceptor" />
                 </mvc:interceptor>
         </mvc:interceptors>
