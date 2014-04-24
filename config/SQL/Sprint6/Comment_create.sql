@@ -1,4 +1,4 @@
-CREATE TABLE `comment` (
+CREATE TABLE `Comment` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `content` varchar(160) COLLATE utf8_bin NOT NULL,
   `created_date` datetime NOT NULL,
