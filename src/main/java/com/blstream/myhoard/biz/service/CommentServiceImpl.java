@@ -10,6 +10,7 @@ import com.blstream.myhoard.db.model.CollectionDS;
 import com.blstream.myhoard.db.model.CommentDS;
 import com.blstream.myhoard.db.model.UserDS;
 import com.blstream.myhoard.exception.MyHoardException;
+import com.blstream.myhoard.exception.NotFoundException;
 import java.sql.Timestamp;
 import java.util.Date;
 import java.util.List;
@@ -19,6 +20,9 @@ import org.springframework.stereotype.Service;
 
 @Service("commentService")
 public class CommentServiceImpl implements CommentService {
+
+    private static final String COMMENT_NOT_EXIST = "Comment with id = %s not exist";
+    private static final String COLLECTION_WITH_ID_NOT_EXIST = "Collection with id = %s not exist";
 
     private static final Logger logger = Logger.getLogger(CommentServiceImpl.class.getCanonicalName());
 
@@ -31,19 +35,30 @@ public class CommentServiceImpl implements CommentService {
     @Autowired
     private SecurityService securityService;
 
-    // TODO RT - implement
     @Override
-    public CommentDTO get(int i) throws MyHoardException {
-        throw new UnsupportedOperationException("Not supported yet.");
+    public CommentDTO get(int id) throws MyHoardException {
+        CommentDS commentDS = commentDAO.get(id);
+        if (commentDS == null) {
+            throw new NotFoundException(String.format(COMMENT_NOT_EXIST, id));
+        }
+
+        return CommentMapper.map(commentDS);
     }
 
-    // TODO RT - check it
+    @Override
+    public CommentDTO get(String id) throws MyHoardException {
+
+        return get(Integer.parseInt(id));
+    }
+
     @Override
     public CommentDTO create(CommentDTO commentDTO) throws MyHoardException {
         UserDS userDS = userDAO.get(Integer.parseInt(securityService.getCurrentUser().getId()));
         CollectionDS collectionDS = collectionDAO.get(Integer.parseInt(commentDTO.getCollection()));
+        if (collectionDS == null) {
+            throw new NotFoundException(String.format(COLLECTION_WITH_ID_NOT_EXIST, commentDTO.getCollection()));
+        }
         commentDTO.setCreatedDate(new Timestamp(new Date().getTime()));
-
         CommentDS commentDS = CommentMapper.map(commentDTO);
         commentDS.setCollection(collectionDS);
         commentDS.setOwner(userDS);
@@ -52,16 +67,35 @@ public class CommentServiceImpl implements CommentService {
         return CommentMapper.map(commentDS);
     }
 
-    // TODO RT - implement
     @Override
     public CommentDTO update(CommentDTO commentDTO) throws MyHoardException {
-        throw new UnsupportedOperationException("Not supported yet.");
+        CommentDS commentDS = commentDAO.get(Integer.parseInt(commentDTO.getId()));
+        commentDS.setModifiedDate(new Date());
+        if (commentDTO.getContent() != null) {
+            commentDS.setContent(commentDTO.getContent());
+        }
+        if (commentDTO.getCollection() != null) {
+            CollectionDS collectionDS = collectionDAO.get(Integer.parseInt(commentDTO.getCollection()));
+            if (collectionDS == null) {
+                throw new NotFoundException(String.format(COLLECTION_WITH_ID_NOT_EXIST, commentDTO.getCollection()));
+            }
+            commentDS.setCollection(collectionDS);
+        }
+        commentDAO.update(commentDS);
+
+        return CommentMapper.map(commentDS);
     }
 
-    // TODO RT - implement
     @Override
-    public void remove(int i) throws MyHoardException {
-        throw new UnsupportedOperationException("Not supported yet.");
+    public void remove(int id) throws MyHoardException {
+        commentDAO.remove(id);
+    }
+
+    @Override
+    public List<CommentDTO> getListByCollection(String collectionId) throws MyHoardException {
+        List<CommentDS> commentDsList = commentDAO.getListByCollection(Integer.parseInt(collectionId));
+
+        return CommentMapper.map(commentDsList);
     }
 
     // RT - unused

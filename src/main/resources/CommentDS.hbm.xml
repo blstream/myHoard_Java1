@@ -10,7 +10,7 @@
                         <generator class="identity" />
                 </id>
                 <property name="content" type="string">
-                        <column name="content" length="160" not-null="false" unique="false" />
+                        <column name="content" length="160" not-null="true" unique="false" />
                 </property>
                 <property name="createdDate" type="timestamp">
                         <column name="created_date" not-null="true" unique="false" />
@@ -26,7 +26,7 @@
                 </property>
                 <many-to-one name="owner" column="owner" lazy="false"
                              class="com.blstream.myhoard.db.model.UserDS" not-null="false"/>
-                <many-to-one name="collection" column="collection"
-                             class="com.blstream.myhoard.db.model.CollectionDS" not-null="true" />
+                <many-to-one name="collection" column="collection" lazy="false"
+                             class="com.blstream.myhoard.db.model.CollectionDS" not-null="false" />
         </class>
 </hibernate-mapping>

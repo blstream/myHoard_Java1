@@ -3,6 +3,7 @@ package com.blstream.myhoard.biz.model;
 import com.blstream.myhoard.biz.serializer.RestDateSerializer;
 import com.blstream.myhoard.biz.serializer.UserSerializer;
 import java.util.Date;
+import org.codehaus.jackson.annotate.JsonIgnore;
 import org.codehaus.jackson.annotate.JsonProperty;
 import org.codehaus.jackson.map.annotate.JsonSerialize;
 
@@ -16,6 +17,8 @@ public class CommentDTO {
     @JsonSerialize(using = UserSerializer.class)
     private UserDTO owner;
     private String collection;
+    @JsonIgnore
+    private CollectionDTO collectionDTO;
 
     public String getId() {
         return id;
@@ -55,5 +58,13 @@ public class CommentDTO {
 
     public void setCollection(String collection) {
         this.collection = collection;
+    }
+
+    public CollectionDTO getCollectionDTO() {
+        return collectionDTO;
+    }
+
+    public void setCollectionDTO(CollectionDTO collectionDTO) {
+        this.collectionDTO = collectionDTO;
     }
 }

@@ -1,8 +1,21 @@
 package com.blstream.myhoard.controller;
 
+import com.blstream.myhoard.authorization.service.SecurityService;
+import com.blstream.myhoard.biz.enums.RequestMethodEnum;
+import com.blstream.myhoard.biz.model.CollectionDTO;
+import com.blstream.myhoard.biz.model.CommentDTO;
+import com.blstream.myhoard.biz.model.ItemDTO;
+import com.blstream.myhoard.biz.service.CollectionService;
+import com.blstream.myhoard.biz.service.CommentService;
+import com.blstream.myhoard.biz.service.ItemService;
+import com.blstream.myhoard.biz.validator.CollectionValidator;
+import com.blstream.myhoard.biz.validator.RequestValidator;
+import com.blstream.myhoard.exception.MyHoardException;
+import com.blstream.myhoard.exception.MyHoardRestException;
+import com.blstream.myhoard.exception.NotFoundException;
+import com.blstream.myhoard.exception.ResourceAlreadyExistException;
 import java.util.ArrayList;
 import java.util.List;
-
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -15,19 +28,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
-import com.blstream.myhoard.authorization.service.SecurityService;
-import com.blstream.myhoard.biz.enums.RequestMethodEnum;
-import com.blstream.myhoard.biz.model.CollectionDTO;
-import com.blstream.myhoard.biz.model.ItemDTO;
-import com.blstream.myhoard.biz.service.CollectionService;
-import com.blstream.myhoard.biz.service.ItemService;
-import com.blstream.myhoard.biz.validator.CollectionValidator;
-import com.blstream.myhoard.biz.validator.RequestValidator;
-import com.blstream.myhoard.exception.MyHoardException;
-import com.blstream.myhoard.exception.MyHoardRestException;
-import com.blstream.myhoard.exception.NotFoundException;
-import com.blstream.myhoard.exception.ResourceAlreadyExistException;
-
 @Controller
 @RequestMapping("/collections")
 public class CollectionController {
@@ -37,18 +37,16 @@ public class CollectionController {
 
 	@Autowired
 	private CollectionService collectionService;
-
 	@Autowired
 	private ItemService itemService;
-
 	@Autowired
 	private CollectionValidator collectionValidator;
-
 	@Autowired
 	private RequestValidator requestValidator;
-
 	@Autowired
 	private SecurityService securityService;
+    @Autowired
+    private CommentService commentService;
 	
 	@RequestMapping(method = RequestMethod.POST)
 	@ResponseBody
@@ -251,5 +249,15 @@ public class CollectionController {
 		return new ArrayList<ItemDTO>();
 
 	}
+    
+    
+    @RequestMapping(value = "/{collectionId}/comments", method = RequestMethod.GET)
+    @ResponseStatus(HttpStatus.OK)
+    @ResponseBody
+    public List<CommentDTO> getCollectionComments(@PathVariable("collectionId") String id) throws MyHoardException {
+        requestValidator.validId(id);
+
+        return commentService.getListByCollection(id);
+    }
 
 }

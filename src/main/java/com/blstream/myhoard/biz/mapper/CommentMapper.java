@@ -2,6 +2,8 @@ package com.blstream.myhoard.biz.mapper;
 
 import com.blstream.myhoard.biz.model.CommentDTO;
 import com.blstream.myhoard.db.model.CommentDS;
+import java.util.ArrayList;
+import java.util.List;
 
 public class CommentMapper {
 
@@ -9,7 +11,8 @@ public class CommentMapper {
         CommentDS commentDS = new CommentDS();
         commentDS.setContent(commentDTO.getContent());
         commentDS.setCreatedDate(commentDTO.getCreatedDate());
-        
+        commentDS.setModifiedDate(commentDTO.getCreatedDate());
+
         return commentDS;
     }
 
@@ -20,7 +23,16 @@ public class CommentMapper {
         commentDTO.setCreatedDate(commentDS.getCreatedDate());
         commentDTO.setOwner(UserMapper.map(commentDS.getOwner()));
         commentDTO.setCollection(String.valueOf(commentDS.getCollection().getId()));
+        commentDTO.setCollectionDTO(CollectionMapper.map(commentDS.getCollection()));
 
         return commentDTO;
+    }
+
+    public static List<CommentDTO> map(List<CommentDS> itemDSList) {
+        List<CommentDTO> commentDTOList = new ArrayList<CommentDTO>();
+        for (CommentDS ids : itemDSList) {
+            commentDTOList.add(map(ids));
+        }
+        return commentDTOList;
     }
 }
