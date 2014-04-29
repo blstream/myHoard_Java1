@@ -26,4 +26,6 @@ public interface ItemDAO extends ResourceDAO<ItemDS> {
     public void remove(int id);
 
 	public List<ItemDS> getList(int id, List<String> sortBy, String sortDirection);
+    
+    public boolean isUniqueNameOfCollectionItem(String name, int collectionId);
 }

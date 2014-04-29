@@ -5,6 +5,7 @@ import com.blstream.myhoard.biz.enums.RequestMethodEnum;
 import com.blstream.myhoard.biz.model.ItemDTO;
 import com.blstream.myhoard.biz.service.ItemService;
 import com.blstream.myhoard.biz.validator.ItemValidator;
+import com.blstream.myhoard.biz.validator.RequestValidator;
 import com.blstream.myhoard.exception.ForbiddenException;
 import com.blstream.myhoard.exception.MyHoardException;
 import com.blstream.myhoard.exception.NotFoundException;
@@ -27,7 +28,6 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 public class ItemController {
 
     private static final String ITEM_NOT_EXIST = "Item with id = %s not exist";
-    private static final String ITEM_NOT_EXIST_INVALID_ID = "Item with id = %s not exist; Invalid Id";
     private static final String INVALID_PARAMETERS = "Invalid parameters to searching";
     private static final String INVALID_COLLECTION_ID = "Invalid parameter: collection = %s";
     private static final String ACCESS_DENIED = "Access denied";
@@ -43,6 +43,8 @@ public class ItemController {
     private SecurityService securityService;
     @Autowired
     private ItemValidator itemValidator;
+	@Autowired
+	private RequestValidator requestValidator;
 
     @RequestMapping(method = RequestMethod.GET)
     @ResponseStatus(HttpStatus.OK)
@@ -81,6 +83,7 @@ public class ItemController {
     @ResponseStatus(HttpStatus.CREATED)
     @ResponseBody
     public ItemDTO addItem(@RequestBody ItemDTO itemDTO) throws MyHoardException {
+        requestValidator.validId(itemDTO.getCollection());
         itemValidator.validate(itemDTO, RequestMethodEnum.POST);
         
         return itemService.create(itemDTO);
@@ -90,12 +93,10 @@ public class ItemController {
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
     public ItemDTO getItem(@PathVariable("itemId") String id) {
+        requestValidator.validId(id);
         ItemDTO itemDTO;
         try {
             itemDTO = itemService.get(Integer.parseInt(id));
-        } catch (NumberFormatException e) {
-            logger.error(GET_ITEM, e);
-            throw new NotFoundException(String.format(ITEM_NOT_EXIST_INVALID_ID, id));
         } catch (MyHoardException mhe) {
             logger.error(GET_ITEM, mhe);
             throw new NotFoundException(String.format(ITEM_NOT_EXIST, id));
@@ -112,14 +113,12 @@ public class ItemController {
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
     public ItemDTO updateItem(@PathVariable("itemId") String id, @Valid @RequestBody ItemDTO itemDTO) throws MyHoardException {
+        requestValidator.validId(itemDTO.getId());
         itemValidator.validate(itemDTO, RequestMethodEnum.PUT);
         ItemDTO srcItemDTO;
         try {
             srcItemDTO = itemService.get(Integer.parseInt(id));
             itemDTO.setId(id);
-        } catch (NumberFormatException e) {
-            logger.error(UPDATE_ITEM, e);
-            throw new NotFoundException(String.format(ITEM_NOT_EXIST_INVALID_ID, id));
         } catch (MyHoardException mhe) {
             logger.info(UPDATE_ITEM, mhe);
             throw new NotFoundException(String.format(ITEM_NOT_EXIST, id));
@@ -136,12 +135,10 @@ public class ItemController {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @ResponseBody
     public void deleteItem(@PathVariable("itemId") String id) throws MyHoardException {
+        requestValidator.validId(id);
         ItemDTO itemDTO;
         try {
             itemDTO = itemService.get(Integer.parseInt(id));
-        } catch (NumberFormatException e) {
-            logger.error(DELETE_ITEM, e);
-            throw new NotFoundException(String.format(ITEM_NOT_EXIST_INVALID_ID, id));
         } catch (MyHoardException mhe) {
             logger.error(DELETE_ITEM, mhe);
             throw new NotFoundException(String.format(ITEM_NOT_EXIST, id));

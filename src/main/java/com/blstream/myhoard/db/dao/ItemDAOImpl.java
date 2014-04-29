@@ -91,5 +91,15 @@ public class ItemDAOImpl implements ItemDAO {
 		
 		return crit.list();
 	}
+    
+    @Override
+    public boolean isUniqueNameOfCollectionItem(String name, int collectionId) {
+        List<ItemDS> itemDS = sessionFactory.getCurrentSession()
+                .createCriteria(ItemDS.class)
+                .add(Restrictions.eq("name", name))
+                .add(Restrictions.eq("collection.id", collectionId)).list();
+    
+        return itemDS.isEmpty();
+    }
 
 }

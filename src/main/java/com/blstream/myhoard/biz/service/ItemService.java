@@ -18,4 +18,5 @@ public interface ItemService extends ResourceService<ItemDTO> {
 	public List<ItemDTO> getList(int id, List<String> sortBy,
 			String sortDirection);
 
+    public boolean isUniqueNameOfCollectionItem(String name, int collectionId);
 }

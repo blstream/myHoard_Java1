@@ -199,4 +199,10 @@ public class ItemServiceImpl implements ItemService {
 		return itemDTOList;
 	}
 
+    @Override
+    public boolean isUniqueNameOfCollectionItem(String name, int collectionId) {
+        
+        return itemDAO.isUniqueNameOfCollectionItem(name, collectionId);
+    }
+    
 }

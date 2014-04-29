@@ -17,7 +17,7 @@ public class RequestValidator {
 			Integer.parseInt(id);
 		} catch (NumberFormatException e) {
 			logger.error(e.getMessage(), e);
-			throw new NotFoundException(String.format("Invalid ID", id));
+			throw new NotFoundException(String.format("Invalid ID: %s", id));
 		}
 
 	}

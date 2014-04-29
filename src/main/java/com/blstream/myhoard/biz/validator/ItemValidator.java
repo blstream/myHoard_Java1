@@ -2,10 +2,12 @@ package com.blstream.myhoard.biz.validator;
 
 import com.blstream.myhoard.biz.enums.RequestMethodEnum;
 import com.blstream.myhoard.biz.model.ItemDTO;
+import com.blstream.myhoard.biz.service.ItemService;
 import com.blstream.myhoard.exception.MyHoardException;
 import com.blstream.myhoard.exception.ValidatorException;
 
 import java.util.HashMap;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import org.springframework.stereotype.Component;
 
@@ -16,6 +18,10 @@ public class ItemValidator extends AbstractValidator {
     private final String KEY_PATTERN = "pattern";
 
     private static final String NAME_LENGTH = "Length of name must be between 2 and 20 characters";
+    private static final String NAME_EXIST = "Item name: %s, already exist";
+    
+    @Autowired
+    private ItemService itemService;
     
     public void validate(ItemDTO itemDTO, RequestMethodEnum requestMethod) throws MyHoardException {
         errorMessages = new HashMap<>();
@@ -41,6 +47,8 @@ public class ItemValidator extends AbstractValidator {
             errorMessages.put(KEY_NAME, MESSAGE_NOT_EMPTY);
         } else if (itemDTO.getName().length() < 2 || itemDTO.getName().length() > 50) {
             errorMessages.put(KEY_NAME, String.format(MESSAGE_LENGTH_MIN_MAX, 2, 50));
+        } else if (!itemService.isUniqueNameOfCollectionItem(itemDTO.getName(), Integer.parseInt(itemDTO.getCollection()))) {
+            errorMessages.put(KEY_NAME, String.format(NAME_EXIST, itemDTO.getName()));
         }
     }
 
