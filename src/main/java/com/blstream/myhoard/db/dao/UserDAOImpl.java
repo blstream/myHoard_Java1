@@ -2,10 +2,15 @@ package com.blstream.myhoard.db.dao;
 
 import com.blstream.myhoard.authorization.service.SecurityService;
 import com.blstream.myhoard.db.model.CollectionDS;
+import com.blstream.myhoard.db.model.ItemDS;
 import com.blstream.myhoard.db.model.UserDS;
 import com.blstream.myhoard.exception.MyHoardException;
 
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 
 import org.hibernate.Criteria;
 import org.hibernate.SessionFactory;
@@ -72,6 +77,35 @@ public class UserDAOImpl implements UserDAO {
 					.add(Restrictions.eq("isPublic", true));
 		}
 		return criteria.list();
+	}
+	
+	@Override
+	public List<CollectionDS> getListOfUserFavoriteCollections(int id) {
+		UserDS user = (UserDS) sessionFactory.getCurrentSession().get(UserDS.class, id);
+		Set<CollectionDS> favoriteCollections = user.getFavoriteCollections();
+		return new ArrayList<CollectionDS>(favoriteCollections);
+	}
+
+	public void saveWithFavoriteCollection(int id, CollectionDS collectionToSave) {
+		UserDS user = (UserDS) sessionFactory.getCurrentSession().get(UserDS.class, id);
+		Set<CollectionDS> favoriteCollections = user.getFavoriteCollections();
+		favoriteCollections.add(collectionToSave);
+		user.setFavoriteCollections(favoriteCollections);
+		update(user);
+	}
+	
+	public void saveWithoutFavoriteCollection(int id, CollectionDS collectionToDelete) {
+		UserDS user = (UserDS) sessionFactory.getCurrentSession().get(UserDS.class, id);
+		Set<CollectionDS> favoriteCollections = user.getFavoriteCollections();
+		Iterator<CollectionDS> it = favoriteCollections.iterator();
+		while(it.hasNext()) {
+			CollectionDS collection = it.next();
+			if(collection.getId() == collectionToDelete.getId()) {
+				it.remove();
+			}
+		}
+		user.setFavoriteCollections(favoriteCollections);
+		update(user);
 	}
 
 }

@@ -7,13 +7,13 @@
 	<session-factory>
 		<property name="hibernate.bytecode.use_reflection_optimizer">false</property>
 		<property name="show_sql">true</property>
-
+        <property name="format_sql">true</property>
 		<mapping resource="CollectionDS.hbm.xml"></mapping>
 		<mapping resource="ItemDS.hbm.xml"></mapping>
 		<mapping resource="MediaDS.hbm.xml"></mapping>
 		<mapping resource="TagDS.hbm.xml"></mapping>
-                <mapping resource="UserDS.hbm.xml"></mapping>
-                <mapping resource="TokenDS.hbm.xml"></mapping>
-                <mapping resource="CommentDS.hbm.xml"></mapping>
+		<mapping resource="UserDS.hbm.xml"></mapping>
+		<mapping resource="TokenDS.hbm.xml"></mapping>
+		<mapping resource="CommentDS.hbm.xml"></mapping>
 	</session-factory>
 </hibernate-configuration>

@@ -59,7 +59,9 @@ public class CollectionMapper {
         collectionDTO.setItemsNumber(collectionDS.getItems() != null ? collectionDS.getItems().size() : 0);
         collectionDTO.setModifiedDateClient(collectionDS.getModifiedDateClient());
         collectionDTO.setName(collectionDS.getName());
-        collectionDTO.setOwner(UserMapper.map(collectionDS.getOwner()));
+        if(collectionDS.getOwner() != null) {
+        	collectionDTO.setOwner(UserMapper.map(collectionDS.getOwner()));
+        }
 
         List<String> tagi = new ArrayList<String>();
         Set<TagDS> tagList = collectionDS.getTags();

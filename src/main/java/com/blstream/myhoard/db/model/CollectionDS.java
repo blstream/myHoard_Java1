@@ -17,7 +17,7 @@ public class CollectionDS {
 	private Date createdDateClient;
 	private Date modifiedDateClient;
 	private UserDS owner;
-	private Set<ItemDS> items;
+	private Set<ItemDS> items = new HashSet<ItemDS>(0);
 
 	public CollectionDS() {
 	}

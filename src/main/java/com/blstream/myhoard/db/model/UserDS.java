@@ -10,6 +10,7 @@ public class UserDS {
     private String password;
     private Set<ItemDS> items;
     private Set<CollectionDS> collections;
+    private Set<CollectionDS> favoriteCollections;
 
     public int getId() {
         return id;
@@ -58,5 +59,13 @@ public class UserDS {
     public void setCollections(Set<CollectionDS> collections) {
         this.collections = collections;
     }
+
+	public Set<CollectionDS> getFavoriteCollections() {
+		return favoriteCollections;
+	}
+
+	public void setFavoriteCollections(Set<CollectionDS> favoriteCollections) {
+		this.favoriteCollections = favoriteCollections;
+	}
 
 }

@@ -1,7 +1,6 @@
 package com.blstream.myhoard.biz.service;
 
 import com.blstream.myhoard.biz.model.CollectionDTO;
-import com.blstream.myhoard.biz.model.ItemDTO;
 import com.blstream.myhoard.exception.MyHoardException;
 
 import java.util.List;
@@ -30,4 +29,10 @@ public interface CollectionService extends ResourceService<CollectionDTO> {
             throws MyHoardException;
     
     boolean isNameUnique(CollectionDTO collectionDTO);
+
+	List<CollectionDTO> getFavoriteCollections();
+
+	void addToFavoriteCollections(int id);
+
+	void deleteFromFavoriteCollections(int parseInt);
 }

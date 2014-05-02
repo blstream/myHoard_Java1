@@ -8,18 +8,25 @@ import com.blstream.myhoard.biz.model.ItemDTO;
 import com.blstream.myhoard.biz.service.CollectionService;
 import com.blstream.myhoard.biz.service.CommentService;
 import com.blstream.myhoard.biz.service.ItemService;
+import com.blstream.myhoard.biz.service.UserService;
 import com.blstream.myhoard.biz.validator.CollectionValidator;
+import com.blstream.myhoard.biz.validator.FavoriteCollectionValidator;
 import com.blstream.myhoard.biz.validator.RequestValidator;
+import com.blstream.myhoard.db.dao.UserDAO;
+import com.blstream.myhoard.db.model.CollectionDS;
 import com.blstream.myhoard.exception.MyHoardException;
 import com.blstream.myhoard.exception.MyHoardRestException;
 import com.blstream.myhoard.exception.NotFoundException;
 import com.blstream.myhoard.exception.ResourceAlreadyExistException;
+
 import java.util.ArrayList;
 import java.util.List;
+
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -47,6 +54,11 @@ public class CollectionController {
 	private SecurityService securityService;
     @Autowired
     private CommentService commentService;
+    @Autowired
+    private FavoriteCollectionValidator favoriteCollectionValidator;
+    
+    @Autowired
+    private UserDAO userDao;
 	
 	@RequestMapping(method = RequestMethod.POST)
 	@ResponseBody
@@ -259,4 +271,31 @@ public class CollectionController {
 
         return commentService.getListByCollection(id);
     }
+    
+    @RequestMapping(value = "/favorite", method = RequestMethod.GET)
+    @ResponseStatus(HttpStatus.OK)
+    @ResponseBody
+	public List<CollectionDTO> getFavoriteCollections() {
+    	return collectionService.getFavoriteCollections();
+	}
+    
+    @RequestMapping(value = "/favorite/{id}", method = RequestMethod.POST)
+	@ResponseStatus(HttpStatus.OK)
+	@ResponseBody
+	public String addFavoriteCollection(@PathVariable("id") String idStr) {
+		requestValidator.validId(idStr);
+		favoriteCollectionValidator.validate(Integer.parseInt(idStr), Integer.parseInt(securityService.getCurrentUser().getId()), RequestMethodEnum.POST);
+		collectionService.addToFavoriteCollections(Integer.parseInt(idStr));
+		return null;
+	}
+    
+    @RequestMapping(value = "/favorite/{id}", method = RequestMethod.DELETE)
+	@ResponseStatus(HttpStatus.OK)
+	@ResponseBody
+	public String deleteFavoriteCollection(@PathVariable("id") String idStr) {
+		requestValidator.validId(idStr);
+		favoriteCollectionValidator.validate(Integer.parseInt(idStr), Integer.parseInt(securityService.getCurrentUser().getId()), RequestMethodEnum.DELETE);
+		collectionService.deleteFromFavoriteCollections(Integer.parseInt(idStr));
+		return null;
+	}
 }

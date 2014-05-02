@@ -1,6 +1,7 @@
 package com.blstream.myhoard.db.dao;
 
 import java.util.List;
+import java.util.Set;
 
 import com.blstream.myhoard.db.model.CollectionDS;
 import com.blstream.myhoard.db.model.UserDS;
@@ -22,5 +23,12 @@ public interface UserDAO extends ResourceDAO<UserDS> {
 
     @Override
     public void remove(int id);
+
+	List<CollectionDS> getListOfUserFavoriteCollections(int id);
+	
+	void saveWithFavoriteCollection(int id, CollectionDS collectionToSave);
+
+	public void saveWithoutFavoriteCollection(int parseInt,
+			CollectionDS collectionDS);
 
 }

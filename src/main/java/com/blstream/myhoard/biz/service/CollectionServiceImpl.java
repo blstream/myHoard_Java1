@@ -5,14 +5,18 @@ import com.blstream.myhoard.biz.mapper.CollectionMapper;
 import com.blstream.myhoard.biz.mapper.ItemMapper;
 import com.blstream.myhoard.biz.model.CollectionDTO;
 import com.blstream.myhoard.biz.model.ItemDTO;
+import com.blstream.myhoard.biz.model.UserDTO;
 import com.blstream.myhoard.db.dao.CollectionDAO;
 import com.blstream.myhoard.db.dao.UserDAO;
 import com.blstream.myhoard.db.model.CollectionDS;
+import com.blstream.myhoard.db.model.UserDS;
 import com.blstream.myhoard.exception.MyHoardException;
 
 import java.sql.Timestamp;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -145,5 +149,27 @@ public class CollectionServiceImpl implements CollectionService {
 		
 		return CollectionMapper.map(collectionDAO.getList(name, owner));
 	}
+
+	@Override
+	public List<CollectionDTO> getFavoriteCollections() {
+		UserDTO user = securityService.getCurrentUser();
+		List<CollectionDS> collectionsDS = userDAO.getListOfUserFavoriteCollections(Integer.parseInt(user.getId()));
+		List<CollectionDTO> collectionsDTO = CollectionMapper.map(collectionsDS);
+		return collectionsDTO;
+	}
+
+	@Override
+	public void addToFavoriteCollections(int id) {
+		CollectionDS collectionDS = collectionDAO.get(id);
+		userDAO.saveWithFavoriteCollection(Integer.parseInt(securityService.getCurrentUser().getId()), collectionDS);
+	}
+
+	@Override
+	public void deleteFromFavoriteCollections(int id) {
+		CollectionDS collectionDS = collectionDAO.get(id);
+		userDAO.saveWithoutFavoriteCollection(Integer.parseInt(securityService.getCurrentUser().getId()), collectionDS);
+	}
+	
+	
 
 }
