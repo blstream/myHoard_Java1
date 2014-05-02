@@ -259,5 +259,4 @@ public class CollectionController {
 
         return commentService.getListByCollection(id);
     }
-
 }

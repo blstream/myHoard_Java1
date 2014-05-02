@@ -2,13 +2,16 @@ package com.blstream.myhoard.controller;
 
 import com.blstream.myhoard.authorization.service.SecurityService;
 import com.blstream.myhoard.biz.enums.RequestMethodEnum;
+import com.blstream.myhoard.biz.model.CollectionDTO;
 import com.blstream.myhoard.biz.model.UserDTO;
 import com.blstream.myhoard.biz.service.UserService;
 import com.blstream.myhoard.biz.validator.UserValidator;
 import com.blstream.myhoard.exception.ForbiddenException;
 import com.blstream.myhoard.exception.MyHoardException;
 import com.blstream.myhoard.exception.NotFoundException;
+
 import java.util.List;
+
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -111,4 +114,18 @@ public class UserController {
         userService.remove(Integer.parseInt(securityService.getCurrentUser().getId()));
     }
 
+    @RequestMapping(value = "/{userId}/collections", method = RequestMethod.GET)
+    @ResponseStatus(HttpStatus.OK)
+    @ResponseBody
+    public List<CollectionDTO> getListOfUserCollections(@PathVariable("userId") String id) throws MyHoardException {
+        try {
+            return userService.getListOfUserCollections(Integer.parseInt(id));
+        } catch (NumberFormatException e) {
+            logger.error(GET_USER, e);
+            throw new NotFoundException(String.format(USER_NOT_EXIST_INVALID_ID, id));
+        } catch (MyHoardException mhe) {
+            logger.error(GET_USER, mhe);
+            throw new NotFoundException(String.format(USER_NOT_EXIST, id));
+        }
+    }
 }

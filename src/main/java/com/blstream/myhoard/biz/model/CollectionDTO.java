@@ -2,24 +2,24 @@ package com.blstream.myhoard.biz.model;
 
 import com.blstream.myhoard.biz.serializer.RestDateSerializer;
 import com.blstream.myhoard.biz.serializer.UserSerializer;
+
 import java.util.Date;
 import java.util.List;
 
 import org.codehaus.jackson.annotate.JsonIgnore;
 import org.codehaus.jackson.annotate.JsonProperty;
 import org.codehaus.jackson.map.annotate.JsonSerialize;
-import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotEmpty;
 
 public class CollectionDTO {
 
     private String id;
     @NotEmpty
-    @Length(min = 2, max = 50)
     private String name;
-    @Length(max = 250)
     private String description;
     List<String> tags;
+    @JsonProperty("public")
+    private boolean isPublic;
     @JsonProperty("items_number")
     private int itemsNumber;
     @JsonProperty("created_date")
@@ -29,10 +29,8 @@ public class CollectionDTO {
     @JsonSerialize(using = RestDateSerializer.class)
     private Date modifiedDateClient;
     @JsonIgnore
-    //@JsonSerialize(using = RestDateSerializer.class)
     private Date createdDate;
     @JsonIgnore
-    //@JsonSerialize(using = RestDateSerializer.class)
     private Date modifiedDate;    
     @JsonSerialize(using = UserSerializer.class)
     private UserDTO owner;
@@ -45,7 +43,7 @@ public class CollectionDTO {
     }
 
     public CollectionDTO(String id, String name, String description,
-            List<String> tags, int itemsNumber, Date createdDate,
+            List<String> tags, boolean isPublic,  int itemsNumber, Date createdDate,
             Date modifiedDate, Date createDateClient,
             Date modifiedDateClient, UserDTO owner) {
         super();
@@ -53,6 +51,7 @@ public class CollectionDTO {
         this.name = name;
         this.description = description;
         this.tags = tags;
+        this.isPublic = isPublic;
         this.itemsNumber = itemsNumber;
         this.createdDate = createdDate;
         this.modifiedDate = modifiedDate;
@@ -89,10 +88,18 @@ public class CollectionDTO {
         return tags;
     }
 
-    public void setTags(List<String> tags) {
+	public void setTags(List<String> tags) {
         this.tags = tags;
     }
 
+    public boolean getIsPublic() {
+		return isPublic;
+	}
+
+	public void setIsPublic(boolean isPublic) {
+		this.isPublic = isPublic;
+	}
+	
     public int getItemsNumber() {
         return itemsNumber;
     }
@@ -162,6 +169,7 @@ public class CollectionDTO {
 		result = prime * result + ((id == null) ? 0 : id.hashCode());
 		result = prime * result + ((items == null) ? 0 : items.hashCode());
 		result = prime * result + itemsNumber;
+		result = prime * result + (isPublic ? 1 : 0);
 		result = prime * result
 				+ ((modifiedDate == null) ? 0 : modifiedDate.hashCode());
 		result = prime * result
@@ -208,6 +216,8 @@ public class CollectionDTO {
 			return false;
 		if (itemsNumber != other.itemsNumber)
 			return false;
+		if (isPublic != other.getIsPublic())
+			return false;
 		if (modifiedDate == null) {
 			if (other.modifiedDate != null)
 				return false;
@@ -239,7 +249,7 @@ public class CollectionDTO {
 	@Override
 	public String toString() {
 		return "CollectionDTO [id=" + id + ", name=" + name + ", description="
-				+ description + ", tags=" + tags + ", itemsNumber="
+				+ description + ", tags=" + tags + ", isPublic" + isPublic + ", itemsNumber="
 				+ itemsNumber + ", createdDate=" + createdDate
 				+ ", modifiedDate=" + modifiedDate + ", createDateClient=" + createdDateClient
 				+ ", modifiedDateClient=" + modifiedDateClient + ", owner=" + owner

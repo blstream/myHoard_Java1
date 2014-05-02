@@ -10,6 +10,7 @@ public class CollectionDS {
 	private String name;
 	private String description;
 	private Set<TagDS> tags = new HashSet<TagDS>(0);
+	private boolean isPublic;
 	private int itemsNumber;
 	private Date createdDate;
 	private Date modifiedDate;
@@ -21,7 +22,7 @@ public class CollectionDS {
 	public CollectionDS() {
 	}
 
-	public CollectionDS(String name, String description, Set<TagDS> tags,
+	public CollectionDS(String name, String description, Set<TagDS> tags, boolean isPublic, 
 			int itemsNumber, Date createdDate, Date modifiedDate, Date createdDateClient,
 			Date modifiedDateClient, UserDS owner) {
 
@@ -29,6 +30,7 @@ public class CollectionDS {
 		this.name = name;
 		this.description = description;
 		this.tags = tags;
+		this.isPublic = isPublic;
 		this.itemsNumber = itemsNumber;
 		this.createdDate = createdDate;
 		this.modifiedDate = modifiedDate;
@@ -67,6 +69,14 @@ public class CollectionDS {
 
 	public void setTags(Set<TagDS> tags) {
 		this.tags = tags;
+	}
+
+	public boolean getIsPublic() {
+		return isPublic;
+	}
+
+	public void setIsPublic(boolean isPublic) {
+		this.isPublic = isPublic;
 	}
 
 	public int getItemsNumber() {
@@ -137,6 +147,7 @@ public class CollectionDS {
 				+ ((description == null) ? 0 : description.hashCode());
 		result = prime * result + id;
 		result = prime * result + itemsNumber;
+		result = prime * result + ( isPublic ? 1 : 0);
 		result = prime * result + ((description == null) ? 0 : tags.hashCode());
 		result = prime * result
 				+ ((modifiedDate == null) ? 0 : modifiedDate.hashCode());
@@ -173,6 +184,8 @@ public class CollectionDS {
 			return false;
 		if (id != other.id)
 			return false;
+		if (isPublic != other.getIsPublic())
+			return false;
 		if (itemsNumber != other.itemsNumber)
 			return false;
 		if (modifiedDate == null) {
@@ -201,7 +214,7 @@ public class CollectionDS {
 	@Override
 	public String toString() {
 		return "CollectionDS [id=" + id + ", name=" + name + ", description="
-				+ description + ", itemsNumber=" + itemsNumber
+				+ description + " isPublic=" + isPublic + ", itemsNumber=" + itemsNumber
 				+ ", createdDate=" + createdDate + ", modifiedDate="
 				+ modifiedDate + ", createdDateClient=" + createdDateClient 
 				+ ", modifiedDateClient=" + modifiedDateClient + ", owner=" + owner + "]";

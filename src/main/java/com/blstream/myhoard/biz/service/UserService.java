@@ -1,13 +1,17 @@
 package com.blstream.myhoard.biz.service;
 
+import com.blstream.myhoard.biz.model.CollectionDTO;
 import com.blstream.myhoard.biz.model.UserDTO;
 import com.blstream.myhoard.exception.MyHoardException;
+
 import java.util.List;
 
 public interface UserService extends ResourceService<UserDTO> {
 
     public UserDTO getUserByEmail(String email) throws MyHoardException;
 
+    public List<CollectionDTO> getListOfUserCollections(int id) throws MyHoardException;
+    
     @Override
     List<UserDTO> getList() throws MyHoardException;
 

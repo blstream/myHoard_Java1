@@ -44,7 +44,11 @@ public class CollectionDAOImpl implements CollectionDAO {
     	UserDS userDs = userDAO.getByEmail((securityService.getCurrentUser().getEmail()));
     	
         List<CollectionDS> collections = sessionFactory.getCurrentSession()
-                .createCriteria(CollectionDS.class).add(Restrictions.eq("owner", userDs)).list();
+                .createCriteria(CollectionDS.class)
+                .add(Restrictions.disjunction()
+                	.add(Restrictions.eq("owner", userDs))
+                	.add(Restrictions.eq("isPublic", true))
+                ).list();
         
         return collections;
     }
@@ -57,7 +61,9 @@ public class CollectionDAOImpl implements CollectionDAO {
 		Criteria criteria = sessionFactory.getCurrentSession().createCriteria(
 				CollectionDS.class);
 		criteria.add(Restrictions.eq("id", id));
-		criteria.add(Restrictions.eq("owner", userDs));
+		criteria.add(Restrictions.disjunction()
+						.add(Restrictions.eq("owner", userDs))
+						.add(Restrictions.eq("isPublic", true)));
 		criteria.setMaxResults(1);
 
 		return (CollectionDS) criteria.uniqueResult();
@@ -121,8 +127,9 @@ public class CollectionDAOImpl implements CollectionDAO {
         objectFromDb.setName(obj.getName());
         objectFromDb.setDescription(obj.getDescription());
         objectFromDb.setTags(tagsToSave);
+        objectFromDb.setIsPublic(obj.getIsPublic());
         objectFromDb.setModifiedDate(obj.getModifiedDate());
-
+        
         sessionFactory.getCurrentSession().update(objectFromDb);
     }
 
@@ -182,7 +189,9 @@ public class CollectionDAOImpl implements CollectionDAO {
 		return sessionFactory.getCurrentSession().createCriteria(CollectionDS.class, "collection")
 				.createAlias("collection.owner", "owner")
 				.add(Restrictions.ilike("collection.name", "%" + name + "%"))
-				.add(Restrictions.eq("owner.email", owner))
+				.add(Restrictions.disjunction()
+					.add(Restrictions.eq("isPublic", true))
+					.add(Restrictions.eq("owner.email", owner)))
 				.list();
 	}
 
@@ -207,7 +216,10 @@ public class CollectionDAOImpl implements CollectionDAO {
 
         }
         
-        crit.add(Restrictions.eq("owner", userDs));
+        crit.add(Restrictions.disjunction()
+			.add(Restrictions.eq("isPublic", true))
+			.add(Restrictions.eq("owner", userDs))
+		);
 
         return crit.list();
     }

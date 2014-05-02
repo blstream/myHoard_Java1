@@ -20,6 +20,10 @@
 				unique="false" />
 		</property>
 
+		<property name="isPublic" type="boolean">
+			<column name="public" not-null="false" unique="false" />
+		</property>
+		
 		<property name="itemsNumber" type="int">
 			<column name="items_number" not-null="true" unique="false" />
 		</property>

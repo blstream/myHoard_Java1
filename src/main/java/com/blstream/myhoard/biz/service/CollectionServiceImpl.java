@@ -107,6 +107,9 @@ public class CollectionServiceImpl implements CollectionService {
         if(collectionDS.getTags() != null) {
         	srcCollectionDS.setTags(collectionDS.getTags());
         }
+        
+        srcCollectionDS.setIsPublic(collectionDS.getIsPublic());
+        
         collectionDAO.update(srcCollectionDS);
 
         return CollectionMapper.map(srcCollectionDS);

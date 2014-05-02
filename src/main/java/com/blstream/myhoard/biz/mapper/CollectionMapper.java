@@ -27,6 +27,7 @@ public class CollectionMapper {
         } catch (Exception e) {
             logger.error("map error", e);
         }
+        collectionDS.setIsPublic(collectionDTO.getIsPublic());
         collectionDS.setItemsNumber(collectionDTO.getItemsNumber());
         collectionDS.setModifiedDate(collectionDTO.getModifiedDate());
         collectionDS.setModifiedDateClient(collectionDTO.getModifiedDateClient());
@@ -53,6 +54,7 @@ public class CollectionMapper {
 
         collectionDTO.setCreatedDateClient(collectionDS.getCreatedDateClient());
         collectionDTO.setDescription(collectionDS.getDescription());
+        collectionDTO.setIsPublic(collectionDS.getIsPublic());
         collectionDTO.setId(String.valueOf(collectionDS.getId()));
         collectionDTO.setItemsNumber(collectionDS.getItems() != null ? collectionDS.getItems().size() : 0);
         collectionDTO.setModifiedDateClient(collectionDS.getModifiedDateClient());

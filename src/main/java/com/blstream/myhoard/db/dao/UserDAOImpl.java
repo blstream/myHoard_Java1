@@ -1,8 +1,12 @@
 package com.blstream.myhoard.db.dao;
 
+import com.blstream.myhoard.authorization.service.SecurityService;
+import com.blstream.myhoard.db.model.CollectionDS;
 import com.blstream.myhoard.db.model.UserDS;
 import com.blstream.myhoard.exception.MyHoardException;
+
 import java.util.List;
+
 import org.hibernate.Criteria;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Restrictions;
@@ -16,6 +20,9 @@ public class UserDAOImpl implements UserDAO {
 
     @Autowired
     private SessionFactory sessionFactory;
+    
+    @Autowired
+    private SecurityService securityService;
 
     @Override
     public UserDS getByEmail(String email) {
@@ -26,7 +33,8 @@ public class UserDAOImpl implements UserDAO {
         return (UserDS) criteria.uniqueResult();
     }
 
-    @Override
+    @SuppressWarnings("unchecked")
+	@Override
     public List<UserDS> getList() throws MyHoardException {
         return sessionFactory.getCurrentSession().createCriteria(UserDS.class).list();
     }
@@ -50,5 +58,20 @@ public class UserDAOImpl implements UserDAO {
     public void remove(int id) {
         sessionFactory.getCurrentSession().delete(get(id));
     }
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<CollectionDS> getListOfUserCollections(int id) {
+		
+		Criteria criteria = sessionFactory.getCurrentSession().createCriteria(CollectionDS.class);
+		if(Integer.parseInt(securityService.getCurrentUser().getId()) == id) {
+			criteria.add(Restrictions.eq("owner.id", id));
+		}
+		else {
+			criteria.add(Restrictions.eq("owner.id", id))
+					.add(Restrictions.eq("isPublic", true));
+		}
+		return criteria.list();
+	}
 
 }
