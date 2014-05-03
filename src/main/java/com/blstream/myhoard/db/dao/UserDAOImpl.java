@@ -92,7 +92,6 @@ public class UserDAOImpl implements UserDAO {
 			}	
 		} else {
 			for (CollectionDS collection : favoriteCollections) {
-				System.out.println(collection.getOwner().getId() + " " + id);
 				if(collection.getIsPublic() || collection.getOwner().getId() == id) {
 					favoriteCollectionsWithoutPrivate.add(collection);
 				}
