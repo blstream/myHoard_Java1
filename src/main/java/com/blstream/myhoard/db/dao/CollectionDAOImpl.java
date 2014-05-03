@@ -17,7 +17,6 @@ import org.springframework.transaction.annotation.Transactional;
 import com.blstream.myhoard.authorization.service.SecurityService;
 import com.blstream.myhoard.biz.model.CollectionDTO;
 import com.blstream.myhoard.db.model.CollectionDS;
-import com.blstream.myhoard.db.model.ItemDS;
 import com.blstream.myhoard.db.model.TagDS;
 import com.blstream.myhoard.db.model.UserDS;
 import com.blstream.myhoard.exception.MyHoardException;
@@ -235,6 +234,18 @@ public class CollectionDAOImpl implements CollectionDAO {
 				.add(Restrictions.not(Restrictions.eq("id", Integer.parseInt(collectionDTO.getId()))))
 				.add(Restrictions.eq("name", collectionDTO.getName())).list().size();
 		return size==0;
+	}
+
+	@Override
+	public CollectionDS getById(int id) {
+
+		Criteria criteria = sessionFactory.getCurrentSession().createCriteria(
+				CollectionDS.class);
+		criteria.add(Restrictions.eq("id", id));
+		criteria.setMaxResults(1);
+
+		return (CollectionDS) criteria.uniqueResult();
+
 	}
 
 }

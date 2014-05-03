@@ -1,9 +1,11 @@
 package com.blstream.myhoard.authorization;
 
-import com.blstream.myhoard.biz.model.UserDTO;
 import java.util.Collection;
+
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
+
+import com.blstream.myhoard.biz.model.UserDTO;
 
 public class UserAuthentication implements Authentication {
 

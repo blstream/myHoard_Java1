@@ -1,9 +1,10 @@
 package com.blstream.myhoard.biz.mapper;
 
-import com.blstream.myhoard.biz.model.CommentDTO;
-import com.blstream.myhoard.db.model.CommentDS;
 import java.util.ArrayList;
 import java.util.List;
+
+import com.blstream.myhoard.biz.model.CommentDTO;
+import com.blstream.myhoard.db.model.CommentDS;
 
 public class CommentMapper {
 

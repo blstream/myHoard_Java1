@@ -1,8 +1,8 @@
 package com.blstream.myhoard.db.dao;
 
-import com.blstream.myhoard.db.model.ItemDS;
-
 import java.util.List;
+
+import com.blstream.myhoard.db.model.ItemDS;
 
 public interface ItemDAO extends ResourceDAO<ItemDS> {
 

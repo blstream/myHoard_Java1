@@ -1,7 +1,8 @@
 package com.blstream.myhoard.biz.service;
 
-import com.blstream.myhoard.exception.MyHoardException;
 import java.util.List;
+
+import com.blstream.myhoard.exception.MyHoardException;
 
 public interface ResourceService<T> {
 

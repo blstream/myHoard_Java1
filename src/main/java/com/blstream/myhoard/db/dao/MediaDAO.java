@@ -1,7 +1,8 @@
 package com.blstream.myhoard.db.dao;
 
-import com.blstream.myhoard.db.model.MediaDS;
 import java.util.List;
+
+import com.blstream.myhoard.db.model.MediaDS;
 
 public interface MediaDAO {
 

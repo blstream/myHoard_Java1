@@ -1,6 +1,5 @@
 package com.blstream.myhoard.controller;
 
-import com.blstream.myhoard.constants.Constants;
 import static com.blstream.myhoard.constants.Constants.ERROR_CODE_AUTH_BAD_CREDENTIALS;
 import static com.blstream.myhoard.constants.Constants.ERROR_CODE_AUTH_TOKEN_INVALID;
 import static com.blstream.myhoard.constants.Constants.ERROR_CODE_AUTH_TOKEN_NOT_PROVIDED;
@@ -8,16 +7,11 @@ import static com.blstream.myhoard.constants.Constants.ERROR_CODE_AUTH_UNKNOW_ER
 import static com.blstream.myhoard.constants.Constants.ERROR_CODE_BAD_REQUEST;
 import static com.blstream.myhoard.constants.Constants.ERROR_CODE_FORBIDDEN;
 import static com.blstream.myhoard.constants.Constants.ERROR_CODE_NOT_FOUND;
-import com.blstream.myhoard.exception.AuthorizationException;
-import com.blstream.myhoard.exception.ErrorCode;
-import com.blstream.myhoard.exception.ForbiddenException;
-import com.blstream.myhoard.exception.MyHoardRestException;
-import com.blstream.myhoard.exception.NotFoundException;
-import com.blstream.myhoard.exception.ResourceAlreadyExistException;
-import com.blstream.myhoard.exception.ValidatorException;
+
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
 import org.apache.log4j.Logger;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.converter.HttpMessageNotReadableException;
@@ -29,6 +23,15 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
+
+import com.blstream.myhoard.constants.Constants;
+import com.blstream.myhoard.exception.AuthorizationException;
+import com.blstream.myhoard.exception.ErrorCode;
+import com.blstream.myhoard.exception.ForbiddenException;
+import com.blstream.myhoard.exception.MyHoardRestException;
+import com.blstream.myhoard.exception.NotFoundException;
+import com.blstream.myhoard.exception.ResourceAlreadyExistException;
+import com.blstream.myhoard.exception.ValidatorException;
 
 @ControllerAdvice
 public class MyHoardErrorHandler {

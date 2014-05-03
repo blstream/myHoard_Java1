@@ -1,10 +1,10 @@
 package com.blstream.myhoard.biz.service;
 
+import java.util.List;
+
 import com.blstream.myhoard.biz.model.CollectionDTO;
 import com.blstream.myhoard.biz.model.UserDTO;
 import com.blstream.myhoard.exception.MyHoardException;
-
-import java.util.List;
 
 public interface UserService extends ResourceService<UserDTO> {
 

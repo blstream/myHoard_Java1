@@ -1,11 +1,13 @@
 package com.blstream.myhoard.biz.validator;
 
+import java.util.HashMap;
+
+import org.springframework.stereotype.Component;
+
 import com.blstream.myhoard.biz.enums.RequestMethodEnum;
 import com.blstream.myhoard.biz.model.CommentDTO;
 import com.blstream.myhoard.exception.MyHoardException;
 import com.blstream.myhoard.exception.ValidatorException;
-import java.util.HashMap;
-import org.springframework.stereotype.Component;
 
 @Component
 public class CommentValidator extends AbstractValidator {

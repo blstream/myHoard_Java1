@@ -1,11 +1,5 @@
 package com.blstream.myhoard.db.dao;
 
-import com.blstream.myhoard.authorization.service.SecurityService;
-import com.blstream.myhoard.db.model.CollectionDS;
-import com.blstream.myhoard.db.model.ItemDS;
-import com.blstream.myhoard.db.model.UserDS;
-import com.blstream.myhoard.exception.MyHoardException;
-
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -18,6 +12,11 @@ import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
+
+import com.blstream.myhoard.authorization.service.SecurityService;
+import com.blstream.myhoard.db.model.CollectionDS;
+import com.blstream.myhoard.db.model.UserDS;
+import com.blstream.myhoard.exception.MyHoardException;
 
 @Repository
 @Transactional
@@ -80,10 +79,27 @@ public class UserDAOImpl implements UserDAO {
 	}
 	
 	@Override
-	public List<CollectionDS> getListOfUserFavoriteCollections(int id) {
+	public List<CollectionDS> getListOfUserFavouriteCollections(int id) {
 		UserDS user = (UserDS) sessionFactory.getCurrentSession().get(UserDS.class, id);
 		Set<CollectionDS> favoriteCollections = user.getFavoriteCollections();
-		return new ArrayList<CollectionDS>(favoriteCollections);
+		Set<CollectionDS> favoriteCollectionsWithoutPrivate = new HashSet<CollectionDS>();
+		
+		if(securityService.getCurrentUser().getId().equals(String.valueOf(id))) {
+			for (CollectionDS collection : favoriteCollections) {
+				if(collection.getIsPublic() || collection.getOwner().getId() == Integer.parseInt(securityService.getCurrentUser().getId())) {
+					favoriteCollectionsWithoutPrivate.add(collection);
+				}
+			}	
+		} else {
+			for (CollectionDS collection : favoriteCollections) {
+				System.out.println(collection.getOwner().getId() + " " + id);
+				if(collection.getIsPublic() || collection.getOwner().getId() == id) {
+					favoriteCollectionsWithoutPrivate.add(collection);
+				}
+			}
+		}
+		
+		return new ArrayList<CollectionDS>(favoriteCollectionsWithoutPrivate);
 	}
 
 	public void saveWithFavoriteCollection(int id, CollectionDS collectionToSave) {

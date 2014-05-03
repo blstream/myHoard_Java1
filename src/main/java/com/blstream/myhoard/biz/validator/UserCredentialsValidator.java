@@ -1,15 +1,18 @@
 package com.blstream.myhoard.biz.validator;
 
-import com.blstream.myhoard.biz.model.UserCredentialsDTO;
-import com.blstream.myhoard.constants.Constants;
 import static com.blstream.myhoard.constants.Constants.GRNAT_TYPE_PASSWORD;
 import static com.blstream.myhoard.constants.Constants.GRNAT_TYPE_REFRESH_TOKEN;
+
+import java.util.HashMap;
+
+import org.apache.log4j.Logger;
+import org.springframework.stereotype.Component;
+
+import com.blstream.myhoard.biz.model.UserCredentialsDTO;
+import com.blstream.myhoard.constants.Constants;
 import com.blstream.myhoard.exception.AuthorizationException;
 import com.blstream.myhoard.exception.MyHoardException;
 import com.blstream.myhoard.exception.ValidatorException;
-import java.util.HashMap;
-import org.apache.log4j.Logger;
-import org.springframework.stereotype.Component;
 
 @Component
 public class UserCredentialsValidator extends AbstractValidator {

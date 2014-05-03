@@ -1,10 +1,10 @@
 package com.blstream.myhoard.db.dao;
 
+import java.util.List;
+
 import com.blstream.myhoard.biz.model.CollectionDTO;
 import com.blstream.myhoard.db.model.CollectionDS;
 import com.blstream.myhoard.exception.MyHoardException;
-
-import java.util.List;
 
 public interface CollectionDAO extends ResourceDAO<CollectionDS> {
 
@@ -29,4 +29,6 @@ public interface CollectionDAO extends ResourceDAO<CollectionDS> {
     public boolean isNameUnique(CollectionDTO collectionDTO);
     
     public List<CollectionDS> getList(String name, String owner);
+    
+    public CollectionDS getById(int id);
 }

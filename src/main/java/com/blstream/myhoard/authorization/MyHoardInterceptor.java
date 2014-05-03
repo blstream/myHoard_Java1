@@ -1,17 +1,20 @@
 package com.blstream.myhoard.authorization;
 
-import com.blstream.myhoard.biz.model.TokenDTO;
-import com.blstream.myhoard.biz.service.TokenService;
-import com.blstream.myhoard.constants.Constants;
 import static com.blstream.myhoard.constants.Constants.USER;
-import com.blstream.myhoard.exception.AuthorizationException;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
+
+import com.blstream.myhoard.biz.model.TokenDTO;
+import com.blstream.myhoard.biz.service.TokenService;
+import com.blstream.myhoard.constants.Constants;
+import com.blstream.myhoard.exception.AuthorizationException;
 
 public class MyHoardInterceptor implements HandlerInterceptor {
 

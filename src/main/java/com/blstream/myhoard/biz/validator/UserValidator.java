@@ -1,5 +1,13 @@
 package com.blstream.myhoard.biz.validator;
 
+import java.util.HashMap;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
 import com.blstream.myhoard.authorization.service.SecurityService;
 import com.blstream.myhoard.biz.enums.RequestMethodEnum;
 import com.blstream.myhoard.biz.model.UserDTO;
@@ -7,12 +15,6 @@ import com.blstream.myhoard.biz.service.UserService;
 import com.blstream.myhoard.exception.ForbiddenException;
 import com.blstream.myhoard.exception.MyHoardException;
 import com.blstream.myhoard.exception.ValidatorException;
-import java.util.HashMap;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-import org.apache.log4j.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 
 @Component
 public class UserValidator extends AbstractValidator {

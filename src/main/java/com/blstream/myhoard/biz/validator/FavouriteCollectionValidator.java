@@ -17,9 +17,11 @@ import com.blstream.myhoard.exception.MyHoardException;
 import com.blstream.myhoard.exception.ValidatorException;
 
 @Component
-public class FavoriteCollectionValidator {
+public class FavouriteCollectionValidator {
 
 	private static final String KEY_COLLECTION = "collection";
+
+	private static final String KEY_USER = "user";
 
 	@Autowired
 	private CollectionService collectionService;
@@ -38,6 +40,9 @@ public class FavoriteCollectionValidator {
 		errorMessages = new HashMap<>();
 
 		switch (requestMethod) {
+		case GET:
+			validateGet(idUser);
+			break;
 		case POST:
 			validateCreate(idCollection, idUser);
 			break;
@@ -51,15 +56,15 @@ public class FavoriteCollectionValidator {
 	}
 
 	private void validateDelete(int idCollection, int idUser) {
-		isPossibleToRemoveFromFavorite(idCollection, idUser);
+		isPossibleToRemoveFromFavourite(idCollection, idUser);
 	}
 
-	private void isPossibleToRemoveFromFavorite(int idCollection, int idUser) {
-		List<CollectionDS> listOfUserFavoriteCollections = userDAO
-				.getListOfUserFavoriteCollections(idUser);
+	private void isPossibleToRemoveFromFavourite(int idCollection, int idUser) {
+		List<CollectionDS> listOfUserFavouriteCollections = userDAO
+				.getListOfUserFavouriteCollections(idUser);
 
 		boolean alreadyExist = false;
-		for (CollectionDS collection : listOfUserFavoriteCollections) {
+		for (CollectionDS collection : listOfUserFavouriteCollections) {
 			if (collection.getId() == idCollection) {
 				alreadyExist = true;
 				break;
@@ -68,13 +73,13 @@ public class FavoriteCollectionValidator {
 
 		if (!alreadyExist) {
 			errorMessages.put(KEY_COLLECTION,
-					"You don't favorite this collection!");
+					"You don't favourite this collection!");
 			return;
 		}
 	}
 
 	private void validateCreate(int idCollection, int idUser) {
-		isPossibleAddToFavorite(idCollection, idUser);
+		isPossibleAddToFavourite(idCollection, idUser);
 
 	}
 
@@ -84,13 +89,13 @@ public class FavoriteCollectionValidator {
 		}
 	}
 
-	private void isPossibleAddToFavorite(int idCollection, int idUser) {
+	private void isPossibleAddToFavourite(int idCollection, int idUser) {
 
-		List<CollectionDS> listOfUserFavoriteCollections = userDAO
-				.getListOfUserFavoriteCollections(idUser);
+		List<CollectionDS> listOfUserFavouriteCollections = userDAO
+				.getListOfUserFavouriteCollections(idUser);
 
 		boolean alreadyExist = false;
-		for (CollectionDS collection : listOfUserFavoriteCollections) {
+		for (CollectionDS collection : listOfUserFavouriteCollections) {
 			if (collection.getId() == idCollection) {
 				alreadyExist = true;
 				break;
@@ -99,13 +104,13 @@ public class FavoriteCollectionValidator {
 
 		if (alreadyExist) {
 			errorMessages.put(KEY_COLLECTION,
-					"You already favorite this collection!");
+					"You already favourite this collection!");
 			return;
 		}
 
 		CollectionDTO collection = null;
 		try {
-			collection = collectionService.get(idCollection);
+			collection = collectionService.getById(idCollection);
 		} catch (MyHoardException e) {
 			e.printStackTrace();
 		}
@@ -122,6 +127,16 @@ public class FavoriteCollectionValidator {
 			}
 		}
 
+	}
+	
+	private void validateGet(int idUser) {
+		isUserExist(idUser);
+	}
+
+	private void isUserExist(int idUser) {
+		if(userDAO.get(idUser) == null ) {
+			errorMessages.put(KEY_USER, "User with id: "+ idUser + " not exist!");
+		}
 	}
 
 }

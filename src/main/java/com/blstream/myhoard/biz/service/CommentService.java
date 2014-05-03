@@ -1,8 +1,9 @@
 package com.blstream.myhoard.biz.service;
 
+import java.util.List;
+
 import com.blstream.myhoard.biz.model.CommentDTO;
 import com.blstream.myhoard.exception.MyHoardException;
-import java.util.List;
 
 public interface CommentService extends ResourceService<CommentDTO> {
 

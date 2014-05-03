@@ -1,15 +1,5 @@
 package com.blstream.myhoard.controller;
 
-import com.blstream.myhoard.authorization.service.SecurityService;
-import com.blstream.myhoard.biz.enums.RequestMethodEnum;
-import com.blstream.myhoard.biz.model.CollectionDTO;
-import com.blstream.myhoard.biz.model.UserDTO;
-import com.blstream.myhoard.biz.service.UserService;
-import com.blstream.myhoard.biz.validator.UserValidator;
-import com.blstream.myhoard.exception.ForbiddenException;
-import com.blstream.myhoard.exception.MyHoardException;
-import com.blstream.myhoard.exception.NotFoundException;
-
 import java.util.List;
 
 import org.apache.log4j.Logger;
@@ -22,6 +12,16 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
+
+import com.blstream.myhoard.authorization.service.SecurityService;
+import com.blstream.myhoard.biz.enums.RequestMethodEnum;
+import com.blstream.myhoard.biz.model.CollectionDTO;
+import com.blstream.myhoard.biz.model.UserDTO;
+import com.blstream.myhoard.biz.service.UserService;
+import com.blstream.myhoard.biz.validator.UserValidator;
+import com.blstream.myhoard.exception.ForbiddenException;
+import com.blstream.myhoard.exception.MyHoardException;
+import com.blstream.myhoard.exception.NotFoundException;
 
 @Controller
 @RequestMapping("/users")

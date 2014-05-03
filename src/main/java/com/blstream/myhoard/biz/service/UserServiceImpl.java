@@ -1,5 +1,12 @@
 package com.blstream.myhoard.biz.service;
 
+import java.util.List;
+
+import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Service;
+
 import com.blstream.myhoard.biz.mapper.CollectionMapper;
 import com.blstream.myhoard.biz.mapper.UserMapper;
 import com.blstream.myhoard.biz.model.CollectionDTO;
@@ -8,13 +15,6 @@ import com.blstream.myhoard.db.dao.UserDAO;
 import com.blstream.myhoard.db.model.UserDS;
 import com.blstream.myhoard.exception.MyHoardException;
 import com.blstream.myhoard.exception.NotFoundException;
-
-import java.util.List;
-
-import org.apache.log4j.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.stereotype.Service;
 
 @Service("userService")
 public class UserServiceImpl implements UserService {

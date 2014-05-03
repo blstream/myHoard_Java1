@@ -1,19 +1,12 @@
 package com.blstream.myhoard.controller;
 
-import com.blstream.myhoard.biz.model.TokenDTO;
-import com.blstream.myhoard.biz.model.UserCredentialsDTO;
-import com.blstream.myhoard.biz.model.UserDTO;
-import com.blstream.myhoard.biz.service.TokenService;
-import com.blstream.myhoard.biz.service.UserService;
-import com.blstream.myhoard.biz.validator.UserCredentialsValidator;
-import com.blstream.myhoard.constants.Constants;
 import static com.blstream.myhoard.constants.Constants.GRNAT_TYPE_PASSWORD;
 import static com.blstream.myhoard.constants.Constants.GRNAT_TYPE_REFRESH_TOKEN;
-import com.blstream.myhoard.exception.AuthorizationException;
-import com.blstream.myhoard.exception.MyHoardException;
-import com.blstream.myhoard.exception.NotFoundException;
+
 import java.util.UUID;
+
 import javax.validation.Valid;
+
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -24,6 +17,17 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
+
+import com.blstream.myhoard.biz.model.TokenDTO;
+import com.blstream.myhoard.biz.model.UserCredentialsDTO;
+import com.blstream.myhoard.biz.model.UserDTO;
+import com.blstream.myhoard.biz.service.TokenService;
+import com.blstream.myhoard.biz.service.UserService;
+import com.blstream.myhoard.biz.validator.UserCredentialsValidator;
+import com.blstream.myhoard.constants.Constants;
+import com.blstream.myhoard.exception.AuthorizationException;
+import com.blstream.myhoard.exception.MyHoardException;
+import com.blstream.myhoard.exception.NotFoundException;
 
 @Controller
 @RequestMapping("/oauth/token/")

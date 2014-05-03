@@ -1,7 +1,8 @@
 package com.blstream.myhoard.db.dao;
 
-import com.blstream.myhoard.exception.MyHoardException;
 import java.util.List;
+
+import com.blstream.myhoard.exception.MyHoardException;
 
 public interface ResourceDAO<T> {
 

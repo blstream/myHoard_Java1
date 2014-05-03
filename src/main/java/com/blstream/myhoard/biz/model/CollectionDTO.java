@@ -1,8 +1,5 @@
 package com.blstream.myhoard.biz.model;
 
-import com.blstream.myhoard.biz.serializer.RestDateSerializer;
-import com.blstream.myhoard.biz.serializer.UserSerializer;
-
 import java.util.Date;
 import java.util.List;
 
@@ -10,6 +7,9 @@ import org.codehaus.jackson.annotate.JsonIgnore;
 import org.codehaus.jackson.annotate.JsonProperty;
 import org.codehaus.jackson.map.annotate.JsonSerialize;
 import org.hibernate.validator.constraints.NotEmpty;
+
+import com.blstream.myhoard.biz.serializer.RestDateSerializer;
+import com.blstream.myhoard.biz.serializer.UserSerializer;
 
 public class CollectionDTO {
 

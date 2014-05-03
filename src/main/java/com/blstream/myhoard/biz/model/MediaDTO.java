@@ -2,6 +2,7 @@ package com.blstream.myhoard.biz.model;
 
 import java.util.Arrays;
 import java.util.Date;
+
 import org.codehaus.jackson.annotate.JsonIgnore;
 
 public class MediaDTO {

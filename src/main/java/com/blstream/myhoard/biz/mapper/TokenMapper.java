@@ -1,9 +1,10 @@
 package com.blstream.myhoard.biz.mapper;
 
-import com.blstream.myhoard.biz.model.TokenDTO;
-import com.blstream.myhoard.db.model.TokenDS;
 import java.sql.Timestamp;
 import java.util.Date;
+
+import com.blstream.myhoard.biz.model.TokenDTO;
+import com.blstream.myhoard.db.model.TokenDS;
 
 public class TokenMapper {
 
