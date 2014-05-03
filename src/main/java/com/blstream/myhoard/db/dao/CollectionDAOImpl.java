@@ -225,7 +225,7 @@ public class CollectionDAOImpl implements CollectionDAO {
     }
 
 	@Override
-	public boolean isNameUniqeu(CollectionDTO collectionDTO) {
+	public boolean isNameUnique(CollectionDTO collectionDTO) {
 		
 		UserDS userDs = userDAO.getByEmail((securityService.getCurrentUser().getEmail()));
 		

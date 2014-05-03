@@ -140,7 +140,7 @@ public class CollectionServiceImpl implements CollectionService {
 
 	@Override
 	public boolean isNameUnique(CollectionDTO collectionDTO) {
-		return collectionDAO.isNameUniqeu(collectionDTO);
+		return collectionDAO.isNameUnique(collectionDTO);
 	}
 
 	@Override
