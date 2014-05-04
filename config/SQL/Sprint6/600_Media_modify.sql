@@ -1,0 +1,1 @@
+ALTER TABLE `Media` MODIFY `owner` INT NULL;
