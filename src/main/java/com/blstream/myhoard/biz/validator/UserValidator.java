@@ -26,7 +26,7 @@ public class UserValidator extends AbstractValidator {
 
     private final String MESSAGE_EMAIL_EXIST = "user with email: %s already exist";
     private final String MESSAGE_EMAIL_INVALID = "invalid email-address: %s";
-    private final static String EMAIL_PATTERN = "^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";
+    private final static String EMAIL_PATTERN = "^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{1,})$";
 
     @Autowired
     private UserService userService;
