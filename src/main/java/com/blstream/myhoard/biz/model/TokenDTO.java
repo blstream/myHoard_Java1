@@ -1,9 +1,11 @@
 package com.blstream.myhoard.biz.model;
 
+import com.blstream.myhoard.biz.serializer.UserSerializer;
 import java.util.Date;
 
 import org.codehaus.jackson.annotate.JsonIgnore;
 import org.codehaus.jackson.annotate.JsonProperty;
+import org.codehaus.jackson.map.annotate.JsonSerialize;
 
 public class TokenDTO {
 
@@ -17,7 +19,8 @@ public class TokenDTO {
     private String refreshToken;
     @JsonIgnore
     private String email;
-    @JsonIgnore
+    @JsonProperty("user_id")
+    @JsonSerialize(using = UserSerializer.class)
     private UserDTO user;
     @JsonIgnore
     private Date createdDate;

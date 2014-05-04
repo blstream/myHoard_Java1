@@ -82,6 +82,7 @@ public class TokenController {
         tokenDTO.setExpiresIn(Constants.TOKEN_KEEP_ALIVE_TIME);
         tokenDTO.setRefreshToken(UUID.randomUUID().toString());
         tokenDTO.setEmail(credentials.getEmail());
+        tokenDTO.setUser(userDTO);
 
         tokenService.create(tokenDTO);
 
