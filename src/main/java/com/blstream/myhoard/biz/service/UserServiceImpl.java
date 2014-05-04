@@ -72,9 +72,9 @@ public class UserServiceImpl implements UserService {
             logger.info("update", e);
             throw new NotFoundException("User not found, invalid id");
         }
-        if (userDTO.getEmail() != null) {
+        if (userDTO.getPassword() != null) {
             // hashing user password
-            String hashedPassword = passwordEncoder.encode(userDTO.getEmail());
+            String hashedPassword = passwordEncoder.encode(userDTO.getPassword());
             userDS.setPassword(hashedPassword);
         }
         if (userDTO.getEmail() != null) {
