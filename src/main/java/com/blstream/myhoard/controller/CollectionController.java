@@ -141,20 +141,26 @@ public class CollectionController {
 			
 			collectionValidator.validatePattern(name);
 			
-			if(owner.equals(securityService.getCurrentUser().getEmail())) {	
+			if(owner.equals(securityService.getCurrentUser().getId())) {	
         			return collectionService.getList(name, owner);
         	}
         	else {
         		throw new NotFoundException(String.format("Access denied"));
         	}
 		}
-			
+		else if( ( (name != null && owner == null) || (name == null && owner != null) ) 
+				&& sortBy == null && sortDirection == null) {
+				
+			throw new NotFoundException(String.format("Invalid parameters for searching"));
+		}
+		
 		try {
 			return collectionService.getList();
 		} catch (Exception e) {
 			logger.error(e.getMessage(), e);
-			throw new MyHoardRestException();	
+			throw new MyHoardRestException();		
 		}
+			
 	}
 
 	@RequestMapping(value = "/{collectionId}", method = RequestMethod.DELETE)

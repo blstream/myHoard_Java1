@@ -16,6 +16,7 @@ import com.blstream.myhoard.db.dao.CollectionDAO;
 import com.blstream.myhoard.db.dao.UserDAO;
 import com.blstream.myhoard.db.model.CollectionDS;
 import com.blstream.myhoard.exception.MyHoardException;
+import com.blstream.myhoard.exception.NotFoundException;
 
 @Service("collectionService")
 public class CollectionServiceImpl implements CollectionService {
@@ -143,7 +144,17 @@ public class CollectionServiceImpl implements CollectionService {
 	public List<CollectionDTO> getList(String name, String owner)
 			throws MyHoardException {
 		
-		return CollectionMapper.map(collectionDAO.getList(name, owner));
+		List<CollectionDTO> collections;
+		
+		try {
+			int id = Integer.parseInt(owner);
+			collections = CollectionMapper.map(collectionDAO.getList(name, id));
+		}
+		catch(NumberFormatException e) {
+			throw new NotFoundException(String.format("Invalid collection id"));
+		}
+		
+		return collections;
 	}
 
 	@Override

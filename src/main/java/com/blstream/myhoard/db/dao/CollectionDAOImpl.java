@@ -183,14 +183,12 @@ public class CollectionDAOImpl implements CollectionDAO {
     
 	@SuppressWarnings("unchecked")
 	@Override
-	public List<CollectionDS> getList(String name, String owner) {
+	public List<CollectionDS> getList(String name, int owner) {
 		
 		return sessionFactory.getCurrentSession().createCriteria(CollectionDS.class, "collection")
 				.createAlias("collection.owner", "owner")
 				.add(Restrictions.ilike("collection.name", "%" + name + "%"))
-				.add(Restrictions.disjunction()
-					.add(Restrictions.eq("isPublic", true))
-					.add(Restrictions.eq("owner.email", owner)))
+				.add(Restrictions.eq("owner.id", owner))
 				.list();
 	}
 

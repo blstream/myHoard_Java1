@@ -54,7 +54,7 @@ public class ItemDAOImpl implements ItemDAO {
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public List<ItemDS> getList(String name, int collection, String owner) {
+	public List<ItemDS> getList(String name, int collection, int owner) {
 		
 		return sessionFactory.getCurrentSession().createCriteria(ItemDS.class, "item")
 				.createAlias("item.collection", "collection")
@@ -64,7 +64,7 @@ public class ItemDAOImpl implements ItemDAO {
 						.add(Restrictions.ilike("item.description", "%" + name + "%"))
 					)
 				.add(Restrictions.eq("collection.id", collection))
-				.add(Restrictions.eq("owner.email", owner))
+				.add(Restrictions.eq("owner.id", owner))
 				.list();
 	}
 
@@ -94,7 +94,8 @@ public class ItemDAOImpl implements ItemDAO {
     
     @Override
     public boolean isUniqueNameOfCollectionItem(String name, int collectionId) {
-        List<ItemDS> itemDS = sessionFactory.getCurrentSession()
+        @SuppressWarnings("unchecked")
+		List<ItemDS> itemDS = sessionFactory.getCurrentSession()
                 .createCriteria(ItemDS.class)
                 .add(Restrictions.eq("name", name))
                 .add(Restrictions.eq("collection.id", collectionId)).list();

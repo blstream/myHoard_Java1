@@ -28,7 +28,7 @@ public interface CollectionDAO extends ResourceDAO<CollectionDS> {
     
     public boolean isNameUnique(CollectionDTO collectionDTO);
     
-    public List<CollectionDS> getList(String name, String owner);
-    
     public CollectionDS getById(int id);
+    
+    public List<CollectionDS> getList(String name, int owner);
 }

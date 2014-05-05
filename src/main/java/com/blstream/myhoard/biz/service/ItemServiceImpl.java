@@ -90,7 +90,17 @@ public class ItemServiceImpl implements ItemService {
     @Override
     public List<ItemDTO> getList(String name, int collection, String owner) {
 
-        return ItemMapper.map(itemDAO.getList(name, collection, owner));
+    	List<ItemDTO> items;
+    	
+    	try {
+    		int id = Integer.parseInt(owner);
+    		items = ItemMapper.map(itemDAO.getList(name, collection, id));
+    	}
+    	catch(NumberFormatException e) {
+    		throw new NotFoundException("Invalid item id");
+    	}
+    	
+        return items;
     }
 
     @Override

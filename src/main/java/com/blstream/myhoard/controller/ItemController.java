@@ -60,7 +60,7 @@ public class ItemController {
         if (name == null && collectionId == null && owner == null) {
             return itemService.getListByUser();
         } else if (name != null && collectionId != null && owner != null) {
-        	if(owner.equals(securityService.getCurrentUser().getEmail())) {
+        	if(owner.equals(securityService.getCurrentUser().getId())) {
         		try {
         			itemValidator.validatePattern(name);
         			int collection = Integer.parseInt(collectionId);

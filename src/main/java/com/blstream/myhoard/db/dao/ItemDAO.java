@@ -8,7 +8,7 @@ public interface ItemDAO extends ResourceDAO<ItemDS> {
 
     public List<ItemDS> getListByUser(int id);
 
-    public List<ItemDS> getList(String name, int collection, String owner);
+    public List<ItemDS> getList(String name, int collection, int owner);
 
     @Override
     public List<ItemDS> getList();
