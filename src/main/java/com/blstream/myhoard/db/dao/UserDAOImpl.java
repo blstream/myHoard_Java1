@@ -37,10 +37,10 @@ public class UserDAOImpl implements UserDAO {
         return (UserDS) criteria.uniqueResult();
     }
 
-    @SuppressWarnings("unchecked")
-	@Override
+    @Override
     public List<UserDS> getList() throws MyHoardException {
-        return sessionFactory.getCurrentSession().createCriteria(UserDS.class).list();
+        return sessionFactory.getCurrentSession().createCriteria(UserDS.class)
+                .add(Restrictions.eq("publicAccount", true)).list();
     }
 
     @Override
@@ -101,6 +101,7 @@ public class UserDAOImpl implements UserDAO {
 		return new ArrayList<CollectionDS>(favoriteCollectionsWithoutPrivate);
 	}
 
+    @Override
 	public void saveWithFavoriteCollection(int id, CollectionDS collectionToSave) {
 		UserDS user = (UserDS) sessionFactory.getCurrentSession().get(UserDS.class, id);
 		Set<CollectionDS> favoriteCollections = user.getFavoriteCollections();
@@ -109,6 +110,7 @@ public class UserDAOImpl implements UserDAO {
 		update(user);
 	}
 	
+    @Override
 	public void saveWithoutFavoriteCollection(int id, CollectionDS collectionToDelete) {
 		UserDS user = (UserDS) sessionFactory.getCurrentSession().get(UserDS.class, id);
 		Set<CollectionDS> favoriteCollections = user.getFavoriteCollections();

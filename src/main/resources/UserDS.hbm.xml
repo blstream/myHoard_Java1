@@ -18,6 +18,9 @@
 		<property name="password" type="string">
 			<column name="password" not-null="true" unique="false" />
 		</property>
+		<property name="publicAccount" type="boolean">
+			<column name="public_account" not-null="true" />
+		</property>
 		<set name="items" cascade="all" fetch="select" lazy="true">
 			<key column="owner" />
 			<one-to-many class="com.blstream.myhoard.db.model.ItemDS" />

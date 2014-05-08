@@ -1,0 +1,1 @@
+ALTER TABLE `User` ADD `public_account` BOOLEAN NOT NULL DEFAULT '1';

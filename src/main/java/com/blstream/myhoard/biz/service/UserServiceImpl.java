@@ -53,13 +53,11 @@ public class UserServiceImpl implements UserService {
         String hashedPassword = passwordEncoder.encode(userDTO.getPassword());
         userDTO.setPassword(hashedPassword);
         
-        if(userDTO.getUsername() == null){
+        if (userDTO.getUsername() == null) {
             userDTO.setUsername(userDTO.getEmail());
         }
-
+        
         userDAO.create(UserMapper.map(userDTO));
-
-        userDTO.setPassword(null); // set password to null because is not should be returned to the controller
         return userDTO;
     }
 
@@ -83,17 +81,19 @@ public class UserServiceImpl implements UserService {
         if (userDTO.getUsername() != null) {
             userDS.setUsername(userDTO.getUsername());
         }
+        if (userDTO.isPublicAccount() != null) {
+            userDS.setPublicAccount(userDTO.isPublicAccount());
+        }
 
         userDAO.update(userDS);
         userDTO = UserMapper.map(userDS);
-        userDTO.setPassword(null);
         
         return userDTO;
     }
 
     @Override
-    public void remove(int i) throws MyHoardException {
-        userDAO.remove(i);
+    public void remove(int id) throws MyHoardException {
+        userDAO.remove(id);
     }
 
     @Override

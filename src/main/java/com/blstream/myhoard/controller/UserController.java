@@ -18,6 +18,7 @@ import com.blstream.myhoard.biz.enums.RequestMethodEnum;
 import com.blstream.myhoard.biz.model.CollectionDTO;
 import com.blstream.myhoard.biz.model.UserDTO;
 import com.blstream.myhoard.biz.service.UserService;
+import com.blstream.myhoard.biz.validator.RequestValidator;
 import com.blstream.myhoard.biz.validator.UserValidator;
 import com.blstream.myhoard.exception.ForbiddenException;
 import com.blstream.myhoard.exception.MyHoardException;
@@ -36,9 +37,11 @@ public class UserController {
     @Autowired
     private UserService userService;
     @Autowired
-    SecurityService securityService;
+    private SecurityService securityService;
     @Autowired
     private UserValidator userValidator;
+	@Autowired
+	private RequestValidator requestValidator;
 
     @RequestMapping(method = RequestMethod.POST)
     @ResponseStatus(HttpStatus.CREATED)
@@ -82,17 +85,13 @@ public class UserController {
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
     public UserDTO getUser(@PathVariable("userId") String id) throws MyHoardException {
-        UserDTO userDTO;
-        try {
-            userDTO = userService.get(Integer.parseInt(id));
-        } catch (NumberFormatException e) {
-            logger.error(GET_USER, e);
-            throw new NotFoundException(String.format(USER_NOT_EXIST_INVALID_ID, id));
-        } catch (MyHoardException mhe) {
-            logger.error(GET_USER, mhe);
-            throw new NotFoundException(String.format(USER_NOT_EXIST, id));
+        requestValidator.validId(id);
+        UserDTO userDTO = userService.get(Integer.parseInt(id));
+        
+        if (!securityService.getCurrentUser().getId().equals(id) && !userDTO.isPublicAccount()) {
+            throw new ForbiddenException();
         }
-        userDTO.setPassword(null);
+        
         return userDTO;
     }
 

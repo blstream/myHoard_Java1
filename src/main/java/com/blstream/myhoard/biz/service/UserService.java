@@ -13,7 +13,7 @@ public interface UserService extends ResourceService<UserDTO> {
     public List<CollectionDTO> getListOfUserCollections(int id) throws MyHoardException;
     
     @Override
-    List<UserDTO> getList() throws MyHoardException;
+    public List<UserDTO> getList() throws MyHoardException;
 
     @Override
     public UserDTO get(int i) throws MyHoardException;

@@ -13,6 +13,7 @@ public class UserMapper {
         userDS.setUsername(userDTO.getUsername());
         userDS.setEmail(userDTO.getEmail());
         userDS.setPassword(userDTO.getPassword());
+        userDS.setPublicAccount(userDTO.isPublicAccount() == null ? true : userDTO.isPublicAccount());
         
         return userDS;
     }
@@ -23,6 +24,7 @@ public class UserMapper {
         userDTO.setUsername(userDS.getUsername());
         userDTO.setEmail(userDS.getEmail());
         userDTO.setPassword(userDS.getPassword());
+        userDTO.setPublicAccount(userDS.isPublicAccount());
         
         return userDTO;
     }
@@ -31,7 +33,6 @@ public class UserMapper {
         List<UserDTO> userDTOList = new ArrayList<UserDTO>();
         for (UserDS u : userDSList) {
             UserDTO userDTO = map(u);
-            userDTO.setPassword(null);
             userDTOList.add(userDTO);
         }
         

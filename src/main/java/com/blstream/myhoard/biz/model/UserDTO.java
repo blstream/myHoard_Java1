@@ -1,5 +1,7 @@
 package com.blstream.myhoard.biz.model;
 
+import org.codehaus.jackson.annotate.JsonIgnore;
+import org.codehaus.jackson.annotate.JsonProperty;
 import org.codehaus.jackson.map.annotate.JsonSerialize;
 
 public class UserDTO {
@@ -8,8 +10,8 @@ public class UserDTO {
     private String id;
     private String username;
     private String email;
-    @JsonSerialize(include = JsonSerialize.Inclusion.NON_NULL)
     private String password;
+    private Boolean publicAccount;
 
     public String getId() {
         return id;
@@ -35,6 +37,8 @@ public class UserDTO {
         this.email = email;
     }
 
+    @JsonIgnore
+    @JsonProperty("password")
     public String getPassword() {
         return password;
     }
@@ -43,9 +47,14 @@ public class UserDTO {
         this.password = password;
     }
 
-    @Override
-    public String toString() {
-        return "UserDTO{" + "id=" + id + ", username=" + username + ", email=" + email + ", password=" + password + '}';
+    @JsonIgnore
+    @JsonProperty("public_account")
+    public Boolean isPublicAccount() {
+        return publicAccount;
     }
 
+    @JsonProperty("public_account")
+    public void setPublicAccount(Boolean publicAccount) {
+        this.publicAccount = publicAccount;
+    }
 }

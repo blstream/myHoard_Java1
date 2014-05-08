@@ -8,6 +8,7 @@ public class UserDS {
     private String username;
     private String email;
     private String password;
+    private boolean publicAccount;
     private Set<ItemDS> items;
     private Set<CollectionDS> collections;
     private Set<CollectionDS> favoriteCollections;
@@ -44,6 +45,14 @@ public class UserDS {
         this.password = password;
     }
 
+    public boolean isPublicAccount() {
+        return publicAccount;
+    }
+
+    public void setPublicAccount(boolean publicAccount) {
+        this.publicAccount = publicAccount;
+    }
+ 
     public Set<ItemDS> getItems() {
         return items;
     }
