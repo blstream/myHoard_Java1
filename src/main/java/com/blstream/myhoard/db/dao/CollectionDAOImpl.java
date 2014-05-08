@@ -1,6 +1,7 @@
 package com.blstream.myhoard.db.dao;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -127,7 +128,14 @@ public class CollectionDAOImpl implements CollectionDAO {
         objectFromDb.setDescription(obj.getDescription());
         objectFromDb.setTags(tagsToSave);
         objectFromDb.setIsPublic(obj.getIsPublic());
-        objectFromDb.setModifiedDate(obj.getModifiedDate());
+        objectFromDb.setModifiedDate(new Date());
+        
+        if(obj.getModifiedDateClient() != null) {
+        	objectFromDb.setModifiedDateClient(obj.getModifiedDateClient());
+        }
+        else {
+        	objectFromDb.setModifiedDateClient(objectFromDb.getModifiedDate());
+        }
         
         sessionFactory.getCurrentSession().update(objectFromDb);
     }
