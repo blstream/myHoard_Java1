@@ -31,6 +31,8 @@ public class ItemDTO {
     @JsonSerialize(using = UserSerializer.class)
     private UserDTO owner;
     private String collection;
+    @JsonProperty("for_sale")
+    private boolean forSale;
 
     public ItemDTO() {
     }
@@ -144,4 +146,13 @@ public class ItemDTO {
     public void setCollection(String collection) {
         this.collection = collection;
     }
+
+	public boolean isForSale() {
+		return forSale;
+	}
+
+	public void setForSale(boolean forSale) {
+		this.forSale = forSale;
+	}    
+    
 }

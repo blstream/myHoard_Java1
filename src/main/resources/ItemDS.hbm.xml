@@ -37,7 +37,10 @@
 		<property name="modifiedDateClient" type="timestamp">
 			<column name="modified_date_client" not-null="true" unique="false" />
 		</property>
-                <many-to-one name="owner" column="owner" lazy="false"
+		<property name="forSale" type="boolean">
+		  <column name="for_sale" not-null="true" />
+		</property>
+        <many-to-one name="owner" column="owner" lazy="false"
 			class="com.blstream.myhoard.db.model.UserDS" not-null="false"/>
 		<many-to-one name="collection" column="collection"
 			class="com.blstream.myhoard.db.model.CollectionDS" not-null="true" />

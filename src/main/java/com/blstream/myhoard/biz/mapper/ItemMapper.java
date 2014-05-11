@@ -33,6 +33,7 @@ public class ItemMapper {
         if (media != null) {
             itemDS.setMedia(media);
         }
+        itemDS.setForSale(itemDTO.isForSale());
 
         return itemDS;
     }
@@ -49,7 +50,8 @@ public class ItemMapper {
         itemDTO.setCollection(String.valueOf(itemDS.getCollection().getId()));
         itemDTO.setOwner(UserMapper.map(itemDS.getOwner()));
         itemDTO.setMedia(MediaMapper.mapToSetDTO(itemDS.getMedia()));
-
+        itemDTO.setForSale(itemDS.isForSale());
+        
         return itemDTO;
     }
 

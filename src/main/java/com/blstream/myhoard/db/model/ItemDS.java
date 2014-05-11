@@ -18,6 +18,7 @@ public class ItemDS {
     private UserDS owner;
     private CollectionDS collection;
     private Set<MediaDS> media;
+    private boolean forSale;
 
     public int getId() {
         return id;
@@ -122,8 +123,16 @@ public class ItemDS {
     public void setMedia(Set<MediaDS> media) {
         this.media = media;
     }
+    
+    public boolean isForSale() {
+		return forSale;
+	}
 
-    @Override
+	public void setForSale(boolean forSale) {
+		this.forSale = forSale;
+	}
+
+	@Override
     public int hashCode() {
         final int prime = 31;
         int result = 1;
