@@ -41,6 +41,8 @@ public class ItemServiceImpl implements ItemService {
     private UserDAO userDAO;
     @Autowired
     private SecurityService securityService;
+    @Autowired
+    private MailService mailService;
 
     @Override
     public ItemDTO create(ItemDTO itemDTO) throws MyHoardException {
@@ -63,6 +65,9 @@ public class ItemServiceImpl implements ItemService {
         itemDAO.create(itemDS);
 
         itemDTO = ItemMapper.map(itemDS);
+        
+        mailService.sendNotification();
+        
         return itemDTO;
     }
 
