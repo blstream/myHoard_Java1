@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.blstream.myhoard.authorization.service.SecurityService;
 import com.blstream.myhoard.db.model.ItemDS;
 
 @Repository
@@ -18,6 +19,9 @@ public class ItemDAOImpl implements ItemDAO {
 
     @Autowired
     private SessionFactory sessionFactory;
+    
+    @Autowired
+    private SecurityService securityService;
     
     @SuppressWarnings("unchecked")
 	@Override
@@ -29,12 +33,27 @@ public class ItemDAOImpl implements ItemDAO {
     @SuppressWarnings("unchecked")
 	@Override
     public List<ItemDS> getList() {
-        return sessionFactory.getCurrentSession().createCriteria(ItemDS.class).list();
+        return sessionFactory.getCurrentSession().createCriteria(ItemDS.class, "item")
+				.createAlias("item.collection", "collection")
+				.createAlias("collection.owner",  "owner")
+				.add(Restrictions.disjunction()
+					.add(Restrictions.eq("owner.id", securityService.getCurrentUser().getId()))
+					.add(Restrictions.eq("collection.isPublic", true)))	
+        		.list();
     }
 
     @Override
     public ItemDS get(int id) {
-        return (ItemDS) sessionFactory.getCurrentSession().get(ItemDS.class, id);
+    	
+    	return (ItemDS) sessionFactory.getCurrentSession().createCriteria(ItemDS.class, "item")
+    			.createAlias("item.collection", "collection")
+        		.createAlias("collection.owner", "owner")
+        		.add(Restrictions.eq("item.id", id))
+				.add(Restrictions.disjunction()
+					.add(Restrictions.eq("owner.id", Integer.parseInt(securityService.getCurrentUser().getId())))
+					.add(Restrictions.eq("collection.isPublic", true)))
+    			.setMaxResults(1)
+    			.uniqueResult();
     }
 
     @Override
@@ -64,7 +83,9 @@ public class ItemDAOImpl implements ItemDAO {
 						.add(Restrictions.ilike("item.description", "%" + name + "%"))
 					)
 				.add(Restrictions.eq("collection.id", collection))
-				.add(Restrictions.eq("owner.id", owner))
+				.add(Restrictions.disjunction()
+					.add(Restrictions.eq("owner.id", owner))
+					.add(Restrictions.eq("collection.isPublic", true)))
 				.list();
 	}
 
@@ -87,7 +108,11 @@ public class ItemDAOImpl implements ItemDAO {
 		}
 
 		crit.createAlias("item.collection", "collection");
+		crit.createAlias("collection.owner", "owner");
 		crit.add(Restrictions.eq("collection.id", id));
+		crit.add(Restrictions.disjunction()
+			.add(Restrictions.eq("owner.id", securityService.getCurrentUser().getId()))
+			.add(Restrictions.eq("collection.isPublic", true)));
 		
 		return crit.list();
 	}

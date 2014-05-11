@@ -30,20 +30,28 @@ public class MediaDAOImpl implements MediaDAO {
 	@Override
 	public List<MediaDS> getList() {
 		return sessionFactory.getCurrentSession()
-				.createCriteria(MediaDS.class)
-				.add(Restrictions.eq("owner", securityService.getCurrentUser().getId()))
+				.createCriteria(MediaDS.class, "media")
+				.createAlias("media.item", "item")
+				.createAlias("item.collection", "collection")
+				.add(Restrictions.disjunction()
+					.add(Restrictions.eq("media.owner", securityService.getCurrentUser().getId()))
+					.add(Restrictions.eq("collection.isPublic", true)))
 				.list();
 	}
 
 	@Override
 	public MediaDS get(int id) {
-		MediaDS media = (MediaDS) sessionFactory.getCurrentSession()
-				.get(MediaDS.class, id);
-		if(media != null && media.getOwner().getId() == Integer.parseInt(securityService.getCurrentUser().getId())) {
-			return media;
-		}
-		else
-			return null;
+		return (MediaDS) sessionFactory.getCurrentSession()
+			.createCriteria(MediaDS.class, "media")
+			.createAlias("media.itemDS", "item")
+			.createAlias("item.collection", "collection")
+			.createAlias("media.owner",  "owner")
+			.add(Restrictions.eq("media.id", id))
+			.add(Restrictions.disjunction()
+				.add(Restrictions.eq("owner.id", Integer.parseInt(securityService.getCurrentUser().getId())))
+				.add(Restrictions.eq("collection.isPublic", true)))
+			.setMaxResults(1)
+			.uniqueResult();
 	}
 
 	@Override
