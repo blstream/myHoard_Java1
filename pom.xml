@@ -16,7 +16,14 @@
 		<jackson.version>1.9.13</jackson.version>
                 <aspectj.version>1.6.11</aspectj.version>
 	</properties>
-
+	
+	<repositories>
+    	<repository>
+  			<id>Java.Net</id>
+  			<url>http://download.java.net/maven/2/</url>
+  		</repository>
+  	</repositories>
+  
 	<dependencies>
 
 		<!-- JUNIT -->
@@ -217,7 +224,13 @@
 			<artifactId>tika-parsers</artifactId>
 			<version>1.5</version>
 		</dependency>
-
+		
+		<!-- Java Mail API -->
+		<dependency>
+			<groupId>javax.mail</groupId>
+	 		<artifactId>mail</artifactId>
+	 		<version>1.4.3</version>
+	 	</dependency>
 
 	</dependencies>
 
