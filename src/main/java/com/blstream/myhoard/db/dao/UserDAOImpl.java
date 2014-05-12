@@ -8,6 +8,7 @@ import java.util.Set;
 
 import org.hibernate.Criteria;
 import org.hibernate.SessionFactory;
+import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -27,6 +28,9 @@ public class UserDAOImpl implements UserDAO {
     
     @Autowired
     private SecurityService securityService;
+    
+    @Autowired
+    private CollectionDAO collectionDAO;
 
     @Override
     public UserDS getByEmail(String email) {
@@ -37,7 +41,8 @@ public class UserDAOImpl implements UserDAO {
         return (UserDS) criteria.uniqueResult();
     }
 
-    @Override
+    @SuppressWarnings("unchecked")
+	@Override
     public List<UserDS> getList() throws MyHoardException {
         return sessionFactory.getCurrentSession().createCriteria(UserDS.class)
                 .add(Restrictions.eq("publicAccount", true)).list();
@@ -124,5 +129,4 @@ public class UserDAOImpl implements UserDAO {
 		user.setFavoriteCollections(favoriteCollections);
 		update(user);
 	}
-
 }

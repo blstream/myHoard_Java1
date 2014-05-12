@@ -66,7 +66,13 @@ public class ItemServiceImpl implements ItemService {
 
         itemDTO = ItemMapper.map(itemDS);
         
-        mailService.sendNotification();
+        mailService.setRecipients(collectionDAO.getObservers(collectionDS.getId()));
+        
+        if(mailService.getRecipients().size() > 0) {
+            mailService.setTitle("New Collection Item");
+            mailService.setMessage("Collection \"" + collectionDS.getName() + "\" has been updated.");
+            mailService.sendNotification();        	
+        }
         
         return itemDTO;
     }

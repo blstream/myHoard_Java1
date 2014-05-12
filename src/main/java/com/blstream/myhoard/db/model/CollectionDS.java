@@ -18,6 +18,7 @@ public class CollectionDS {
 	private Date modifiedDateClient;
 	private UserDS owner;
 	private Set<ItemDS> items = new HashSet<ItemDS>(0);
+	private Set<UserDS> observers = new HashSet<UserDS>(0);
 
 	public CollectionDS() {
 	}
@@ -133,6 +134,14 @@ public class CollectionDS {
 
 	public void setItems(Set<ItemDS> items) {
 		this.items = items;
+	}
+
+	public Set<UserDS> getObservers() {
+		return observers;
+	}
+
+	public void setObservers(Set<UserDS> observers) {
+		this.observers = observers;
 	}
 
 	@Override

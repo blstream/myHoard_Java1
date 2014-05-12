@@ -31,4 +31,6 @@ public interface CollectionDAO extends ResourceDAO<CollectionDS> {
     public CollectionDS getById(int id);
     
     public List<CollectionDS> getList(String name, int owner);
+    
+    public List<String> getObservers(int collection);
 }

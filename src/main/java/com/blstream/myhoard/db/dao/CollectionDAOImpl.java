@@ -256,4 +256,14 @@ public class CollectionDAOImpl implements CollectionDAO {
 
 	}
 
+	@Override
+	public List<String> getObservers(int collectionId) {
+		CollectionDS collection = (CollectionDS) get(collectionId);
+		List<String> emails = new ArrayList<String>();
+		for(UserDS user : collection.getObservers()) {
+			emails.add(user.getEmail());
+		}
+		return emails;
+	}
+
 }

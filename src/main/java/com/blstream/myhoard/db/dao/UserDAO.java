@@ -29,5 +29,4 @@ public interface UserDAO extends ResourceDAO<UserDS> {
 
 	public void saveWithoutFavoriteCollection(int parseInt,
 			CollectionDS collectionDS);
-
 }
