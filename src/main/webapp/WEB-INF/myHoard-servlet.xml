@@ -68,7 +68,12 @@
         <bean id="securityService" class="com.blstream.myhoard.authorization.service.SecurityServiceImpl"/>
         
         <!-- MAIL SERVICE -->
-        <bean id="mailService" class="com.blstream.myhoard.biz.service.MailServiceImpl"/>
+        <bean id="mailService" class="com.blstream.myhoard.biz.service.MailServiceImpl">
+        	<property name="host" value="${email.host}" />
+        	<property name="port" value="${email.port}" />
+        	<property name="username" value="${email.username}" />
+        	<property name="password" value="${email.password}" />
+        </bean>
         
         <!-- AOP AUTOPROXY -->
         <aop:aspectj-autoproxy />

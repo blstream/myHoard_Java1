@@ -71,7 +71,7 @@ public class ItemServiceImpl implements ItemService {
         if(mailService.getRecipients().size() > 0) {
             mailService.setTitle("New Collection Item");
             mailService.setMessage("Collection \"" + collectionDS.getName() + "\" has been updated.");
-            mailService.sendNotification();        	
+            mailService.sendMessage();        	
         }
         
         return itemDTO;

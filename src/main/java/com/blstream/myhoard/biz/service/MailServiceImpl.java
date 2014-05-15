@@ -5,6 +5,7 @@ import java.util.Properties;
 
 import javax.mail.Message;
 import javax.mail.MessagingException;
+import javax.mail.PasswordAuthentication;
 import javax.mail.Session;
 import javax.mail.Transport;
 import javax.mail.internet.InternetAddress;
@@ -15,8 +16,10 @@ import org.apache.log4j.Logger;
 public class MailServiceImpl implements MailService{
 	
 	private List<String> recipients;
-	private final String SENDER = "noreply@myhoard.com";
-	private final String HOST = "localhost";
+	private String host;
+	private String port;
+	private String username;
+	private String password;
 	private String title;
 	private String message;
 	
@@ -28,6 +31,22 @@ public class MailServiceImpl implements MailService{
 
 	public void setRecipients(List<String> recipients) {
 		this.recipients = recipients;
+	}
+
+	public String getUsername() {
+		return username;
+	}
+
+	public void setUsername(String username) {
+		this.username = username;
+	}
+
+	public String getPassword() {
+		return password;
+	}
+
+	public void setPassword(String password) {
+		this.password = password;
 	}
 
 	public String getTitle() {
@@ -42,30 +61,62 @@ public class MailServiceImpl implements MailService{
 		return message;
 	}
 
+	public String getHost() {
+		return host;
+	}
+
+	public void setHost(String host) {
+		this.host = host;
+	}
+
+	public String getPort() {
+		return port;
+	}
+
+	public void setPort(String port) {
+		this.port = port;
+	}
+	
 	public void setMessage(String message) {
 		this.message = message;
 	}
 
-	public void sendNotification() {
+	public void sendMessage() {
 	      
 		if(this.getRecipients().size() > 0) {
+			
 	      Properties properties = System.getProperties();
-	      properties.setProperty("mail.smtp.host", HOST);
-	      Session session = Session.getDefaultInstance(properties);
+	      properties.setProperty("mail.smtp.host", host);
+	      properties.setProperty("mail.smtp.port", port);
+	      
+	      properties.setProperty("mail.smtp.auth", "true");
+	      properties.setProperty("mail.smtp.starttls.enable", "true");
+	      
+	      //Session session = Session.getDefaultInstance(properties);
+	      
+	      Session session = Session.getInstance(properties,
+	    	      new javax.mail.Authenticator() {
+	    	         protected PasswordAuthentication getPasswordAuthentication() {
+	    	            return new PasswordAuthentication(username, password);
+	    	         }
+	    	      });
 	      
 	      try{
 	    	  
-	         MimeMessage message = new MimeMessage(session);
-	         message.setFrom(new InternetAddress(SENDER));
+	         MimeMessage msg = new MimeMessage(session);
+	         msg.setFrom(new InternetAddress(username));
 	         for(String email : this.getRecipients()) {
-	        	 message.addRecipient(Message.RecipientType.TO, new InternetAddress(email)); 
+	        	 msg.addRecipient(Message.RecipientType.TO, new InternetAddress(email)); 
 	         }
-	         message.setSubject(this.getTitle());
-	         message.setText(this.getMessage());
-		         Transport.send(message);
-		         logger.info("Sent message successfully...");
+	         msg.setSubject(title);
+	         msg.setText(message);
+	         Transport.send(msg);
+	         logger.info("Sent message successfully to: ");
+	         for(String email : this.getRecipients()) {
+	        	 logger.info(email + ", ");
+	         }
 	      } catch (MessagingException mex) {
-	         logger.error("Sent message failed");
+	         logger.error("Sent message failed [ " + username + " " + host + " " + port + "]");
 	      }
 		}
 		else {
