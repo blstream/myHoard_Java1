@@ -4,7 +4,7 @@
 	<groupId>com.blstream.myhoard</groupId>
 	<artifactId>MyHoardJava1</artifactId>
 	<packaging>war</packaging>
-	<version>7.0.0</version>
+	<version>8.0.0</version>
 	<name>MyHoard Maven Webapp</name>
 	<url>http://maven.apache.org</url>
 
@@ -14,7 +14,7 @@
 		<spring.version>3.2.2.RELEASE</spring.version>
 		<hibernate.version>4.2.3.Final</hibernate.version>
 		<jackson.version>1.9.13</jackson.version>
-                <aspectj.version>1.6.11</aspectj.version>
+        <aspectj.version>1.6.11</aspectj.version>
 	</properties>
 	
 	<repositories>
@@ -25,7 +25,6 @@
   	</repositories>
   
 	<dependencies>
-
 		<!-- JUNIT -->
 		<dependency>
 			<groupId>junit</groupId>
