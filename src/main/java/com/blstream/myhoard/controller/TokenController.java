@@ -30,7 +30,7 @@ import com.blstream.myhoard.exception.MyHoardException;
 import com.blstream.myhoard.exception.NotFoundException;
 
 @Controller
-@RequestMapping("/oauth/token/")
+@RequestMapping("/oauth/token")
 public class TokenController {
     
     private static final Logger logger = Logger.getLogger(TokenController.class.getCanonicalName());

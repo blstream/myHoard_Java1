@@ -48,12 +48,12 @@ public class UserDTO {
     }
 
     @JsonIgnore
-    @JsonProperty("public_account")
+    @JsonProperty("public")
     public Boolean isPublicAccount() {
         return publicAccount;
     }
 
-    @JsonProperty("public_account")
+    @JsonProperty("public")
     public void setPublicAccount(Boolean publicAccount) {
         this.publicAccount = publicAccount;
     }
