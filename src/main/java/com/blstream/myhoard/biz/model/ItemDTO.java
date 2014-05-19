@@ -32,7 +32,7 @@ public class ItemDTO {
     private UserDTO owner;
     private String collection;
     @JsonProperty("for_sale")
-    private boolean forSale;
+    private Boolean forSale;
 
     public ItemDTO() {
     }
@@ -147,12 +147,12 @@ public class ItemDTO {
         this.collection = collection;
     }
 
-	public boolean isForSale() {
-		return forSale;
-	}
+    public Boolean isForSale() {
+        return forSale;
+    }
 
-	public void setForSale(boolean forSale) {
-		this.forSale = forSale;
-	}    
+    public void setForSale(Boolean forSale) {
+        this.forSale = forSale;
+    }
     
 }

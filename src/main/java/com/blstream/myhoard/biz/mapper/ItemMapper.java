@@ -33,7 +33,9 @@ public class ItemMapper {
         if (media != null) {
             itemDS.setMedia(media);
         }
-        itemDS.setForSale(itemDTO.isForSale());
+        if (itemDTO.isForSale() != null) {
+            itemDS.setForSale(itemDTO.isForSale());
+        }
 
         return itemDS;
     }

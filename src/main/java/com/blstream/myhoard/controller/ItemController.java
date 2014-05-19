@@ -116,7 +116,7 @@ public class ItemController {
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
     public ItemDTO updateItem(@PathVariable("itemId") String id, @Valid @RequestBody ItemDTO itemDTO) throws MyHoardException {
-        requestValidator.validId(itemDTO.getId());
+        requestValidator.validId(id);
         itemValidator.validate(itemDTO, RequestMethodEnum.PUT);
         ItemDTO srcItemDTO;
         try {

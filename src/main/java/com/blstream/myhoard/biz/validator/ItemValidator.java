@@ -32,17 +32,17 @@ public class ItemValidator extends AbstractValidator {
 
         switch (requestMethod) {
             case POST:
-            case PUT:
-                validateItemDTO(itemDTO);
+                validateCreate(itemDTO);
                 break;
-            default:
+            case PUT:
+                validateUpdate(itemDTO);
                 break;
         }
 
         checkError();
     }
 
-    private void validateItemDTO(ItemDTO itemDTO) throws MyHoardException {
+    private void validateCreate(ItemDTO itemDTO) throws MyHoardException {
         // name
         if (itemDTO.getName() != null) {
             itemDTO.setName(itemDTO.getName().trim());
@@ -53,6 +53,25 @@ public class ItemValidator extends AbstractValidator {
             errorMessages.put(KEY_NAME, String.format(MESSAGE_LENGTH_MIN_MAX, 2, 50));
         } else if (!itemService.isUniqueNameOfCollectionItem(itemDTO.getName(), Integer.parseInt(itemDTO.getCollection()))) {
             errorMessages.put(KEY_NAME, String.format(NAME_EXIST, itemDTO.getName()));
+        }
+
+        if (itemDTO.getLocation() != null) {
+            if (itemDTO.getLocation().getLat() == null || itemDTO.getLocation().getLat() < -90 || itemDTO.getLocation().getLat() > 90) {
+                errorMessages.put(KEY_LOCATION_LAT, String.format(LOCATION_LAT, itemDTO.getLocation().getLat()));
+            }
+            if (itemDTO.getLocation().getLng() == null || itemDTO.getLocation().getLng() < -180 || itemDTO.getLocation().getLng() > 180) {
+                errorMessages.put(KEY_LOCATION_LNG, String.format(LOCATION_LNG, itemDTO.getLocation().getLng()));
+            }
+        }
+    }
+    
+    private void validateUpdate(ItemDTO itemDTO) throws MyHoardException {
+        // name
+        if (itemDTO.getName() != null) {
+            itemDTO.setName(itemDTO.getName().trim());
+            if (itemDTO.getName().length() < 2 || itemDTO.getName().length() > 50) {
+                errorMessages.put(KEY_NAME, String.format(MESSAGE_LENGTH_MIN_MAX, 2, 50));
+            }
         }
 
         if (itemDTO.getLocation() != null) {

@@ -167,6 +167,9 @@ public class ItemServiceImpl implements ItemService {
         if (updateItemDS.getMedia() != null) {
             itemDS.setMedia(updateItemDS.getMedia());
         }
+        if (itemDTO.isForSale() != null) {
+            itemDS.setForSale(itemDTO.isForSale());
+        }
         itemDAO.update(itemDS);
 
         itemDTO = ItemMapper.map(itemDS);
@@ -213,7 +216,6 @@ public class ItemServiceImpl implements ItemService {
 
 	@Override
 	public List<ItemDTO> getList(int id, List<String> sortBy, String sortDirection) {
-		
 		List<ItemDS> itemDSList = itemDAO.getList(id, sortBy, sortDirection);
 		List<ItemDTO> itemDTOList = ItemMapper.map(itemDSList);
 
