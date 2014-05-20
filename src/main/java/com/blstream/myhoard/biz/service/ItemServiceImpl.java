@@ -68,9 +68,17 @@ public class ItemServiceImpl implements ItemService {
         
         mailService.setRecipients(collectionDAO.getObservers(collectionDS.getId()));
         
+        String message = "New Item \"" + itemDTO.getName() + "\" was added to collection \"" + collectionDS.getName() + "\".\n\n";
+        message += "Name:\t\t" + itemDTO.getName() + "\n";
+        message += "Description:\t" + itemDTO.getDescription() + "\n";
+        message += "Collection:\t" + collectionDS.getName() + "\n";
+        message += "Owner:\t\t" + itemDS.getOwner().getEmail() + "\n";
+        message += "Location:\t" + itemDTO.getLocation().getLat() + ", " + itemDTO.getLocation().getLng()  + "\n";
+        message += "Quantity:\t" + itemDTO.getQuantity() + "\n";
+        
         if(mailService.getRecipients().size() > 0) {
             mailService.setTitle("New Collection Item");
-            mailService.setMessage("Collection \"" + collectionDS.getName() + "\" has been updated.");
+            mailService.setMessage(message);
             mailService.sendMessage();        	
         }
         

@@ -12,6 +12,9 @@ import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 
 import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
+
+import com.blstream.myhoard.authorization.service.SecurityService;
 
 public class MailServiceImpl implements MailService{
 	
@@ -24,6 +27,9 @@ public class MailServiceImpl implements MailService{
 	private String message;
 	
 	private static final Logger logger = Logger.getLogger(MailServiceImpl.class.getCanonicalName());
+	
+	@Autowired
+	private SecurityService securityService;
 	
 	public List<String> getRecipients() {
 		return recipients;
@@ -92,8 +98,6 @@ public class MailServiceImpl implements MailService{
 	      properties.setProperty("mail.smtp.auth", "true");
 	      properties.setProperty("mail.smtp.starttls.enable", "true");
 	      
-	      //Session session = Session.getDefaultInstance(properties);
-	      
 	      Session session = Session.getInstance(properties,
 	    	      new javax.mail.Authenticator() {
 	    	         protected PasswordAuthentication getPasswordAuthentication() {
@@ -106,7 +110,8 @@ public class MailServiceImpl implements MailService{
 	         MimeMessage msg = new MimeMessage(session);
 	         msg.setFrom(new InternetAddress(username));
 	         for(String email : this.getRecipients()) {
-	        	 msg.addRecipient(Message.RecipientType.TO, new InternetAddress(email)); 
+	        	 if(!email.equals(securityService.getCurrentUser().getEmail()))
+	        		 msg.addRecipient(Message.RecipientType.TO, new InternetAddress(email)); 
 	         }
 	         msg.setSubject(title);
 	         msg.setText(message);
