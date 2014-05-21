@@ -209,7 +209,7 @@ public class ItemServiceImpl implements ItemService {
             for (MediaDTO mediaDTO : itemDTO.getMedia()) {
                 MediaDS mediaDS = null;
                 try {
-                    mediaDS = mediaDAO.get(Integer.parseInt(mediaDTO.getId()));
+                    mediaDS = mediaDAO.getForItem(Integer.parseInt(mediaDTO.getId()));
                 } catch (NumberFormatException e) {
                     logger.error("getItemMedia - Invalid Media Id", e);
                 }

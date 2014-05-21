@@ -54,6 +54,15 @@ public class MediaDAOImpl implements MediaDAO {
 			.uniqueResult();
 	}
 
+    @Override
+    public MediaDS getForItem(int id) {
+        return (MediaDS) sessionFactory.getCurrentSession()
+                .createCriteria(MediaDS.class)
+                .add(Restrictions.eq("id", id))
+                .add(Restrictions.eq("owner.id", Integer.parseInt(securityService.getCurrentUser().getId())))
+                .setMaxResults(1).uniqueResult();
+    }
+
 	@Override
 	public void create(MediaDS object) {
 		getSession().save(object);

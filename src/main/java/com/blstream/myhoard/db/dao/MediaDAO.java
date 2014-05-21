@@ -9,6 +9,8 @@ public interface MediaDAO {
     public List<MediaDS> getList();
 
     public MediaDS get(int id);
+    
+    public MediaDS getForItem(int id);
 
     public void create(MediaDS object);
 
