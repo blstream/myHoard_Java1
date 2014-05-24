@@ -8,7 +8,6 @@ import java.util.Set;
 
 import org.hibernate.Criteria;
 import org.hibernate.SessionFactory;
-import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -25,17 +24,13 @@ public class UserDAOImpl implements UserDAO {
 
     @Autowired
     private SessionFactory sessionFactory;
-    
     @Autowired
     private SecurityService securityService;
-    
-    @Autowired
-    private CollectionDAO collectionDAO;
 
     @Override
     public UserDS getByEmail(String email) {
         Criteria criteria = sessionFactory.getCurrentSession().createCriteria(UserDS.class);
-        criteria.add(Restrictions.eq("email", email));
+        criteria.add(Restrictions.eq("email", email).ignoreCase());
         criteria.setMaxResults(1);
 
         return (UserDS) criteria.uniqueResult();
