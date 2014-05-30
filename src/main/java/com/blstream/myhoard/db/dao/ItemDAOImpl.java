@@ -68,7 +68,7 @@ public class ItemDAOImpl implements ItemDAO {
 
     @Override
     public void remove(int id) {
-        sessionFactory.getCurrentSession().delete(get(id));
+        sessionFactory.getCurrentSession().delete(sessionFactory.getCurrentSession().get(ItemDS.class, id));
     }
 
 	@SuppressWarnings("unchecked")
